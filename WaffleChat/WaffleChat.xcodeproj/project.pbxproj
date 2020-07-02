@@ -18,6 +18,7 @@
 		CE9AE42824ACC16A00F77F48 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE42724ACC16A00F77F48 /* LoginController.swift */; };
 		CE9AE42A24ACC18500F77F48 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE42924ACC18500F77F48 /* RegistrationController.swift */; };
 		CE9AE42D24ACC48B00F77F48 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE42C24ACC48B00F77F48 /* Constants.swift */; };
+		CE9AE42F24AE377500F77F48 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE42E24AE377500F77F48 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		CE9AE42724ACC16A00F77F48 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		CE9AE42924ACC18500F77F48 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		CE9AE42C24ACC48B00F77F48 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		CE9AE42E24AE377500F77F48 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.release.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +109,7 @@
 		CE9AE41724A9BC4500F77F48 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				CE9AE42E24AE377500F77F48 /* Extensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				CE9AE42324A9DC1700F77F48 /* ConversationCell.swift in Sources */,
 				CE9AE40424A9BBB800F77F48 /* AppDelegate.swift in Sources */,
 				CE9AE41F24A9C08100F77F48 /* ConversationsController.swift in Sources */,
+				CE9AE42F24AE377500F77F48 /* Extensions.swift in Sources */,
 				CE9AE40624A9BBB800F77F48 /* SceneDelegate.swift in Sources */,
 				CE9AE42D24ACC48B00F77F48 /* Constants.swift in Sources */,
 				CE9AE42A24ACC18500F77F48 /* RegistrationController.swift in Sources */,
