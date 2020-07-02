@@ -24,18 +24,9 @@ class LoginController: UIViewController {
        let view = UIView()
         return view
     }()
-    
     let emailTextField: UITextField = {
        let tf = UITextField()
         tf.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor : UIColor.white])
-        tf.textColor = .white
-        tf.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        return tf
-    }()
-    
-    let passwordTextField: UITextField = {
-       let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor : UIColor.white])
         tf.textColor = .white
         tf.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         return tf
@@ -45,13 +36,20 @@ class LoginController: UIViewController {
        let view = UIView()
         return view
     }()
+    let passwordTextField: UITextField = {
+       let tf = UITextField()
+        tf.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor : UIColor.white])
+        tf.textColor = .white
+        tf.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        return tf
+    }()
     
     let loginButton: UIButton = {
        let btn = UIButton()
         btn.setTitle("Log In", for: .normal)
         btn.backgroundColor = #colorLiteral(red: 1, green: 0.698582075, blue: 0.1078745686, alpha: 1)
         btn.setTitleColor(.white, for: .normal)
-        btn.layer.cornerRadius = 5
+        btn.layer.cornerRadius = 10
         btn.clipsToBounds = true
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         return btn
