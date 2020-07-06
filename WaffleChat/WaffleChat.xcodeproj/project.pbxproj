@@ -19,6 +19,7 @@
 		CE9AE42A24ACC18500F77F48 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE42924ACC18500F77F48 /* RegistrationController.swift */; };
 		CE9AE42D24ACC48B00F77F48 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE42C24ACC48B00F77F48 /* Constants.swift */; };
 		CE9AE42F24AE377500F77F48 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE42E24AE377500F77F48 /* Extensions.swift */; };
+		CEB17AE024B3743400FB7B7E /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		CE9AE42924ACC18500F77F48 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		CE9AE42C24ACC48B00F77F48 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CE9AE42E24AE377500F77F48 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
 		E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.release.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -140,6 +142,8 @@
 		CE9AE41C24A9BC5B00F77F48 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CEB17AE124B377E300FB7B7E /* UITextField */,
+				CEB17ADE24B373F600FB7B7E /* CustomUIView */,
 				CE9AE42124A9DB8200F77F48 /* Cells */,
 			);
 			path = View;
@@ -184,6 +188,21 @@
 				CE9AE42C24ACC48B00F77F48 /* Constants.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		CEB17ADE24B373F600FB7B7E /* CustomUIView */ = {
+			isa = PBXGroup;
+			children = (
+				CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */,
+			);
+			path = CustomUIView;
+			sourceTree = "<group>";
+		};
+		CEB17AE124B377E300FB7B7E /* UITextField */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UITextField;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -305,6 +324,7 @@
 				CE9AE40424A9BBB800F77F48 /* AppDelegate.swift in Sources */,
 				CE9AE41F24A9C08100F77F48 /* ConversationsController.swift in Sources */,
 				CE9AE42F24AE377500F77F48 /* Extensions.swift in Sources */,
+				CEB17AE024B3743400FB7B7E /* InputContainerView.swift in Sources */,
 				CE9AE40624A9BBB800F77F48 /* SceneDelegate.swift in Sources */,
 				CE9AE42D24ACC48B00F77F48 /* Constants.swift in Sources */,
 				CE9AE42A24ACC18500F77F48 /* RegistrationController.swift in Sources */,

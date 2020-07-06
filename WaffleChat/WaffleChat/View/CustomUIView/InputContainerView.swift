@@ -1,21 +1,30 @@
 //
-//  Extensions.swift
+//  InputContainerView.swift
 //  WaffleChat
 //
-//  Created by SEONGJUN on 2020/07/03.
+//  Created by SEONGJUN on 2020/07/07.
 //  Copyright © 2020 Seongjun Im. All rights reserved.
 //
 
 import UIKit
+import SnapKit
 
-
-extension UIViewController {
+class InputContainerView: UIView {
     
-    func makeInputDataContainerView(container: UIView, image: UIImage, textField: UITextField) {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(image: UIImage?, textField: UITextField) {
+        super.init(frame: .zero)
         let imageView = UIImageView(image: image)
         let underline = UIView()
         
-        [imageView, textField, underline].forEach({ container.addSubview($0)})
+        [imageView, textField, underline].forEach({ addSubview($0)})
         underline.backgroundColor = .white
         underline.snp.makeConstraints {
             $0.bottom.trailing.equalToSuperview()

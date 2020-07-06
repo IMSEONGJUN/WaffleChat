@@ -20,10 +20,7 @@ class LoginController: UIViewController {
         return iv
     }()
     
-    let emailContainer: UIView = {
-       let view = UIView()
-        return view
-    }()
+    let emailContainer = UIView()
     let emailTextField: UITextField = {
        let tf = UITextField()
         tf.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor : UIColor.white])
@@ -32,14 +29,12 @@ class LoginController: UIViewController {
         return tf
     }()
     
-    let passwordContainer: UIView = {
-       let view = UIView()
-        return view
-    }()
+    let passwordContainer = UIView()
     let passwordTextField: UITextField = {
        let tf = UITextField()
         tf.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor : UIColor.white])
         tf.textColor = .white
+        tf.isSecureTextEntry = true
         tf.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         return tf
     }()
@@ -47,19 +42,38 @@ class LoginController: UIViewController {
     let loginButton: UIButton = {
        let btn = UIButton()
         btn.setTitle("Log In", for: .normal)
-        btn.backgroundColor = #colorLiteral(red: 1, green: 0.698582075, blue: 0.1078745686, alpha: 1)
+        btn.backgroundColor = #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
         btn.setTitleColor(.white, for: .normal)
         btn.layer.cornerRadius = 10
         btn.clipsToBounds = true
+        btn.isEnabled = false
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        btn.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
+        return btn
+    }()
+    // #colorLiteral(red: 1, green: 0.698582075, blue: 0.1078745686, alpha: 1)
+    
+    let signUpButton: UIButton = {
+        let btn = UIButton(type: .system)
+        let attributedTitle = NSMutableAttributedString(string: "Don't have an account? ",
+                                                        attributes: [.font: UIFont.systemFont(ofSize: 16),
+                                                                     .foregroundColor : UIColor.white])
+        
+        attributedTitle.append(NSAttributedString(string: "Sign Up",
+                                                  attributes: [.font : UIFont.boldSystemFont(ofSize: 16),
+                                                               .foregroundColor : UIColor.white]))
+        btn.setAttributedTitle(attributedTitle, for: .normal)
+        btn.addTarget(self, action: #selector(didTapSignUpButton), for: .touchUpInside)
         return btn
     }()
     
-    // MARK: - Lifecycle
+    
+    // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
     }
+    
     
     // MARK: - Initial Setup
     private func configureUI() {
@@ -67,6 +81,7 @@ class LoginController: UIViewController {
         navigationController?.navigationBar.barStyle = .default
         configureGradientLayer()
         configureLogoImageView()
+        configureSignUpButton()
         configureAuthenticationStackView()
         configureTapGesture()
     }
@@ -87,6 +102,14 @@ class LoginController: UIViewController {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().offset(100)
             $0.width.height.equalTo(120)
+        }
+    }
+    
+    private func configureSignUpButton() {
+        view.addSubview(signUpButton)
+        signUpButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
     
@@ -111,16 +134,25 @@ class LoginController: UIViewController {
     }
     
     private func configureEmailSection() {
-        makeInputDataTextField(container: emailContainer, image: #imageLiteral(resourceName: "ic_mail_outline_white_2x"), textField: emailTextField)
+        makeInputDataContainerView(container: emailContainer, image: #imageLiteral(resourceName: "ic_mail_outline_white_2x"), textField: emailTextField)
     }
     
     private func configurePasswordSection() {
-        makeInputDataTextField(container: passwordContainer, image: #imageLiteral(resourceName: "ic_lock_outline_white_2x"), textField: passwordTextField)
+        makeInputDataContainerView(container: passwordContainer, image: #imageLiteral(resourceName: "ic_lock_outline_white_2x"), textField: passwordTextField)
     }
     
     private func configureTapGesture() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
+    
+    
     // MARK: - Action Handler
 
+    @objc private func didTapLoginButton() {
+        print("login")
+    }
+    
+    @objc private func didTapSignUpButton() {
+        print("sign Up")
+    }
 }
