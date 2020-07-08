@@ -20,22 +20,13 @@ class LoginController: UIViewController {
         return iv
     }()
     
-    let emailContainer = UIView()
-    let emailTextField: UITextField = {
-       let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor : UIColor.white])
-        tf.textColor = .white
-        tf.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        return tf
-    }()
+    lazy var emailContainer = InputContainerView(image: #imageLiteral(resourceName: "ic_mail_outline_white_2x"), textField: emailTextField)
+    let emailTextField = InputTextField(placeHolder: "Email")
     
-    let passwordContainer = UIView()
-    let passwordTextField: UITextField = {
-       let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor : UIColor.white])
-        tf.textColor = .white
+    lazy var passwordContainer = InputContainerView(image: #imageLiteral(resourceName: "ic_lock_outline_white_2x"), textField: passwordTextField)
+    let passwordTextField: InputTextField = {
+       let tf = InputTextField(placeHolder: "Password")
         tf.isSecureTextEntry = true
-        tf.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         return tf
     }()
     
@@ -128,17 +119,6 @@ class LoginController: UIViewController {
             $0.top.equalTo(logoImageView.snp.bottom).offset(50)
             $0.leading.trailing.equalToSuperview().inset(50)
         }
-        
-        configureEmailSection()
-        configurePasswordSection()
-    }
-    
-    private func configureEmailSection() {
-        makeInputDataContainerView(container: emailContainer, image: #imageLiteral(resourceName: "ic_mail_outline_white_2x"), textField: emailTextField)
-    }
-    
-    private func configurePasswordSection() {
-        makeInputDataContainerView(container: passwordContainer, image: #imageLiteral(resourceName: "ic_lock_outline_white_2x"), textField: passwordTextField)
     }
     
     private func configureTapGesture() {
@@ -153,6 +133,7 @@ class LoginController: UIViewController {
     }
     
     @objc private func didTapSignUpButton() {
-        print("sign Up")
+        let vc = RegistrationController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

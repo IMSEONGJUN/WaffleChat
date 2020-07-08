@@ -20,6 +20,7 @@
 		CE9AE42D24ACC48B00F77F48 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE42C24ACC48B00F77F48 /* Constants.swift */; };
 		CE9AE42F24AE377500F77F48 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE42E24AE377500F77F48 /* Extensions.swift */; };
 		CEB17AE024B3743400FB7B7E /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */; };
+		CEB17AE324B4721200FB7B7E /* InputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17AE224B4721200FB7B7E /* InputTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		CE9AE42C24ACC48B00F77F48 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CE9AE42E24AE377500F77F48 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
+		CEB17AE224B4721200FB7B7E /* InputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextField.swift; sourceTree = "<group>"; };
 		E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.release.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -126,8 +128,8 @@
 		CE9AE41A24A9BC5400F77F48 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CE9AE42624ACC12800F77F48 /* Authentication */,
 				CE9AE41E24A9C08100F77F48 /* ConversationsController.swift */,
+				CE9AE42624ACC12800F77F48 /* Authentication */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -201,6 +203,7 @@
 		CEB17AE124B377E300FB7B7E /* UITextField */ = {
 			isa = PBXGroup;
 			children = (
+				CEB17AE224B4721200FB7B7E /* InputTextField.swift */,
 			);
 			path = UITextField;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB17AE324B4721200FB7B7E /* InputTextField.swift in Sources */,
 				CE9AE42324A9DC1700F77F48 /* ConversationCell.swift in Sources */,
 				CE9AE40424A9BBB800F77F48 /* AppDelegate.swift in Sources */,
 				CE9AE41F24A9C08100F77F48 /* ConversationsController.swift in Sources */,
