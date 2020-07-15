@@ -35,4 +35,14 @@ extension UIViewController {
             $0.trailing.equalToSuperview().inset(10)
         }
     }
+    
+    func configureGradientLayer() {
+        let gradient = CAGradientLayer()
+        let topColor = #colorLiteral(red: 1, green: 0.9944892197, blue: 0.7521914475, alpha: 1).cgColor
+        let bottomColor = #colorLiteral(red: 0.6196078431, green: 0.4235294118, blue: 0.1254901961, alpha: 1).cgColor
+        gradient.colors = [topColor, bottomColor]
+        gradient.locations = [0, 1]
+        view.layer.addSublayer(gradient)
+        gradient.frame = view.frame
+    }
 }

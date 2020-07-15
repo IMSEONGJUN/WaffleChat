@@ -31,20 +31,13 @@ class LoginController: UIViewController {
     }()
     
     let loginButton: UIButton = {
-       let btn = UIButton()
-        btn.setTitle("Log In", for: .normal)
-        btn.backgroundColor = #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
-        btn.setTitleColor(.white, for: .normal)
-        btn.layer.cornerRadius = 10
-        btn.clipsToBounds = true
-        btn.isEnabled = false
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+       let btn = CustomButtonForAuth(title: "Log In", color: #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1))
         btn.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
         return btn
     }()
     // #colorLiteral(red: 1, green: 0.698582075, blue: 0.1078745686, alpha: 1)
     
-    let signUpButton: UIButton = {
+    let goToSignUpPageButton: UIButton = {
         let btn = UIButton(type: .system)
         let attributedTitle = NSMutableAttributedString(string: "Don't have an account? ",
                                                         attributes: [.font: UIFont.systemFont(ofSize: 16),
@@ -54,7 +47,7 @@ class LoginController: UIViewController {
                                                   attributes: [.font : UIFont.boldSystemFont(ofSize: 16),
                                                                .foregroundColor : UIColor.white]))
         btn.setAttributedTitle(attributedTitle, for: .normal)
-        btn.addTarget(self, action: #selector(didTapSignUpButton), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(didTapGoToSignUpPageButton), for: .touchUpInside)
         return btn
     }()
     
@@ -72,19 +65,9 @@ class LoginController: UIViewController {
         navigationController?.navigationBar.barStyle = .default
         configureGradientLayer()
         configureLogoImageView()
-        configureSignUpButton()
+        configureGoToSignUpPageButton()
         configureAuthenticationStackView()
         configureTapGesture()
-    }
-    
-    private func configureGradientLayer() {
-        let gradient = CAGradientLayer()
-        let topColor = #colorLiteral(red: 1, green: 0.9944892197, blue: 0.7521914475, alpha: 1).cgColor
-        let bottomColor = #colorLiteral(red: 0.6196078431, green: 0.4235294118, blue: 0.1254901961, alpha: 1).cgColor
-        gradient.colors = [topColor, bottomColor]
-        gradient.locations = [0, 1]
-        view.layer.addSublayer(gradient)
-        gradient.frame = view.frame
     }
     
     private func configureLogoImageView() {
@@ -96,9 +79,9 @@ class LoginController: UIViewController {
         }
     }
     
-    private func configureSignUpButton() {
-        view.addSubview(signUpButton)
-        signUpButton.snp.makeConstraints {
+    private func configureGoToSignUpPageButton() {
+        view.addSubview(goToSignUpPageButton)
+        goToSignUpPageButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
@@ -131,7 +114,7 @@ class LoginController: UIViewController {
         print("login")
     }
     
-    @objc private func didTapSignUpButton() {
+    @objc private func didTapGoToSignUpPageButton() {
         let vc = RegistrationController()
         navigationController?.pushViewController(vc, animated: true)
     }

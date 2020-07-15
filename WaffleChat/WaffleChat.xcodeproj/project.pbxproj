@@ -21,6 +21,7 @@
 		CE9AE42F24AE377500F77F48 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE42E24AE377500F77F48 /* Extensions.swift */; };
 		CEB17AE024B3743400FB7B7E /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */; };
 		CEB17AE324B4721200FB7B7E /* InputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17AE224B4721200FB7B7E /* InputTextField.swift */; };
+		CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17AE724BF625A00FB7B7E /* CustomButtonForAuth.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		CE9AE42E24AE377500F77F48 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
 		CEB17AE224B4721200FB7B7E /* InputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextField.swift; sourceTree = "<group>"; };
+		CEB17AE724BF625A00FB7B7E /* CustomButtonForAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonForAuth.swift; sourceTree = "<group>"; };
 		E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.release.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,6 +146,7 @@
 		CE9AE41C24A9BC5B00F77F48 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CEB17AE624BF61E100FB7B7E /* UIButton */,
 				CEB17AE124B377E300FB7B7E /* UITextField */,
 				CEB17ADE24B373F600FB7B7E /* CustomUIView */,
 				CE9AE42124A9DB8200F77F48 /* Cells */,
@@ -206,6 +209,14 @@
 				CEB17AE224B4721200FB7B7E /* InputTextField.swift */,
 			);
 			path = UITextField;
+			sourceTree = "<group>";
+		};
+		CEB17AE624BF61E100FB7B7E /* UIButton */ = {
+			isa = PBXGroup;
+			children = (
+				CEB17AE724BF625A00FB7B7E /* CustomButtonForAuth.swift */,
+			);
+			path = UIButton;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,6 +342,7 @@
 				CEB17AE024B3743400FB7B7E /* InputContainerView.swift in Sources */,
 				CE9AE40624A9BBB800F77F48 /* SceneDelegate.swift in Sources */,
 				CE9AE42D24ACC48B00F77F48 /* Constants.swift in Sources */,
+				CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */,
 				CE9AE42A24ACC18500F77F48 /* RegistrationController.swift in Sources */,
 				CE9AE42824ACC16A00F77F48 /* LoginController.swift in Sources */,
 			);
