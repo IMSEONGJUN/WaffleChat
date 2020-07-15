@@ -12,19 +12,19 @@ class ConversationsController: UIViewController {
 
     private let reuseIdentifier = "ConversationCell"
     
-    // MARK: - Properties
     
+    // MARK: - Properties
     let tableView = UITableView()
     
-    // MARK: - Life Cycle
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
     }
     
-    // MARK: - Initial Setup
     
+    // MARK: - Initial Setup
     private func configureUI() {
         view.backgroundColor = .white
         configureNavigationBar()
@@ -61,15 +61,15 @@ class ConversationsController: UIViewController {
         navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
     }
     
-    // MARK: - Action Handler
     
+    // MARK: - Action Handler
     @objc private func didTapProfileButton() {
         print("profile")
     }
 }
 
-// MARK: - UITableViewDataSource
 
+// MARK: - UITableViewDataSource
 extension ConversationsController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
@@ -82,8 +82,8 @@ extension ConversationsController: UITableViewDataSource {
     }
 }
 
-// MARK: - UITableViewDelegate
 
+// MARK: - UITableViewDelegate
 extension ConversationsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
