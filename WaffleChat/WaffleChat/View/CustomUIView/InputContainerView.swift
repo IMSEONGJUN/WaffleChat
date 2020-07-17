@@ -29,7 +29,7 @@ class InputContainerView: UIView {
         underline.snp.makeConstraints {
             $0.bottom.trailing.equalToSuperview()
             $0.leading.equalToSuperview().inset(10)
-            $0.height.equalTo(1.5)
+            $0.height.equalTo(1)
         }
         
         imageView.snp.makeConstraints {

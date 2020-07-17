@@ -12,7 +12,7 @@ import SnapKit
 class LoginController: UIViewController {
 
     // MARK: - Properties
-    let logoImageView: UIImageView = {
+    private let logoImageView: UIImageView = {
        let iv = UIImageView()
         iv.image = UIImage(named: Images.logo)
         iv.layer.cornerRadius = 3
@@ -20,29 +20,28 @@ class LoginController: UIViewController {
         return iv
     }()
     
-    lazy var emailContainer = InputContainerView(image: #imageLiteral(resourceName: "ic_mail_outline_white_2x"), textField: emailTextField)
-    let emailTextField = InputTextField(placeHolder: "Email")
+    private lazy var emailContainer = InputContainerView(image: #imageLiteral(resourceName: "ic_mail_outline_white_2x"), textField: emailTextField)
+    private let emailTextField = InputTextField(placeHolder: "Email")
     
-    lazy var passwordContainer = InputContainerView(image: #imageLiteral(resourceName: "ic_lock_outline_white_2x"), textField: passwordTextField)
-    let passwordTextField: InputTextField = {
+    private lazy var passwordContainer = InputContainerView(image: #imageLiteral(resourceName: "ic_lock_outline_white_2x"), textField: passwordTextField)
+    private let passwordTextField: InputTextField = {
        let tf = InputTextField(placeHolder: "Password")
         tf.isSecureTextEntry = true
         return tf
     }()
     
-    let loginButton: UIButton = {
+    private let loginButton: UIButton = {
        let btn = CustomButtonForAuth(title: "Log In", color: #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1))
         btn.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
         return btn
     }()
     // #colorLiteral(red: 1, green: 0.698582075, blue: 0.1078745686, alpha: 1)
     
-    let goToSignUpPageButton: UIButton = {
+    private let goToSignUpPageButton: UIButton = {
         let btn = UIButton(type: .system)
         let attributedTitle = NSMutableAttributedString(string: "Don't have an account? ",
                                                         attributes: [.font: UIFont.systemFont(ofSize: 16),
                                                                      .foregroundColor : UIColor.white])
-        
         attributedTitle.append(NSAttributedString(string: "Sign Up",
                                                   attributes: [.font : UIFont.boldSystemFont(ofSize: 16),
                                                                .foregroundColor : UIColor.white]))
@@ -51,6 +50,7 @@ class LoginController: UIViewController {
         return btn
     }()
     
+    var viewModel = LoginViewModel()
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -68,6 +68,8 @@ class LoginController: UIViewController {
         configureGoToSignUpPageButton()
         configureAuthenticationStackView()
         configureTapGesture()
+        addTarget()
+        bind()
     }
     
     private func configureLogoImageView() {
@@ -108,6 +110,22 @@ class LoginController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
+    private func bind() {
+        viewModel.formValidObserver = { [unowned self] isValid in
+            guard let isValid = isValid else { return }
+            self.loginButton.isEnabled = isValid
+            if isValid {
+                self.loginButton.backgroundColor = UIColor(red: 1, green: 0.698582075, blue: 0.1078745686, alpha: 1)
+            } else {
+                self.loginButton.backgroundColor = #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
+            }
+        }
+    }
+    
+    private func addTarget() {
+        emailTextField.addTarget(self, action: #selector(handleTextField(sender:)), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(handleTextField(sender:)), for: .editingChanged)
+    }
     
     // MARK: - Action Handler
     @objc private func didTapLoginButton() {
@@ -117,5 +135,13 @@ class LoginController: UIViewController {
     @objc private func didTapGoToSignUpPageButton() {
         let vc = RegistrationController()
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func handleTextField(sender: UITextField) {
+        if sender == emailTextField {
+            viewModel.email = sender.text
+        } else {
+            viewModel.password = sender.text
+        }
     }
 }

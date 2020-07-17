@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AB650DE7C24B8EA28D97A79B /* Pods_WaffleChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */; };
+		CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87288224C1EE8300E00C42 /* LoginViewModel.swift */; };
 		CE9AE40424A9BBB800F77F48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE40324A9BBB800F77F48 /* AppDelegate.swift */; };
 		CE9AE40624A9BBB800F77F48 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE40524A9BBB800F77F48 /* SceneDelegate.swift */; };
 		CE9AE40B24A9BBB800F77F48 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE9AE40924A9BBB800F77F48 /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		3F363E3C2492FB5307D42C85 /* Pods-WaffleChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.debug.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.debug.xcconfig"; sourceTree = "<group>"; };
 		53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaffleChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE87288224C1EE8300E00C42 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		CE9AE40024A9BBB800F77F48 /* WaffleChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaffleChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9AE40324A9BBB800F77F48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE9AE40524A9BBB800F77F48 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 		CE9AE41B24A9BC5600F77F48 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				CE87288224C1EE8300E00C42 /* LoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				CEB17AE024B3743400FB7B7E /* InputContainerView.swift in Sources */,
 				CE9AE40624A9BBB800F77F48 /* SceneDelegate.swift in Sources */,
 				CE9AE42D24ACC48B00F77F48 /* Constants.swift in Sources */,
+				CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */,
 				CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */,
 				CE9AE42A24ACC18500F77F48 /* RegistrationController.swift in Sources */,
 				CE9AE42824ACC16A00F77F48 /* LoginController.swift in Sources */,

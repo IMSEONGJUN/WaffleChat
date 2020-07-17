@@ -54,6 +54,9 @@ class RegistrationController: UIViewController {
         return btn
     }()
     
+    lazy var stackContents = [emailContainer,fullNameContainer,userNameContainer,passwordContainer,signUpButton]
+    let stack = UIStackView()
+    
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -62,6 +65,8 @@ class RegistrationController: UIViewController {
         configurePlusPhotoButton()
         configureInputContextStackView()
         configureGoToLoginPageButton()
+        configureKeyboardNotification()
+        setTapGesture()
     }
     
     
@@ -76,8 +81,7 @@ class RegistrationController: UIViewController {
     }
     
     private func configureInputContextStackView() {
-        let stackContents = [emailContainer,fullNameContainer,userNameContainer,passwordContainer,signUpButton]
-        let stack = UIStackView(arrangedSubviews: stackContents)
+        stackContents.forEach({ stack.addArrangedSubview($0) })
         stack.axis = .vertical
         stack.spacing = 20
         
@@ -102,6 +106,14 @@ class RegistrationController: UIViewController {
         }
     }
     
+    private func configureKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func setTapGesture() {
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+    }
     
     // MARK: - Action Handler
     @objc private func didTapPlusPhotoButton() {
@@ -114,5 +126,26 @@ class RegistrationController: UIViewController {
     
     @objc private func didTapGoToLoginPageButton() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func handleKeyboardShow(notification: Notification) {
+        guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return
+        }
+        let keyboardFrame = value.cgRectValue
+        let bottomSpace = view.frame.height - stack.frame.origin.y - stack.frame.height
+        let spaceToMoveUp = keyboardFrame.height - bottomSpace
+        self.view.transform = CGAffineTransform(translationX: 0, y: -spaceToMoveUp)
+    }
+    
+    @objc private func handleKeyboardHide(notification: Notification) {
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 1,
+                       options: .curveEaseOut,
+                       animations: {
+            self.view.transform = .identity
+        })
     }
 }
