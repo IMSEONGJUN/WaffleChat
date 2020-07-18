@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class RegistrationController: UIViewController {
 
@@ -57,6 +59,8 @@ class RegistrationController: UIViewController {
     lazy var stackContents = [emailContainer,fullNameContainer,userNameContainer,passwordContainer,signUpButton]
     let stack = UIStackView()
     
+    var disposeBag = DisposeBag()
+    
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -65,7 +69,7 @@ class RegistrationController: UIViewController {
         configurePlusPhotoButton()
         configureInputContextStackView()
         configureGoToLoginPageButton()
-        configureKeyboardNotification()
+        bind()
         setTapGesture()
     }
     
@@ -106,13 +110,41 @@ class RegistrationController: UIViewController {
         }
     }
     
-    private func configureKeyboardNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
     private func setTapGesture() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+    }
+    
+    private func bind() {
+        notificationBinding()
+    }
+    
+    private func notificationBinding() {
+        NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
+            .map { [unowned self] noti -> CGFloat in
+                guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { fatalError("no keyboard frame") }
+                let keyboardHeight = value.cgRectValue.height
+                let bottomSpace = self.view.frame.height - self.stack.frame.origin.y - self.stack.frame.height
+                let lengthToMoveUp = keyboardHeight - bottomSpace
+                return lengthToMoveUp
+            }
+            .subscribe(onNext: { [unowned self] in
+                self.view.transform = CGAffineTransform(translationX: 0, y: -$0 - 8)
+            })
+            .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
+            .subscribe(onNext: { noti -> Void in
+                UIView.animate(withDuration: 0.5,
+                               delay: 0,
+                               usingSpringWithDamping: 0.7,
+                               initialSpringVelocity: 1,
+                               options: .curveEaseOut,
+                               animations: {
+                    self.view.transform = .identity
+                })
+            })
+            .disposed(by: disposeBag)
+        
     }
     
     // MARK: - Action Handler
@@ -126,26 +158,5 @@ class RegistrationController: UIViewController {
     
     @objc private func didTapGoToLoginPageButton() {
         navigationController?.popViewController(animated: true)
-    }
-    
-    @objc private func handleKeyboardShow(notification: Notification) {
-        guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
-            return
-        }
-        let keyboardFrame = value.cgRectValue
-        let bottomSpace = view.frame.height - stack.frame.origin.y - stack.frame.height
-        let spaceToMoveUp = keyboardFrame.height - bottomSpace
-        self.view.transform = CGAffineTransform(translationX: 0, y: -spaceToMoveUp)
-    }
-    
-    @objc private func handleKeyboardHide(notification: Notification) {
-        UIView.animate(withDuration: 0.5,
-                       delay: 0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 1,
-                       options: .curveEaseOut,
-                       animations: {
-            self.view.transform = .identity
-        })
     }
 }

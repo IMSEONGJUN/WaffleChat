@@ -20,6 +20,8 @@ class InputTextField: UITextField {
     
     init(placeHolder: String) {
         super.init(frame: .zero)
+        returnKeyType = .done
+        autocorrectionType = .no
         attributedPlaceholder = NSAttributedString(string: placeHolder, attributes: [.foregroundColor : UIColor.white])
         textColor = .white
         font = UIFont.systemFont(ofSize: 16, weight: .semibold)
