@@ -8,18 +8,21 @@
 
 import Foundation
 
-struct LoginViewModel {
+class LoginViewModel {
+    
     var email: String? { didSet{ checkValidty() } }
     var password: String? { didSet{ checkValidty() } }
+    
     var isFormValid: Bool? {
         didSet{
+            print("changed")
             formValidObserver?(isFormValid)
         }
     }
     
     var formValidObserver: ((Bool?) -> Void)?
     
-    mutating func checkValidty() {
+    func checkValidty() {
         let valid = isValidEmailAddress(email: email ?? "") && password?.count ?? 0 > 6
         isFormValid = valid
     }

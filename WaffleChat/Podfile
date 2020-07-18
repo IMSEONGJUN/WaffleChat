@@ -7,4 +7,6 @@ target 'WaffleChat' do
 
   # Pods for WaffleChat
   pod 'SnapKit'
+  pod 'RxSwift'
+  pod 'RxCocoa'
 end
