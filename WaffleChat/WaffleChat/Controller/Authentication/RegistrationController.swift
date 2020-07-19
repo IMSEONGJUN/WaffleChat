@@ -153,7 +153,7 @@ class RegistrationController: UIViewController {
     }
     
     @objc private func didTapSignUpButton() {
-        
+        print("Sign Up")
     }
     
     @objc private func didTapGoToLoginPageButton() {
