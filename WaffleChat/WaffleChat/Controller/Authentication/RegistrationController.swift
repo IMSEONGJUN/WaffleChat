@@ -59,6 +59,7 @@ class RegistrationController: UIViewController {
     lazy var stackContents = [emailContainer,fullNameContainer,userNameContainer,passwordContainer,signUpButton]
     let stack = UIStackView()
     
+    let viewModel = RegistrationViewModel()
     var disposeBag = DisposeBag()
     
     
@@ -115,32 +116,74 @@ class RegistrationController: UIViewController {
     }
     
     private func bind() {
+        UIbinding()
+        dataBinding()
         notificationBinding()
+    }
+    
+    private func UIbinding() {
+        emailTextField.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .bind(to: viewModel.email)
+            .disposed(by: disposeBag)
+        
+        fullNameTextField.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .bind(to: viewModel.fullName)
+            .disposed(by: disposeBag)
+        
+        userNameTextField.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .bind(to: viewModel.userName)
+            .disposed(by: disposeBag)
+        
+        passwordTextField.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .bind(to: viewModel.password)
+            .disposed(by: disposeBag)
+    }
+    
+    private func dataBinding() {
+        viewModel.isFormValid
+            .subscribe(onNext: { [weak self] in
+                self?.signUpButton.isEnabled = $0
+                self?.signUpButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func notificationBinding() {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
-            .map { [unowned self] noti -> CGFloat in
-                guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { fatalError("no keyboard frame") }
+            .map { [weak self] noti -> CGFloat? in
+                guard let self = self else { return nil }
+                guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+                    fatalError("no keyboard frame")
+                }
                 let keyboardHeight = value.cgRectValue.height
-                let bottomSpace = self.view.frame.height - self.stack.frame.origin.y - self.stack.frame.height
+                let bottomSpace = self.view.frame.height - (self.stack.frame.origin.y + self.stack.frame.height)
                 let lengthToMoveUp = keyboardHeight - bottomSpace
                 return lengthToMoveUp
             }
-            .subscribe(onNext: { [unowned self] in
-                self.view.transform = CGAffineTransform(translationX: 0, y: -$0 - 8)
+            .subscribe(onNext: { [weak self] in
+                guard let self = self,
+                      let value = $0 else {return}
+                self.view.transform = CGAffineTransform(translationX: 0, y: -value - 8)
             })
             .disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
-            .subscribe(onNext: { noti -> Void in
+            .subscribe(onNext: { [weak self] noti -> Void in
                 UIView.animate(withDuration: 0.5,
                                delay: 0,
-                               usingSpringWithDamping: 0.7,
+                               usingSpringWithDamping: 0.8,
                                initialSpringVelocity: 1,
                                options: .curveEaseOut,
                                animations: {
-                    self.view.transform = .identity
+                    self?.view.transform = .identity
                 })
             })
             .disposed(by: disposeBag)
