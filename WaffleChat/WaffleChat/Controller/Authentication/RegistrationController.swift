@@ -190,6 +190,7 @@ class RegistrationController: UIViewController {
         
     }
     
+    
     // MARK: - Action Handler
     @objc private func didTapPlusPhotoButton() {
         
