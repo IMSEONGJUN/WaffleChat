@@ -115,6 +115,8 @@ class RegistrationController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
+    
+    // MARK: - Binding for Async data stream
     private func bind() {
         UIbinding()
         dataBinding()
@@ -158,15 +160,8 @@ class RegistrationController: UIViewController {
     
     private func notificationBinding() {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
-            .map { [weak self] noti -> CGFloat? in
-                guard let self = self else { return nil }
-                guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
-                    fatalError("no keyboard frame")
-                }
-                let keyboardHeight = value.cgRectValue.height
-                let bottomSpace = self.view.frame.height - (self.stack.frame.origin.y + self.stack.frame.height)
-                let lengthToMoveUp = keyboardHeight - bottomSpace
-                return lengthToMoveUp
+            .map { noti -> CGFloat? in
+                return self.getKeyboardFrameHeight(noti: noti)
             }
             .subscribe(onNext: { [weak self] in
                 guard let self = self,
@@ -188,6 +183,16 @@ class RegistrationController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+    }
+    
+    private func getKeyboardFrameHeight(noti: Notification) -> CGFloat {
+        guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return 0
+        }
+        let keyboardHeight = value.cgRectValue.height
+        let bottomSpace = self.view.frame.height - (self.stack.frame.origin.y + self.stack.frame.height)
+        let lengthToMoveUp = keyboardHeight - bottomSpace
+        return lengthToMoveUp
     }
     
     
