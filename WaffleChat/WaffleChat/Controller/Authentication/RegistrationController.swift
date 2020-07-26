@@ -20,6 +20,7 @@ class RegistrationController: UIViewController {
         btn.addTarget(self, action: #selector(didTapPlusPhotoButton), for: .touchUpInside)
         return btn
     }()
+    let imagePicker = UIImagePickerController()
     
     private lazy var emailContainer = InputContainerView(image: #imageLiteral(resourceName: "ic_mail_outline_white_2x"), textField: emailTextField)
     private let emailTextField = InputTextField(placeHolder: "Email")
@@ -66,6 +67,7 @@ class RegistrationController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        imagePicker.delegate = self
         configureGradientLayer()
         configurePlusPhotoButton()
         configureInputContextStackView()
@@ -151,22 +153,29 @@ class RegistrationController: UIViewController {
     
     private func dataBinding() {
         viewModel.isFormValid
+            .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.signUpButton.isEnabled = $0
                 self?.signUpButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.profileImage
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: {
+                print("changed image")
+                self.plusPhotoButton.setImage($0?.withRenderingMode(.alwaysOriginal), for: .normal)
             })
             .disposed(by: disposeBag)
     }
     
     private func notificationBinding() {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
-            .map { noti -> CGFloat? in
+            .map { noti -> CGFloat in
                 return self.getKeyboardFrameHeight(noti: noti)
             }
             .subscribe(onNext: { [weak self] in
-                guard let self = self,
-                      let value = $0 else {return}
-                self.view.transform = CGAffineTransform(translationX: 0, y: -value - 8)
+                self?.view.transform = CGAffineTransform(translationX: 0, y: -$0 - 8)
             })
             .disposed(by: disposeBag)
         
@@ -198,7 +207,26 @@ class RegistrationController: UIViewController {
     
     // MARK: - Action Handler
     @objc private func didTapPlusPhotoButton() {
+        let alert = UIAlertController(title: "Select ImageSource", message: "", preferredStyle: .alert)
         
+        let takePhoto = UIAlertAction(title: "Take photo", style: .default) { (_) in
+            guard UIImagePickerController.isSourceTypeAvailable(.camera) else { return }
+            self.imagePicker.sourceType = .camera
+            self.imagePicker.videoQuality = .typeHigh
+            self.present(self.imagePicker, animated: true)
+        }
+        
+        let album = UIAlertAction(title: "Photo Album", style: .default) { (_) in
+            self.imagePicker.sourceType = .savedPhotosAlbum
+            self.present(self.imagePicker, animated: true)
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alert.addAction(takePhoto)
+        alert.addAction(album)
+        alert.addAction(cancel)
+        self.present(alert, animated: true)
     }
     
     @objc private func didTapSignUpButton() {
@@ -207,5 +235,14 @@ class RegistrationController: UIViewController {
     
     @objc private func didTapGoToLoginPageButton() {
         navigationController?.popViewController(animated: true)
+    }
+}
+
+
+extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[.originalImage] as? UIImage
+        viewModel.profileImage.accept(image)
+        picker.dismiss(animated: true)
     }
 }
