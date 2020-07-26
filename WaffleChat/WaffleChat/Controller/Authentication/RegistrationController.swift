@@ -152,16 +152,16 @@ class RegistrationController: UIViewController {
     }
     
     private func dataBinding() {
+        viewModel.bind()
         viewModel.isFormValid
-            .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
+                print("Registration")
                 self?.signUpButton.isEnabled = $0
                 self?.signUpButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
             })
             .disposed(by: disposeBag)
         
         viewModel.profileImage
-            .observeOn(MainScheduler.instance)
             .subscribe(onNext: {
                 print("changed image")
                 self.plusPhotoButton.setImage($0?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -231,6 +231,7 @@ class RegistrationController: UIViewController {
     
     @objc private func didTapSignUpButton() {
         print("Sign Up")
+        viewModel.performRegistration()
     }
     
     @objc private func didTapGoToLoginPageButton() {
@@ -239,6 +240,7 @@ class RegistrationController: UIViewController {
 }
 
 
+// MARK: - UIImagePickerControllerDelegate
 extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as? UIImage

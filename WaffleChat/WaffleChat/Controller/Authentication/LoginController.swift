@@ -133,7 +133,7 @@ class LoginController: UIViewController {
             .distinctUntilChanged()
             .bind(to: viewModel.emailObservable)
             .disposed(by: disposeBag)
-        
+
         passwordTextField.rx.text
             .orEmpty
             .distinctUntilChanged()
