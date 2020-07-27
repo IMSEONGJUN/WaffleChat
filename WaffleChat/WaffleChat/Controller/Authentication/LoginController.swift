@@ -49,6 +49,7 @@ class LoginController: UIViewController {
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        loginCheck()
         configureUI()
         binding()
     }
@@ -157,6 +158,13 @@ class LoginController: UIViewController {
     // MARK: - Action Handler
     private func didTapLoginButton() {
         print("login")
+        viewModel.performLogin { (error) in
+            if let error = error {
+                print("failed to login: ", error)
+                return
+            }
+            self.switchToConversationVC()
+        }
     }
     
     private func didTapGoToSignUpPageButton() {

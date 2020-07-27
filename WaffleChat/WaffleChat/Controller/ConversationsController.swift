@@ -65,6 +65,7 @@ class ConversationsController: UIViewController {
     // MARK: - Action Handler
     @objc private func didTapProfileButton() {
         print("profile")
+        doLogoutThisUser()
     }
 }
 

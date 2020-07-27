@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import JGProgressHUD
 
 class RegistrationController: UIViewController {
 
@@ -17,10 +18,12 @@ class RegistrationController: UIViewController {
         let btn = UIButton(type: .system)
         btn.setImage(#imageLiteral(resourceName: "plus_photo"), for: .normal)
         btn.tintColor = .brown
-        btn.addTarget(self, action: #selector(didTapPlusPhotoButton), for: .touchUpInside)
+//        btn.addTarget(self, action: #selector(didTapPlusPhotoButton), for: .touchUpInside)
+        btn.clipsToBounds = true
         return btn
     }()
-    let imagePicker = UIImagePickerController()
+    
+    let hud = JGProgressHUD(style: .dark)
     
     private lazy var emailContainer = InputContainerView(image: #imageLiteral(resourceName: "ic_mail_outline_white_2x"), textField: emailTextField)
     private let emailTextField = InputTextField(placeHolder: "Email")
@@ -67,7 +70,6 @@ class RegistrationController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagePicker.delegate = self
         configureGradientLayer()
         configurePlusPhotoButton()
         configureInputContextStackView()
@@ -91,7 +93,7 @@ class RegistrationController: UIViewController {
         stackContents.forEach({ stack.addArrangedSubview($0) })
         stack.axis = .vertical
         stack.spacing = 20
-        
+        stack.setCustomSpacing(10, after: passwordContainer)
         stackContents.forEach({
             $0.snp.makeConstraints {
                 $0.height.equalTo(50)
@@ -126,6 +128,12 @@ class RegistrationController: UIViewController {
     }
     
     private func UIbinding() {
+        plusPhotoButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.didTapPlusPhotoButton()
+            })
+            .disposed(by: disposeBag)
+        
         emailTextField.rx.text
             .orEmpty
             .distinctUntilChanged()
@@ -162,11 +170,28 @@ class RegistrationController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.profileImage
-            .subscribe(onNext: {
+            .subscribe(onNext: { [weak self] in
                 print("changed image")
+                guard let self = self else { return }
                 self.plusPhotoButton.setImage($0?.withRenderingMode(.alwaysOriginal), for: .normal)
+                self.plusPhotoButton.layer.cornerRadius = self.plusPhotoButton.frame.width / 2
+                self.plusPhotoButton.layer.borderWidth = 3
+                self.plusPhotoButton.layer.borderColor = UIColor.white.cgColor
             })
             .disposed(by: disposeBag)
+        
+        viewModel.isRegistering
+            .subscribe(onNext: {[weak self] in
+                guard let self = self else { return }
+                if $0 {
+                    self.hud.textLabel.text = "Registering..."
+                    self.hud.show(in: self.view)
+                } else {
+                    self.hud.dismiss()
+                }
+            })
+        .disposed(by: disposeBag)
+        
     }
     
     private func notificationBinding() {
@@ -207,18 +232,21 @@ class RegistrationController: UIViewController {
     
     // MARK: - Action Handler
     @objc private func didTapPlusPhotoButton() {
+        self.view.endEditing(true)
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
         let alert = UIAlertController(title: "Select ImageSource", message: "", preferredStyle: .alert)
         
         let takePhoto = UIAlertAction(title: "Take photo", style: .default) { (_) in
             guard UIImagePickerController.isSourceTypeAvailable(.camera) else { return }
-            self.imagePicker.sourceType = .camera
-            self.imagePicker.videoQuality = .typeHigh
-            self.present(self.imagePicker, animated: true)
+            imagePicker.sourceType = .camera
+            imagePicker.videoQuality = .typeHigh
+            self.present(imagePicker, animated: true)
         }
         
         let album = UIAlertAction(title: "Photo Album", style: .default) { (_) in
-            self.imagePicker.sourceType = .savedPhotosAlbum
-            self.present(self.imagePicker, animated: true)
+            imagePicker.sourceType = .savedPhotosAlbum
+            self.present(imagePicker, animated: true)
         }
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)
@@ -231,7 +259,15 @@ class RegistrationController: UIViewController {
     
     @objc private func didTapSignUpButton() {
         print("Sign Up")
-        viewModel.performRegistration()
+        viewModel.isRegistering.accept(true)
+        viewModel.performRegistration { (err) in
+            if let error = err {
+                print("failed to registration: ", error)
+                return
+            }
+            self.viewModel.isRegistering.accept(false)
+            
+        }
     }
     
     @objc private func didTapGoToLoginPageButton() {
@@ -242,7 +278,8 @@ class RegistrationController: UIViewController {
 
 // MARK: - UIImagePickerControllerDelegate
 extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as? UIImage
         viewModel.profileImage.accept(image)
         picker.dismiss(animated: true)

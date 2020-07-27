@@ -9,4 +9,12 @@ target 'WaffleChat' do
   pod 'SnapKit'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Core'
+  pod 'Firebase/Storage'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+  pod 'SDWebImage'
+  pod 'JGProgressHUD'
+
 end
