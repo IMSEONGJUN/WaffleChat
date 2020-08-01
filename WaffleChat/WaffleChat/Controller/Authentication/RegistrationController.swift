@@ -266,7 +266,7 @@ class RegistrationController: UIViewController {
                 return
             }
             self.viewModel.isRegistering.accept(false)
-            
+            self.switchToConversationVC()
         }
     }
     

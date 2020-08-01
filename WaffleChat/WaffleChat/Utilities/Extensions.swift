@@ -111,3 +111,12 @@ extension UIViewController {
         
     }
 }
+
+extension UIView {
+    func setupShadow(opacity: Float = 0, radius: CGFloat = 0, offset: CGSize = .zero, color: UIColor = .black) {
+        layer.shadowOpacity = opacity
+        layer.shadowRadius = radius
+        layer.shadowOffset = offset
+        layer.shadowColor = color.cgColor
+    }
+}

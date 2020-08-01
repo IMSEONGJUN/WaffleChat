@@ -11,6 +11,8 @@ import UIKit
 class ConversationCell: UITableViewCell {
 
     // MARK: - Properties
+    let messageLabel = UILabel()
+    let messageContainerView = UIView()
     
     // MARK: - initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
