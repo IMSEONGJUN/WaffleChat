@@ -110,7 +110,7 @@ class RegistrationViewModel {
             "fullname": tempFullName,
             "profileImageURL": imageURL,
             "uid": uid,
-            "username": tempUserName
+            "username": tempUserName.lowercased()
         ]
         Firestore.firestore().collection("users").document(uid).setData(docData) { (error) in
             if let error = error {

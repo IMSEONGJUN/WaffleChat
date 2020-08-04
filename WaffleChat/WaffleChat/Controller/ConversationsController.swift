@@ -65,7 +65,14 @@ class ConversationsController: UIViewController {
     // MARK: - Action Handler
     @objc private func didTapProfileButton() {
         print("profile")
-        doLogoutThisUser()
+        doLogoutThisUser { (error) in
+            if let err = error {
+                print("Failed to logged out:", err)
+                return
+            }
+            print("Successfully logged out this user")
+            switchToLoginVC()
+        }
     }
 }
 

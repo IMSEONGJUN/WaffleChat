@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import JGProgressHUD
 
 class LoginController: UIViewController {
 
@@ -45,6 +46,7 @@ class LoginController: UIViewController {
     var viewModel = LoginViewModel()
     var disposeBag = DisposeBag()
     
+    let hud = JGProgressHUD(style: .dark)
     
     // MARK: - Life cycle
     override func viewDidLoad() {
@@ -158,7 +160,9 @@ class LoginController: UIViewController {
     // MARK: - Action Handler
     private func didTapLoginButton() {
         print("login")
+        hud.show(in: self.view)
         viewModel.performLogin { (error) in
+            self.hud.dismiss()
             if let error = error {
                 print("failed to login: ", error)
                 return

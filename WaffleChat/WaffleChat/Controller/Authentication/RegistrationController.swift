@@ -18,7 +18,7 @@ class RegistrationController: UIViewController {
         let btn = UIButton(type: .system)
         btn.setImage(#imageLiteral(resourceName: "plus_photo"), for: .normal)
         btn.tintColor = .brown
-//        btn.addTarget(self, action: #selector(didTapPlusPhotoButton), for: .touchUpInside)
+        btn.contentMode = .scaleAspectFill
         btn.clipsToBounds = true
         return btn
     }()

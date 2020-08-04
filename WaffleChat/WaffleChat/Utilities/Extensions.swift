@@ -82,13 +82,17 @@ extension UIViewController {
         }
     }
     
-    func doLogoutThisUser() {
+    func doLogoutThisUser(completion: (Error?) -> Void) {
         do{
            try Auth.auth().signOut()
+            completion(nil)
         } catch {
             print(error)
+            completion(error)
         }
-        
+    }
+    
+    func switchToLoginVC() {
         if #available(iOS 13.0, *) {
             if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
                 let window = UIWindow(windowScene: windowScene)
@@ -108,7 +112,6 @@ extension UIViewController {
             window.makeKeyAndVisible()
             appDelegate.window = window
         }
-        
     }
 }
 
