@@ -11,6 +11,7 @@ import UIKit
 class ConversationCell: UITableViewCell {
 
     // MARK: - Properties
+    let profileImageView = UIImageView()
     let messageLabel = UILabel()
     let messageContainerView = UIView()
     
@@ -25,7 +26,6 @@ class ConversationCell: UITableViewCell {
     }
     
     // MARK: - setup
-    
     func configure() {
         
     }

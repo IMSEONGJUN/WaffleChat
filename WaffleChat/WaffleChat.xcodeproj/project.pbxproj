@@ -26,6 +26,7 @@
 		CEB17AE024B3743400FB7B7E /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */; };
 		CEB17AE324B4721200FB7B7E /* InputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17AE224B4721200FB7B7E /* InputTextField.swift */; };
 		CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17AE724BF625A00FB7B7E /* CustomButtonForAuth.swift */; };
+		CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF0CC7824DAF8BD0017E452 /* APIManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
 		CEB17AE224B4721200FB7B7E /* InputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextField.swift; sourceTree = "<group>"; };
 		CEB17AE724BF625A00FB7B7E /* CustomButtonForAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonForAuth.swift; sourceTree = "<group>"; };
+		CEF0CC7824DAF8BD0017E452 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIManager.swift; path = WaffleChat/APIManager.swift; sourceTree = SOURCE_ROOT; };
 		E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.release.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,13 +116,13 @@
 			isa = PBXGroup;
 			children = (
 				CE9AE42024A9D9DE00F77F48 /* Support */,
-				CE9AE41D24A9BC6600F77F48 /* Model */,
 				CE9AE41C24A9BC5B00F77F48 /* View */,
 				CE9AE41B24A9BC5600F77F48 /* ViewModel */,
 				CE9AE41A24A9BC5400F77F48 /* Controller */,
 				CE9AE41924A9BC5200F77F48 /* API */,
 				CE9AE41724A9BC4500F77F48 /* Utilities */,
 				CE9AE42B24ACC46500F77F48 /* Constants */,
+				CEF0CC7C24DAFAC50017E452 /* Model */,
 				CE9AE40924A9BBB800F77F48 /* Main.storyboard */,
 				CE9AE40C24A9BBBA00F77F48 /* Assets.xcassets */,
 				CE9AE40E24A9BBBA00F77F48 /* LaunchScreen.storyboard */,
@@ -141,6 +143,7 @@
 		CE9AE41924A9BC5200F77F48 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				CEF0CC7824DAF8BD0017E452 /* APIManager.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -172,13 +175,6 @@
 				CE9AE42124A9DB8200F77F48 /* Cells */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		CE9AE41D24A9BC6600F77F48 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		CE9AE42024A9D9DE00F77F48 /* Support */ = {
@@ -237,6 +233,13 @@
 				CEB17AE724BF625A00FB7B7E /* CustomButtonForAuth.swift */,
 			);
 			path = UIButton;
+			sourceTree = "<group>";
+		};
+		CEF0CC7C24DAFAC50017E452 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -367,6 +370,7 @@
 				CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */,
 				CE87288524C46B5000E00C42 /* RegistrationViewModel.swift in Sources */,
 				CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */,
+				CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */,
 				CE9AE42A24ACC18500F77F48 /* RegistrationController.swift in Sources */,
 				CE9AE42824ACC16A00F77F48 /* LoginController.swift in Sources */,
 			);
