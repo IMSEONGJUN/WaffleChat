@@ -123,7 +123,7 @@ class LoginController: UIViewController {
 //            .map { _ in true}
 //            .startWith(true) // viewModel.isValidForm Observable의 시퀀스가 시작되는 시점에 가장먼저 true를 방출하고 시작한다.
             .subscribe(onNext: { [weak self] in
-//                print($0)
+                print($0)
                 self?.loginButton.isEnabled = $0
                 self?.loginButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
             })

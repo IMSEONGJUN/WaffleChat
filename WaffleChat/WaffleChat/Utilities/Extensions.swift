@@ -18,31 +18,6 @@ func isValidEmailAddress(email: String) -> Bool {
 
 extension UIViewController {
     
-    func makeInputDataContainerView(container: UIView, image: UIImage, textField: UITextField) {
-        let imageView = UIImageView(image: image)
-        let underline = UIView()
-        
-        [imageView, textField, underline].forEach({ container.addSubview($0)})
-        underline.backgroundColor = .white
-        underline.snp.makeConstraints {
-            $0.bottom.trailing.equalToSuperview()
-            $0.leading.equalToSuperview().inset(10)
-            $0.height.equalTo(1.5)
-        }
-        
-        imageView.snp.makeConstraints {
-            $0.centerY.equalToSuperview().offset(-2)
-            $0.leading.equalToSuperview().offset(10)
-            $0.width.height.equalTo(30)
-        }
-        
-        textField.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalTo(imageView.snp.trailing).offset(10)
-            $0.trailing.equalToSuperview().inset(10)
-        }
-    }
-    
     func configureGradientLayer() {
         let gradient = CAGradientLayer()
         let topColor = #colorLiteral(red: 1, green: 0.9944892197, blue: 0.7521914475, alpha: 1).cgColor
@@ -113,6 +88,31 @@ extension UIViewController {
             appDelegate.window = window
         }
     }
+    
+//    func makeInputDataContainerView(container: UIView, image: UIImage, textField: UITextField) {
+//        let imageView = UIImageView(image: image)
+//        let underline = UIView()
+//
+//        [imageView, textField, underline].forEach({ container.addSubview($0)})
+//        underline.backgroundColor = .white
+//        underline.snp.makeConstraints {
+//            $0.bottom.trailing.equalToSuperview()
+//            $0.leading.equalToSuperview().inset(10)
+//            $0.height.equalTo(1.5)
+//        }
+//
+//        imageView.snp.makeConstraints {
+//            $0.centerY.equalToSuperview().offset(-2)
+//            $0.leading.equalToSuperview().offset(10)
+//            $0.width.height.equalTo(30)
+//        }
+//
+//        textField.snp.makeConstraints {
+//            $0.centerY.equalToSuperview()
+//            $0.leading.equalTo(imageView.snp.trailing).offset(10)
+//            $0.trailing.equalToSuperview().inset(10)
+//        }
+//    }
 }
 
 extension UIView {

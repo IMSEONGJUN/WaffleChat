@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AB650DE7C24B8EA28D97A79B /* Pods_WaffleChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */; };
+		CE1DA98D24DC499C00233C32 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1DA98C24DC499C00233C32 /* Models.swift */; };
 		CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87288224C1EE8300E00C42 /* LoginViewModel.swift */; };
 		CE87288524C46B5000E00C42 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87288424C46B5000E00C42 /* RegistrationViewModel.swift */; };
 		CE961AAC24CEF9B80094FE86 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE961AAB24CEF9B80094FE86 /* GoogleService-Info.plist */; };
@@ -32,6 +33,7 @@
 /* Begin PBXFileReference section */
 		3F363E3C2492FB5307D42C85 /* Pods-WaffleChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.debug.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.debug.xcconfig"; sourceTree = "<group>"; };
 		53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaffleChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE1DA98C24DC499C00233C32 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		CE87288224C1EE8300E00C42 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		CE87288424C46B5000E00C42 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		CE961AAB24CEF9B80094FE86 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 		CEF0CC7C24DAFAC50017E452 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CE1DA98C24DC499C00233C32 /* Models.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				CE961AAE24CF06620094FE86 /* Bindable.swift in Sources */,
 				CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */,
 				CE87288524C46B5000E00C42 /* RegistrationViewModel.swift in Sources */,
+				CE1DA98D24DC499C00233C32 /* Models.swift in Sources */,
 				CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */,
 				CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */,
 				CE9AE42A24ACC18500F77F48 /* RegistrationController.swift in Sources */,

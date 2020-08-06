@@ -27,6 +27,7 @@ class ConversationCell: UITableViewCell {
     
     // MARK: - setup
     func configure() {
+        [profileImageView, messageLabel].forEach({contentView.addSubview($0)})
         
     }
 }
