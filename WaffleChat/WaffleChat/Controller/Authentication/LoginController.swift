@@ -46,8 +46,6 @@ class LoginController: UIViewController {
     var viewModel = LoginViewModel()
     var disposeBag = DisposeBag()
     
-    let hud = JGProgressHUD(style: .dark)
-    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -160,9 +158,9 @@ class LoginController: UIViewController {
     // MARK: - Action Handler
     private func didTapLoginButton() {
         print("login")
-        hud.show(in: self.view)
+        showActivityIndicator(true)
         viewModel.performLogin { (error) in
-            self.hud.dismiss()
+            self.showActivityIndicator(false)
             if let error = error {
                 print("failed to login: ", error)
                 return

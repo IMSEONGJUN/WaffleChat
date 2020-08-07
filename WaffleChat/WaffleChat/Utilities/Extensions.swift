@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+import JGProgressHUD
 
 func isValidEmailAddress(email: String) -> Bool {
     let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
@@ -17,6 +17,8 @@ func isValidEmailAddress(email: String) -> Bool {
 }
 
 extension UIViewController {
+        
+    static let hud = JGProgressHUD(style: .dark)
     
     func configureGradientLayer() {
         let gradient = CAGradientLayer()
@@ -86,6 +88,17 @@ extension UIViewController {
             window.rootViewController = UINavigationController(rootViewController: LoginController())
             window.makeKeyAndVisible()
             appDelegate.window = window
+        }
+    }
+    
+    func showActivityIndicator(_ show: Bool, withText text: String? = "Loading") {
+        view.endEditing(true)
+        UIViewController.hud.textLabel.text = text
+        
+        if show {
+            UIViewController.hud.show(in: view)
+        } else {
+            UIViewController.hud.dismiss()
         }
     }
     
