@@ -12,6 +12,14 @@ class ConversationsController: UIViewController {
 
     private let reuseIdentifier = "ConversationCell"
     
+    private let newMessageButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setImage(UIImage(systemName: "plus"), for: .normal)
+        btn.backgroundColor = #colorLiteral(red: 0.6196078431, green: 0.4235294118, blue: 0.1254901961, alpha: 1)
+        btn.tintColor = .white
+        btn.addTarget(self, action: #selector(didTapNewMessageButton), for: .touchUpInside)
+        return btn
+    }()
     
     // MARK: - Properties
     let tableView = UITableView()
@@ -32,6 +40,19 @@ class ConversationsController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.circle.fill"),
                                                            style: .plain, target: self,
                                                            action: #selector(didTapProfileButton))
+        configureNewMessageButton()
+        
+    }
+    
+    private func configureNewMessageButton() {
+        view.addSubview(newMessageButton)
+        newMessageButton.layer.cornerRadius = 56 / 2
+        newMessageButton.clipsToBounds = true
+        newMessageButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(16)
+            $0.trailing.equalTo(view.snp.trailing).inset(24)
+            $0.width.height.equalTo(56)
+        }
     }
     
     private func configureTableView() {
@@ -73,6 +94,10 @@ class ConversationsController: UIViewController {
             print("Successfully logged out this user")
             switchToLoginVC()
         }
+    }
+    
+    @objc private func didTapNewMessageButton() {
+        print("tap newMessage")
     }
 }
 
