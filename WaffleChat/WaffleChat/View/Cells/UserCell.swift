@@ -8,12 +8,20 @@
 
 import UIKit
 import SnapKit
+import SDWebImage
 
 class UserCell: UITableViewCell {
 
     static let reuseIdentifier = "UserCell"
     
     // MARK: - Properties
+    
+    var user: User? {
+        didSet {
+            guard let user = user else { return }
+            configureCell(user)
+        }
+    }
     
     private let profileImageView: UIImageView = {
        let iv = UIImageView()
@@ -26,7 +34,7 @@ class UserCell: UITableViewCell {
     private let usernameLabel: UILabel = {
        let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.text = "IronMan"
+//        label.text = "IronMan"
         return label
     }()
     
@@ -34,7 +42,7 @@ class UserCell: UITableViewCell {
        let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
-        label.text = "Robert Downey Junior"
+//        label.text = "Robert Downey Junior"
         return label
     }()
     // MARK: - Life Cycle
@@ -68,4 +76,10 @@ class UserCell: UITableViewCell {
         }
     }
     
+    private func configureCell(_ user: User) {
+        let url = URL(string: user.profileImage)
+        profileImageView.sd_setImage(with: url)
+        usernameLabel.text = user.username
+        fullnameLabel.text = user.fullname
+    }
 }

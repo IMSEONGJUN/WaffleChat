@@ -7,7 +7,17 @@
 //
 
 import Foundation
+import RxSwift
 
 class NewMessageViewModel {
     
+    var users = Bindable<[User]>()
+    
+    func configure(completion: @escaping (Error?) -> Void) {
+        APIManager.shared.fetchUsers { [weak self] (users) in
+            self?.users.value = users
+            completion(nil)
+        }
+
+    }
 }
