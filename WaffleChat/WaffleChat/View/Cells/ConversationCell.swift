@@ -10,6 +10,9 @@ import UIKit
 
 class ConversationCell: UITableViewCell {
 
+    static let reuseIdentifier = "ConversationCell"
+    
+    
     // MARK: - Properties
     let profileImageView = UIImageView()
     let messageLabel = UILabel()

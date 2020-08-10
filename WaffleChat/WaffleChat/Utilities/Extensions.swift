@@ -102,6 +102,23 @@ extension UIViewController {
         }
     }
     
+    func configureNavigationBar(with title: String, prefersLargeTitles: Bool) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.backgroundColor = #colorLiteral(red: 0.6196078431, green: 0.4235294118, blue: 0.1254901961, alpha: 1)
+            
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.compactAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            
+            navigationController?.navigationBar.prefersLargeTitles = prefersLargeTitles
+            navigationItem.title = title
+            navigationController?.navigationBar.tintColor = .white
+    //        navigationController?.navigationBar.isTranslucent = true
+            navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
+        }
+    
 //    func makeInputDataContainerView(container: UIView, image: UIImage, textField: UITextField) {
 //        let imageView = UIImageView(image: image)
 //        let underline = UIView()

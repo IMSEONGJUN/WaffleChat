@@ -35,7 +35,7 @@ class ConversationsController: UIViewController {
     // MARK: - Initial Setup
     private func configureUI() {
         view.backgroundColor = .white
-        configureNavigationBar()
+        configureNavigationBar(with: "Messages", prefersLargeTitles: true)
         configureTableView()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.circle.fill"),
                                                            style: .plain, target: self,
@@ -59,28 +59,13 @@ class ConversationsController: UIViewController {
         view.addSubview(tableView)
         tableView.backgroundColor = .systemBackground
         tableView.frame = view.frame
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
         tableView.rowHeight = 80
         tableView.dataSource = self
         tableView.delegate = self
     }
     
-    private func configureNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        appearance.backgroundColor = #colorLiteral(red: 0.6196078431, green: 0.4235294118, blue: 0.1254901961, alpha: 1)
-        
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "Messages"
-        navigationController?.navigationBar.tintColor = .white
-//        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
-    }
+    
     
     
     // MARK: - Action Handler
@@ -98,6 +83,9 @@ class ConversationsController: UIViewController {
     
     @objc private func didTapNewMessageButton() {
         print("tap newMessage")
+        let newMessageVC = UINavigationController(rootViewController: NewMessageController())
+        newMessageVC.modalPresentationStyle = .fullScreen
+        present(newMessageVC, animated: true)
     }
 }
 
@@ -109,7 +97,7 @@ extension ConversationsController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier, for: indexPath)
         cell.textLabel?.text = "Test Cell"
         return cell
     }
