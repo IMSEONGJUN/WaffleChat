@@ -11,13 +11,25 @@ import RxSwift
 
 class NewMessageViewModel {
     
-    var users = Bindable<[User]>()
+//    var users = Bindable<[User]>()
     
-    func configure(completion: @escaping (Error?) -> Void) {
-        APIManager.shared.fetchUsers { [weak self] (users) in
-            self?.users.value = users
-            completion(nil)
+    var users = PublishSubject<[User]>()
+    
+    init() {
+        fetchUsers()
+    }
+    
+//    func configure(completion: @escaping (Error?) -> Void) {
+//        APIManager.shared.fetchUsers { [weak self] (users) in
+//            self?.users.value = users
+//            completion(nil)
+//        }
+//
+//    }
+    
+    func fetchUsers()  {
+        APIManager.shared.fetchUsers {[weak self] users in
+            self?.users.onNext(users)
         }
-
     }
 }

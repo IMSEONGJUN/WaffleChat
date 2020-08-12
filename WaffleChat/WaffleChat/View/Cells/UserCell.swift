@@ -27,7 +27,6 @@ class UserCell: UITableViewCell {
        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = .red
         return iv
     }()
     

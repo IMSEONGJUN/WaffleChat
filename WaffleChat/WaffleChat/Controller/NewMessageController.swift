@@ -20,9 +20,9 @@ class NewMessageController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.configure { (_) in
-            print("fetched Users")
-        }
+//        viewModel.configure { (_) in
+//            print("fetched Users")
+//        }
         configureUI()
     }
     
@@ -46,8 +46,8 @@ class NewMessageController: UIViewController {
         
         tableView.frame = view.frame
         tableView.backgroundColor = .white
-        tableView.dataSource = self
-        tableView.delegate = self
+//        tableView.dataSource = self
+//        tableView.delegate = self
         tableView.rowHeight = 80
         tableView.tableFooterView = UIView()
         tableView.register(UserCell.self, forCellReuseIdentifier: UserCell.reuseIdentifier)
@@ -65,13 +65,22 @@ class NewMessageController: UIViewController {
     private func configureRefreshController() {
         refresh.tintColor = #colorLiteral(red: 0.6179639697, green: 0.421579957, blue: 0.1246413961, alpha: 1)
         self.tableView.refreshControl = refresh
-        refresh.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+//        refresh.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
     }
     
     private func bind() {
-        viewModel.users.bind {[unowned self] (_) in
-            self.tableView.reloadData()
-        }
+        viewModel.users
+            .bind(to: tableView.rx.items(cellIdentifier: UserCell.reuseIdentifier,
+                                         cellType: UserCell.self)) { indexPath, user, cell in
+                                                                        cell.user = user }
+            .disposed(by: disposeBag)
+        
+        self.refresh.rx.controlEvent(.allEvents)
+            .subscribe(onNext: {
+                self.viewModel.fetchUsers()
+                self.refresh.endRefreshing()
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Action Handler
@@ -80,42 +89,35 @@ class NewMessageController: UIViewController {
         dismiss(animated: true)
     }
     
-    @objc private func handleRefresh() {
-        let group = DispatchGroup()
-        group.enter()
-        viewModel.configure { (_) in
-            group.leave()
-            print("refetch users")
-        }
-        
-        group.notify(queue: .main) {
-            self.tableView.refreshControl?.endRefreshing()
-            print("refreshing")
-        }
-    }
+//    @objc private func handleRefresh() {
+//        let group = DispatchGroup()
+//        group.enter()
+//        viewModel.configure { (_) in
+//            group.leave()
+//            print("refetch users")
+//        }
+//
+//        group.notify(queue: .main) {
+//            self.tableView.refreshControl?.endRefreshing()
+//            print("refreshing")
+//        }
+//    }
     
 }
 
 
 // MARK: - UITableViewDataSource
-extension NewMessageController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.users.value?.count ?? 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: UserCell.reuseIdentifier, for: indexPath) as! UserCell
-        cell.user = viewModel.users.value?[indexPath.row]
-        return cell
-    }
-}
-
-
-// MARK: - UITableViewDelegate
-extension NewMessageController: UITableViewDelegate {
-    
-}
-
+//extension NewMessageController: UITableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return viewModel.users.value?.count ?? 0
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: UserCell.reuseIdentifier, for: indexPath) as! UserCell
+//        cell.user = viewModel.users.value?[indexPath.row]
+//        return cell
+//    }
+//}
 
 // MARK: - UISearchResultsUpdating
 extension NewMessageController: UISearchResultsUpdating {
