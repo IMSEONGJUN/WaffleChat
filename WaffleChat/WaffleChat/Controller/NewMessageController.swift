@@ -13,18 +13,18 @@ class NewMessageController: UIViewController {
     
     // MARK: - Properties
     let tableView = UITableView()
+    let refresh = UIRefreshControl()
     
     let viewModel = NewMessageViewModel()
     var disposeBag = DisposeBag()
-    let refresh = UIRefreshControl()
+    
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        viewModel.configure { (_) in
-//            print("fetched Users")
-//        }
         configureUI()
     }
+    
     
     // MARK: - Initial Setup
     private func configureUI() {
@@ -46,8 +46,6 @@ class NewMessageController: UIViewController {
         
         tableView.frame = view.frame
         tableView.backgroundColor = .white
-//        tableView.dataSource = self
-//        tableView.delegate = self
         tableView.rowHeight = 80
         tableView.tableFooterView = UIView()
         tableView.register(UserCell.self, forCellReuseIdentifier: UserCell.reuseIdentifier)
@@ -65,7 +63,6 @@ class NewMessageController: UIViewController {
     private func configureRefreshController() {
         refresh.tintColor = #colorLiteral(red: 0.6179639697, green: 0.421579957, blue: 0.1246413961, alpha: 1)
         self.tableView.refreshControl = refresh
-//        refresh.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
     }
     
     private func bind() {
