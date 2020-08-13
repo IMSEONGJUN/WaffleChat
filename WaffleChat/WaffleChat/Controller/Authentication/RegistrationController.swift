@@ -122,12 +122,12 @@ class RegistrationController: UIViewController {
     
     // MARK: - Binding for Async data stream
     private func bind() {
-        UIbinding()
-        dataBinding()
+        userActionBinding()
+        stateBinding()
         notificationBinding()
     }
     
-    private func UIbinding() {
+    private func userActionBinding() {
         plusPhotoButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.didTapPlusPhotoButton()
@@ -159,7 +159,7 @@ class RegistrationController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func dataBinding() {
+    private func stateBinding() {
         viewModel.bind()
         viewModel.isFormValid
             .subscribe(onNext: { [weak self] in

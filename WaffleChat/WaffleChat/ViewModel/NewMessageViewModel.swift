@@ -19,6 +19,12 @@ class NewMessageViewModel {
         fetchUsers()
     }
     
+    func fetchUsers()  {
+        APIManager.shared.fetchUsers {[weak self] users in
+            self?.users.onNext(users)
+        }
+    }
+    
 //    func configure(completion: @escaping (Error?) -> Void) {
 //        APIManager.shared.fetchUsers { [weak self] (users) in
 //            self?.users.value = users
@@ -27,9 +33,5 @@ class NewMessageViewModel {
 //
 //    }
     
-    func fetchUsers()  {
-        APIManager.shared.fetchUsers {[weak self] users in
-            self?.users.onNext(users)
-        }
-    }
+    
 }

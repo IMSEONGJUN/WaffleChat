@@ -24,7 +24,8 @@ class APIManager {
             var users = [User]()
             snapshot?.documents.forEach({ doc in
                 let json = doc.data()
-                guard let user = User(user: json) else { return }
+                guard let user = User(user: json),
+                          user.uid != Auth.auth().currentUser?.uid else { return }
                 users.append(user)
             })
             

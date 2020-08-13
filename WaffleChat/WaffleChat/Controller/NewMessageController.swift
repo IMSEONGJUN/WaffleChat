@@ -14,9 +14,11 @@ class NewMessageController: UIViewController {
     // MARK: - Properties
     let tableView = UITableView()
     let refresh = UIRefreshControl()
+    let searchController = UISearchController()
     
     let viewModel = NewMessageViewModel()
     var disposeBag = DisposeBag()
+    let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: nil)
     
     
     // MARK: - Life Cycle
@@ -38,7 +40,7 @@ class NewMessageController: UIViewController {
     
     private func configureNaviBar() {
         configureNavigationBar(with: "New Message", prefersLargeTitles: false)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(didTapCancelButton))
+        navigationItem.rightBarButtonItem = cancelButton
     }
     
     private func configureTableView() {
@@ -52,7 +54,6 @@ class NewMessageController: UIViewController {
     }
     
     private func configureSearchBar() {
-        let searchController = UISearchController()
         searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Search"
         searchController.searchBar.tintColor = .white
@@ -65,26 +66,36 @@ class NewMessageController: UIViewController {
         self.tableView.refreshControl = refresh
     }
     
+    
+    // MARK: - Binding
     private func bind() {
         viewModel.users
             .bind(to: tableView.rx.items(cellIdentifier: UserCell.reuseIdentifier,
                                          cellType: UserCell.self)) { indexPath, user, cell in
-                                                                        cell.user = user }
+              cell.user = user
+            }
             .disposed(by: disposeBag)
         
-        self.refresh.rx.controlEvent(.allEvents)
+        refresh.rx.controlEvent(.allEvents)
             .subscribe(onNext: {
                 self.viewModel.fetchUsers()
                 self.refresh.endRefreshing()
             })
             .disposed(by: disposeBag)
+        
+        cancelButton.rx.tap
+            .subscribe(onNext: {
+                self.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
     }
+    
     
     // MARK: - Action Handler
     
-    @objc private func didTapCancelButton() {
-        dismiss(animated: true)
-    }
+//    @objc private func didTapCancelButton() {
+//        dismiss(animated: true)
+//    }
     
 //    @objc private func handleRefresh() {
 //        let group = DispatchGroup()
