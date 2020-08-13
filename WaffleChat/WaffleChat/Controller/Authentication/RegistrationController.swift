@@ -160,7 +160,7 @@ class RegistrationController: UIViewController {
     }
     
     private func stateBinding() {
-        viewModel.bind()
+//        viewModel.bind()
         viewModel.isFormValid
             .subscribe(onNext: { [weak self] in
                 print("Registration")

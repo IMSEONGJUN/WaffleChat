@@ -13,7 +13,7 @@ class NewMessageViewModel {
     
 //    var users = Bindable<[User]>()
     
-    var users = PublishSubject<[User]>()
+    var users = BehaviorSubject<[User]>(value: [])
     
     init() {
         fetchUsers()

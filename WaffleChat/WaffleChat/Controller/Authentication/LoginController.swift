@@ -73,8 +73,8 @@ class LoginController: UIViewController {
     }
     
     private func binding() {
-        dataBinding()
-        UIBinding()
+        stateBinding()
+        userActionBinding()
     }
     
     private func configureLogoImageView() {
@@ -115,7 +115,7 @@ class LoginController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
-    private func dataBinding() {
+    private func stateBinding() {
         viewModel.isValidForm
             .observeOn(MainScheduler.instance)
 //            .map { _ in true}
@@ -128,7 +128,7 @@ class LoginController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    private func UIBinding() {
+    private func userActionBinding() {
         emailTextField.rx.text
             .orEmpty
             .distinctUntilChanged()

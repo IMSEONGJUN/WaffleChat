@@ -18,8 +18,7 @@ class UserCell: UITableViewCell {
     
     var user: User? {
         didSet {
-            guard let user = user else { return }
-            configureCell(user)
+            configureCell()
         }
     }
     
@@ -44,6 +43,8 @@ class UserCell: UITableViewCell {
 //        label.text = "Robert Downey Junior"
         return label
     }()
+    
+    
     // MARK: - Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -54,6 +55,8 @@ class UserCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: - Initial Setup
     private func configureUI() {
         addSubview(profileImageView)
         
@@ -75,7 +78,8 @@ class UserCell: UITableViewCell {
         }
     }
     
-    private func configureCell(_ user: User) {
+    private func configureCell() {
+        guard let user = user else { return }
         let url = URL(string: user.profileImage)
         profileImageView.sd_setImage(with: url)
         usernameLabel.text = user.username

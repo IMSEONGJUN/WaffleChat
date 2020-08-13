@@ -34,6 +34,12 @@ class RegistrationViewModel {
         isValidEmailAddress(email: $0) && $1.count > 2 && $2.count > 2 && $3.count > 6 && $4 != nil
     }
     
+    
+    // MARK: - Initializer
+    init() {
+        bind()
+    }
+    
     // MARK: - Bind
     func bind() {
         profileImage

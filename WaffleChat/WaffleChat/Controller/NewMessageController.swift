@@ -69,13 +69,15 @@ class NewMessageController: UIViewController {
     
     // MARK: - Binding
     private func bind() {
+        // State Bind
         viewModel.users
             .bind(to: tableView.rx.items(cellIdentifier: UserCell.reuseIdentifier,
                                          cellType: UserCell.self)) { indexPath, user, cell in
-              cell.user = user
+                cell.user = user
             }
             .disposed(by: disposeBag)
         
+        // Action Bind
         refresh.rx.controlEvent(.allEvents)
             .subscribe(onNext: {
                 self.viewModel.fetchUsers()
@@ -90,7 +92,17 @@ class NewMessageController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    
+}
+
+
+// MARK: - UISearchResultsUpdating
+extension NewMessageController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        
+    }
+}
+
+
     // MARK: - Action Handler
     
 //    @objc private func didTapCancelButton() {
@@ -110,8 +122,6 @@ class NewMessageController: UIViewController {
 //            print("refreshing")
 //        }
 //    }
-    
-}
 
 
 // MARK: - UITableViewDataSource
@@ -127,9 +137,4 @@ class NewMessageController: UIViewController {
 //    }
 //}
 
-// MARK: - UISearchResultsUpdating
-extension NewMessageController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        
-    }
-}
+
