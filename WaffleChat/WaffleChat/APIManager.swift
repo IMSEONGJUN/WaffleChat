@@ -14,10 +14,11 @@ class APIManager {
     
     private init() {}
     
-    func fetchUsers(completion: @escaping ([User]) -> Void) {
+    func fetchUsers(completion: @escaping (Result<[User], Error>) -> Void) {
         Firestore.firestore().collection("users").getDocuments { (snapshot, error) in
             if let error = error {
                 print("Failed to fetch users:", error)
+                completion(.failure(error))
                 return
             }
             
@@ -29,7 +30,7 @@ class APIManager {
                 users.append(user)
             })
             
-            completion(users)
+            completion(.success(users))
         }
     }
 }

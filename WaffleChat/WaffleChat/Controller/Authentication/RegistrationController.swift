@@ -60,7 +60,12 @@ class RegistrationController: UIViewController {
         return btn
     }()
     
-    lazy var stackContents = [emailContainer,fullNameContainer,userNameContainer,passwordContainer,signUpButton]
+    lazy var stackContents = [emailContainer,
+                              fullNameContainer,
+                              userNameContainer,
+                              passwordContainer,
+                              signUpButton]
+    
     let stack = UIStackView()
     
     let viewModel = RegistrationViewModel()
@@ -160,7 +165,6 @@ class RegistrationController: UIViewController {
     }
     
     private func stateBinding() {
-//        viewModel.bind()
         viewModel.isFormValid
             .subscribe(onNext: { [weak self] in
                 print("Registration")
@@ -218,17 +222,7 @@ class RegistrationController: UIViewController {
             .disposed(by: disposeBag)
         
     }
-    
-    private func getKeyboardFrameHeight(noti: Notification) -> CGFloat {
-        guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
-            return 0
-        }
-        let keyboardHeight = value.cgRectValue.height
-        let bottomSpace = self.view.frame.height - (self.stack.frame.origin.y + self.stack.frame.height)
-        let lengthToMoveUp = keyboardHeight - bottomSpace
-        return lengthToMoveUp
-    }
-    
+
     
     // MARK: - Action Handler
     @objc private func didTapPlusPhotoButton() {
@@ -272,6 +266,18 @@ class RegistrationController: UIViewController {
     
     @objc private func didTapGoToLoginPageButton() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    
+    // MARK: - Helper
+    private func getKeyboardFrameHeight(noti: Notification) -> CGFloat {
+        guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return 0
+        }
+        let keyboardHeight = value.cgRectValue.height
+        let bottomSpace = self.view.frame.height - (self.stack.frame.origin.y + self.stack.frame.height)
+        let lengthToMoveUp = keyboardHeight - bottomSpace
+        return lengthToMoveUp
     }
 }
 

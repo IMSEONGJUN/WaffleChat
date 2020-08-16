@@ -9,6 +9,10 @@
 import UIKit
 import RxSwift
 
+protocol NewMessageControllerDelegate: AnyObject {
+    func newChatStarted(toRemove controller: NewMessageController, startWithUser user: User)
+}
+
 class NewMessageController: UIViewController {
     
     // MARK: - Properties
@@ -20,11 +24,14 @@ class NewMessageController: UIViewController {
     var disposeBag = DisposeBag()
     let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: nil)
     
+    weak var delegate: NewMessageControllerDelegate?
+    
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        bind()
     }
     
     
@@ -35,7 +42,6 @@ class NewMessageController: UIViewController {
         configureNaviBar()
         configureSearchBar()
         configureRefreshController()
-        bind()
     }
     
     private func configureNaviBar() {
@@ -90,7 +96,18 @@ class NewMessageController: UIViewController {
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .subscribe(onNext: {[weak self] indexPath in
+                guard let self = self else { return }
+                guard let cell = self.tableView.cellForRow(at: indexPath) as? UserCell else { return }
+                guard let user = cell.user else { return }
+                self.delegate?.newChatStarted(toRemove: self, startWithUser: user)
+            })
+            .disposed(by: disposeBag)
     }
+    
+    
     
 }
 

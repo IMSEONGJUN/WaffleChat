@@ -81,9 +81,11 @@ class ConversationsController: UIViewController {
     
     @objc private func didTapNewMessageButton() {
         print("tap newMessage")
-        let newMessageVC = UINavigationController(rootViewController: NewMessageController())
-        newMessageVC.modalPresentationStyle = .fullScreen
-        present(newMessageVC, animated: true)
+        let newMessageVC = NewMessageController()
+        newMessageVC.delegate = self
+        let newMessageVCNavi = UINavigationController(rootViewController: newMessageVC)
+        newMessageVCNavi.modalPresentationStyle = .fullScreen
+        present(newMessageVCNavi, animated: true)
     }
 }
 
@@ -107,4 +109,15 @@ extension ConversationsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
     }
+}
+
+// MARK: - NewMessageControllerDelegate
+extension ConversationsController: NewMessageControllerDelegate {
+    func newChatStarted(toRemove controller: NewMessageController, startWithUser user: User) {
+        controller.dismiss(animated: true)
+        let chatVC = ChatController(user: user)
+        navigationController?.pushViewController(chatVC, animated: true)
+    }
+    
+    
 }

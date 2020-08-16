@@ -31,6 +31,7 @@
 		CEB17AE024B3743400FB7B7E /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */; };
 		CEB17AE324B4721200FB7B7E /* InputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17AE224B4721200FB7B7E /* InputTextField.swift */; };
 		CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17AE724BF625A00FB7B7E /* CustomButtonForAuth.swift */; };
+		CEB3AD8324E967B8003F83C1 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB3AD8224E967B8003F83C1 /* ChatController.swift */; };
 		CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF0CC7824DAF8BD0017E452 /* APIManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,7 @@
 		CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
 		CEB17AE224B4721200FB7B7E /* InputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextField.swift; sourceTree = "<group>"; };
 		CEB17AE724BF625A00FB7B7E /* CustomButtonForAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonForAuth.swift; sourceTree = "<group>"; };
+		CEB3AD8224E967B8003F83C1 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		CEF0CC7824DAF8BD0017E452 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIManager.swift; path = WaffleChat/APIManager.swift; sourceTree = SOURCE_ROOT; };
 		E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.release.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -164,6 +166,7 @@
 			children = (
 				CE9AE41E24A9C08100F77F48 /* ConversationsController.swift */,
 				CE4D9D2724E045A500DC933D /* NewMessageController.swift */,
+				CEB3AD8224E967B8003F83C1 /* ChatController.swift */,
 				CE9AE42624ACC12800F77F48 /* Authentication */,
 			);
 			path = Controller;
@@ -375,6 +378,7 @@
 			files = (
 				CEB17AE324B4721200FB7B7E /* InputTextField.swift in Sources */,
 				CE39B7B124E145C8009B0DD0 /* NewMessageViewModel.swift in Sources */,
+				CEB3AD8324E967B8003F83C1 /* ChatController.swift in Sources */,
 				CE9AE42324A9DC1700F77F48 /* ConversationCell.swift in Sources */,
 				CE9AE40424A9BBB800F77F48 /* AppDelegate.swift in Sources */,
 				CE9AE41F24A9C08100F77F48 /* ConversationsController.swift in Sources */,

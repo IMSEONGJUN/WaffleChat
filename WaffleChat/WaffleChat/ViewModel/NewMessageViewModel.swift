@@ -20,8 +20,13 @@ class NewMessageViewModel {
     }
     
     func fetchUsers()  {
-        APIManager.shared.fetchUsers {[weak self] users in
-            self?.users.onNext(users)
+        APIManager.shared.fetchUsers {[weak self] result in
+            switch result {
+            case .success(let users):
+                self?.users.onNext(users)
+            case .failure(let error):
+                print("Failed to fetch users: ", error)
+            }
         }
     }
     

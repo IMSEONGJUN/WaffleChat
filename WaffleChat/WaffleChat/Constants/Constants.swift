@@ -11,3 +11,8 @@ import Foundation
 enum Images {
     static let logo = "logo"
 }
+
+
+enum Notifications {
+    static let newChatStarted = Notification.Name("newChatStarted")
+}

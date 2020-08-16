@@ -46,6 +46,7 @@ class LoginController: UIViewController {
     var viewModel = LoginViewModel()
     var disposeBag = DisposeBag()
     
+    
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,6 +116,8 @@ class LoginController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
+    
+    // MARK: - Binding
     private func stateBinding() {
         viewModel.isValidForm
             .observeOn(MainScheduler.instance)
