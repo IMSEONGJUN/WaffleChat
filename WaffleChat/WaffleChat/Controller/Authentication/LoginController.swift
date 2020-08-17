@@ -30,18 +30,8 @@ class LoginController: UIViewController {
     private let passwordTextField = InputTextField(placeHolder: "Password")
     
     private let loginButton = CustomButtonForAuth(title: "Log In", color: #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1))
-    
-    private let goToSignUpPageButton: UIButton = {
-        let btn = UIButton(type: .system)
-        let attributedTitle = NSMutableAttributedString(string: "Don't have an account? ",
-                                                        attributes: [.font: UIFont.systemFont(ofSize: 16),
-                                                                     .foregroundColor : UIColor.white])
-        attributedTitle.append(NSAttributedString(string: "Sign Up",
-                                                  attributes: [.font : UIFont.boldSystemFont(ofSize: 16),
-                                                               .foregroundColor : UIColor.white]))
-        btn.setAttributedTitle(attributedTitle, for: .normal)
-        return btn
-    }()
+     
+    private let goToSignUpPageButton = BottomButtonOnAuth(firstText: "Don't have an account? ", secondText: "Sign Up")
     
     var viewModel = LoginViewModel()
     var disposeBag = DisposeBag()
@@ -168,6 +158,7 @@ class LoginController: UIViewController {
                 print("failed to login: ", error)
                 return
             }
+            print("Successfully logged in")
             self.switchToConversationVC()
         }
     }

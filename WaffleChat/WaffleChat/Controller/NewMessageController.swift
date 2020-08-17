@@ -84,7 +84,7 @@ class NewMessageController: UIViewController {
             .disposed(by: disposeBag)
         
         // Action Bind
-        refresh.rx.controlEvent(.allEvents)
+        refresh.rx.controlEvent(.valueChanged)
             .subscribe(onNext: {
                 self.viewModel.fetchUsers()
                 self.refresh.endRefreshing()
@@ -106,9 +106,7 @@ class NewMessageController: UIViewController {
             })
             .disposed(by: disposeBag)
     }
-    
-    
-    
+
 }
 
 

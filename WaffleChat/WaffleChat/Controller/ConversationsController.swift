@@ -7,28 +7,31 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ConversationsController: UIViewController {
 
     private let reuseIdentifier = "ConversationCell"
     
+    // MARK: - Properties
     private let newMessageButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setImage(UIImage(systemName: "plus"), for: .normal)
         btn.backgroundColor = #colorLiteral(red: 0.6196078431, green: 0.4235294118, blue: 0.1254901961, alpha: 1)
         btn.tintColor = .white
-        btn.addTarget(self, action: #selector(didTapNewMessageButton), for: .touchUpInside)
         return btn
     }()
     
-    // MARK: - Properties
     let tableView = UITableView()
+    var disposeBag = DisposeBag()
     
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        bind()
     }
     
     
@@ -38,8 +41,7 @@ class ConversationsController: UIViewController {
         configureNavigationBar(with: "Messages", prefersLargeTitles: true)
         configureTableView()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.circle.fill"),
-                                                           style: .plain, target: self,
-                                                           action: #selector(didTapProfileButton))
+                                                           style: .plain, target: nil, action: nil)
         configureNewMessageButton()
         
     }
@@ -65,27 +67,31 @@ class ConversationsController: UIViewController {
         tableView.delegate = self
     }
     
-    
-    // MARK: - Action Handler
-    @objc private func didTapProfileButton() {
-        print("profile")
-        doLogoutThisUser { (error) in
-            if let err = error {
-                print("Failed to logged out:", err)
-                return
-            }
-            print("Successfully logged out this user")
-            switchToLoginVC()
-        }
-    }
-    
-    @objc private func didTapNewMessageButton() {
-        print("tap newMessage")
-        let newMessageVC = NewMessageController()
-        newMessageVC.delegate = self
-        let newMessageVCNavi = UINavigationController(rootViewController: newMessageVC)
-        newMessageVCNavi.modalPresentationStyle = .fullScreen
-        present(newMessageVCNavi, animated: true)
+    func bind() {
+        navigationItem.leftBarButtonItem?.rx.tap
+            .subscribe(onNext: {
+                print("profile")
+                self.doLogoutThisUser {[weak self] (error) in
+                    if let err = error {
+                        print("Failed to logged out:", err)
+                        return
+                    }
+                    print("Successfully logged out this user")
+                    self?.switchToLoginVC()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        newMessageButton.rx.tap
+            .subscribe(onNext:{ [weak self] in
+                guard let self = self else { return }
+                let newMessageVC = NewMessageController()
+                newMessageVC.delegate = self
+                let newMessageVCNavi = UINavigationController(rootViewController: newMessageVC)
+                newMessageVCNavi.modalPresentationStyle = .fullScreen
+                self.present(newMessageVCNavi, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -118,6 +124,4 @@ extension ConversationsController: NewMessageControllerDelegate {
         let chatVC = ChatController(user: user)
         navigationController?.pushViewController(chatVC, animated: true)
     }
-    
-    
 }

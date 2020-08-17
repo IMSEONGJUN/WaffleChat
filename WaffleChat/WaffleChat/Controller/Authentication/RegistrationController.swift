@@ -47,18 +47,7 @@ class RegistrationController: UIViewController {
         return btn
     }()
     
-    let goToLoginPageButton: UIButton = {
-        let btn = UIButton(type: .system)
-        let attributedTitle = NSMutableAttributedString(string: "Already have an account? ",
-                                                        attributes: [.font: UIFont.systemFont(ofSize: 16),
-                                                                     .foregroundColor : UIColor.white])
-        attributedTitle.append(NSAttributedString(string: "Log In",
-                                                  attributes: [.font : UIFont.boldSystemFont(ofSize: 16),
-                                                               .foregroundColor : UIColor.white]))
-        btn.setAttributedTitle(attributedTitle, for: .normal)
-        btn.addTarget(self, action: #selector(didTapGoToLoginPageButton), for: .touchUpInside)
-        return btn
-    }()
+    let goToLoginPageButton = BottomButtonOnAuth(firstText: "Already have an account? ", secondText: "Log In")
     
     lazy var stackContents = [emailContainer,
                               fullNameContainer,
@@ -113,6 +102,7 @@ class RegistrationController: UIViewController {
     }
     
     private func configureGoToLoginPageButton() {
+        goToLoginPageButton.addTarget(self, action: #selector(didTapGoToLoginPageButton), for: .touchUpInside)
         view.addSubview(goToLoginPageButton)
         goToLoginPageButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
