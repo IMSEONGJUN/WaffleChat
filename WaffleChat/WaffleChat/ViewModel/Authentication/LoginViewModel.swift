@@ -16,9 +16,8 @@ class LoginViewModel {
     let emailObservable = BehaviorSubject<String>(value: "")
     let passwordObservable = BehaviorSubject<String>(value: "")
     
-    lazy var isValidForm = Observable.combineLatest(emailObservable, passwordObservable) {
-        isValidEmailAddress(email: $0) && $1.count > 6
-    }
+    lazy var isValidForm = Observable.combineLatest(emailObservable, passwordObservable)
+                            { isValidEmailAddress(email: $0) && $1.count > 6 }
     
     func performLogin(completion: @escaping (Error?) -> Void) {
         guard let email = try? emailObservable.value() else { return }
