@@ -78,7 +78,7 @@ class UserCell: UITableViewCell {
     
     private func configureCell() {
         guard let user = user else { return }
-        let url = URL(string: user.profileImage)
+        let url = URL(string: user.profileImageUrl)
         profileImageView.sd_setImage(with: url)
         usernameLabel.text = user.username
         fullnameLabel.text = user.fullname

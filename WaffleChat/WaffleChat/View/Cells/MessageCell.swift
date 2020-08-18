@@ -11,7 +11,11 @@ import UIKit
 class MessageCell: UICollectionViewCell {
     
     static let reuseID = "MessageCell"
-    
+    var message: Message? {
+        didSet{
+            configure()
+        }
+    }
     private let profileImageView: UIImageView = {
        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
@@ -26,7 +30,6 @@ class MessageCell: UICollectionViewCell {
         tv.font = UIFont.systemFont(ofSize: 16)
         tv.isScrollEnabled = false
         tv.isEditable = false
-        tv.text = "chating cell"
         tv.textColor = .white
         return tv
     }()
@@ -43,15 +46,15 @@ class MessageCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure() {
-        backgroundColor = .yellow
+    func configureUI() {
+        backgroundColor = .white
         
         addSubview(profileImageView)
         profileImageView.snp.makeConstraints {
@@ -73,11 +76,22 @@ class MessageCell: UICollectionViewCell {
             $0.centerY.equalToSuperview()
             $0.width.lessThanOrEqualTo(250)
         }
-        textLeadingConst = textView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10)
-        texttrailingConst = textView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
-        textLeadingConst.isActive = true
+        textLeadingConst = textView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12)
+        texttrailingConst = textView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12)
         
+    }
+    
+    func configure() {
+        guard let message = message else { return }
+        let viewModel = MessageViewModel(message: message)
+        bubbleContainer.backgroundColor = viewModel.messageBackgroundColor
+        textView.textColor = viewModel.messageTextColor
+        textView.text = message.text
         
+        textLeadingConst.isActive = viewModel.leadingAnchorActive
+        texttrailingConst.isActive = viewModel.trailingingAnchorActive
         
+        profileImageView.isHidden = viewModel.shouldHideProfileImage
+        profileImageView.sd_setImage(with: viewModel.profileImageUrl)
     }
 }

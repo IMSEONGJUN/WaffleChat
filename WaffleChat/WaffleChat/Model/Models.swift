@@ -7,18 +7,33 @@
 //
 
 import Foundation
-
+import Firebase
 
 struct Message {
-    var isIncoming: Bool
+    
     var text: String
+    let toId: String
+    let fromId: String
+    var timestamp: Timestamp!
+    var user: User?
+    
+    var isFromCurrentUser: Bool
+    
+    init(dic: [String: Any]) {
+        self.text = dic["text"] as? String ?? ""
+        self.toId = dic["toId"] as? String ?? ""
+        self.fromId = dic["fromId"] as? String ?? ""
+        self.timestamp = dic["timestamp"] as? Timestamp ?? Timestamp(date: Date())
+        
+        self.isFromCurrentUser = fromId == Auth.auth().currentUser?.uid
+    }
     
 }
 
 struct User {
     let email: String
     let fullname: String
-    var profileImage: String
+    var profileImageUrl: String
     let uid: String
     var username: String
     
@@ -30,7 +45,7 @@ struct User {
         self.fullname = fullname
         
         guard let profileImage = user["profileImageURL"] as? String else { return nil }
-        self.profileImage = profileImage
+        self.profileImageUrl = profileImage
         
         guard let uid = user["uid"] as? String else { return nil }
         self.uid = uid
