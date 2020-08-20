@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ChatController: UIViewController {
 
@@ -14,24 +16,21 @@ class ChatController: UIViewController {
     private var collectionView: UICollectionView!
     private var layout: UICollectionViewFlowLayout!
     
-    private let user: User
-    private var messages = [Message]()
-    private var fromCurrentUser = false
+    var user: User?
     
-    private lazy var customInputView: CustomInputAccessoryView = {
-        let iv = CustomInputAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
-        iv.delegate = self
-        return iv
-    }()
-    
+    private lazy var customInputView = CustomInputAccessoryView(frame:
+                                                                CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
+    var viewModel: ChatViewModel
+    var disposeBag = DisposeBag()
+    var messageToSend = BehaviorRelay<String>(value: "")
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
-        fetchMessages()
         configureNavigationBar(with: user.username, prefersLargeTitles: false)
         configureCollectionView()
+        bind()
     }
     
     override var inputAccessoryView: UIView? {
@@ -45,7 +44,7 @@ class ChatController: UIViewController {
     
     // MARK: - Custom Initializer
     init(user: User) {
-        self.user = user
+        self.viewModel = ChatViewModel(user: user)
         print("init")
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,18 +55,10 @@ class ChatController: UIViewController {
     
     
     // MARK: - Initial Setup
-    func fetchMessages() {
-        APIManager.shared.fetchMessages(forUser: user) { (messages) in
-            self.messages = messages
-            self.collectionView.reloadData()
-        }
-    }
-    
     func configureCollectionView() {
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: configureFlowLayout())
         view.addSubview(collectionView)
         collectionView.backgroundColor = .white
-        collectionView.dataSource = self
         collectionView.alwaysBounceVertical = true
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: MessageCell.reuseID)
         collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
@@ -81,34 +72,45 @@ class ChatController: UIViewController {
         layout.scrollDirection = .vertical
         return layout
     }
-}
-
-
-extension ChatController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return messages.count
-    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MessageCell.reuseID, for: indexPath) as! MessageCell
-        cell.message = messages[indexPath.row]
-        cell.message?.user = user
-        return cell
-    }
-}
-
-extension ChatController: CustomInputAccessoryViewDelegate {
-    func inputView(_ inputView: CustomInputAccessoryView, wantsToSend message: String) {
+    
+    // MARK: - Bind
+    func bind() {
+        viewModel.user
+            .subscribe(onNext: { [weak self] in
+                guard let user = $0 else { return }
+                self?.user = user
+            })
+            .disposed(by: disposeBag)
         
-        APIManager.shared.uploadMessage(message, To: user) { (error) in
-            if let error = error {
-                print("Failed to upload message:", error)
-                return
+        viewModel.messages
+            .bind(to: collectionView.rx.items(cellIdentifier: MessageCell.reuseID,
+                                              cellType: MessageCell.self)) {[weak self] indexPath, message, cell in
+                                                cell.message?.user = self?.user
+                                                cell.message = message
             }
-            inputView.clearMessageText()
-            print("Succesfully uploaded message")
-        }
+            .disposed(by: disposeBag)
+        
+        customInputView.messageInputTextView.rx.text
+            .orEmpty
+            .bind(to: messageToSend)
+            .disposed(by: disposeBag)
+        
+        customInputView.sendButton.rx.tap
+            .map({ Observable.zip(self.messageToSend, self.viewModel.user) })
+            .flatMapLatest{$0}
+            .subscribe(onNext:{
+                APIManager.shared.uploadMessage($0.0, To: $0.1!) { [weak self] (error) in
+                    if let error = error {
+                        print("Failed to upload message:", error)
+                        return
+                    }
+                    self?.customInputView.clearMessageText()
+                    print("Succesfully uploaded message")
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        
     }
-    
-    
 }

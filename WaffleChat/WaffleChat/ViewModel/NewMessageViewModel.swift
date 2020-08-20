@@ -8,12 +8,13 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 class NewMessageViewModel {
     
 //    var users = Bindable<[User]>()
     
-    var users = BehaviorSubject<[User]>(value: [])
+    var users = BehaviorRelay<[User]>(value: [])
     
     init() {
         fetchUsers()
@@ -23,7 +24,7 @@ class NewMessageViewModel {
         APIManager.shared.fetchUsers {[weak self] result in
             switch result {
             case .success(let users):
-                self?.users.onNext(users)
+                self?.users.accept(users)
             case .failure(let error):
                 print("Failed to fetch users: ", error)
             }

@@ -10,24 +10,17 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol CustomInputAccessoryViewDelegate: class {
-    func inputView(_ inputView: CustomInputAccessoryView, wantsToSend message: String)
-}
-
 class CustomInputAccessoryView: UIView {
 
     // MARK: - Properties
-    
-    weak var delegate: CustomInputAccessoryViewDelegate?
-    
-    private let messageInputTextView: UITextView = {
+    let messageInputTextView: UITextView = {
        let tv = UITextView()
         tv.font = UIFont.systemFont(ofSize: 16)
         tv.isScrollEnabled = false
         return tv
     }()
     
-    private let sendButton: UIButton = {
+    let sendButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.backgroundColor = .white
         btn.setTitle("Send", for: .normal)
@@ -36,7 +29,7 @@ class CustomInputAccessoryView: UIView {
         return btn
     }()
     
-    private let placeHolderLabel: UILabel = {
+    let placeHolderLabel: UILabel = {
        let label = UILabel()
         label.text = "Enter Message"
         label.font = UIFont.systemFont(ofSize: 16)
@@ -91,14 +84,7 @@ class CustomInputAccessoryView: UIView {
             $0.centerY.equalTo(messageInputTextView)
         }
     }
-    
-    func configureShadow() {
-        layer.shadowOpacity = 0.25
-        layer.shadowRadius = 10
-        layer.shadowOffset = .init(width: 0, height: -8)
-        layer.shadowColor = UIColor.lightGray.cgColor
-    }
-    
+
     
     // MARK: - Bind
     private func bind() {
@@ -108,21 +94,19 @@ class CustomInputAccessoryView: UIView {
             self.placeHolderLabel.isHidden = !self.messageInputTextView.text.isEmpty
         })
         .disposed(by: disposeBag)
-        
-        sendButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                print("send button Tapped!!")
-                guard let self = self else { return }
-                guard let message = self.messageInputTextView.text else { return }
-                self.delegate?.inputView(self, wantsToSend: message)
-            })
-            .disposed(by: disposeBag)
     }
     
-    // MARK: - Helper
     
+    // MARK: - Helper
     func clearMessageText() {
         messageInputTextView.text = nil
         placeHolderLabel.isHidden = false
+    }
+    
+    func configureShadow() {
+        layer.shadowOpacity = 0.25
+        layer.shadowRadius = 10
+        layer.shadowOffset = .init(width: 0, height: -8)
+        layer.shadowColor = UIColor.lightGray.cgColor
     }
 }

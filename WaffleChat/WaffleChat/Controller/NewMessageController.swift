@@ -85,21 +85,20 @@ class NewMessageController: UIViewController {
         
         // Action Bind
         refresh.rx.controlEvent(.valueChanged)
-            .subscribe(onNext: {
+            .subscribe(onNext: { [unowned self] in
                 self.viewModel.fetchUsers()
                 self.refresh.endRefreshing()
             })
             .disposed(by: disposeBag)
         
         cancelButton.rx.tap
-            .subscribe(onNext: {
+            .subscribe(onNext: { [unowned self] in
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
         
         tableView.rx.itemSelected
-            .subscribe(onNext: {[weak self] indexPath in
-                guard let self = self else { return }
+            .subscribe(onNext: {[unowned self] indexPath in
                 guard let cell = self.tableView.cellForRow(at: indexPath) as? UserCell else { return }
                 guard let user = cell.user else { return }
                 self.delegate?.newChatStarted(toRemove: self, startWithUser: user)
@@ -117,39 +116,5 @@ extension NewMessageController: UISearchResultsUpdating {
     }
 }
 
-
-    // MARK: - Action Handler
-    
-//    @objc private func didTapCancelButton() {
-//        dismiss(animated: true)
-//    }
-    
-//    @objc private func handleRefresh() {
-//        let group = DispatchGroup()
-//        group.enter()
-//        viewModel.configure { (_) in
-//            group.leave()
-//            print("refetch users")
-//        }
-//
-//        group.notify(queue: .main) {
-//            self.tableView.refreshControl?.endRefreshing()
-//            print("refreshing")
-//        }
-//    }
-
-
-// MARK: - UITableViewDataSource
-//extension NewMessageController: UITableViewDataSource {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return viewModel.users.value?.count ?? 0
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: UserCell.reuseIdentifier, for: indexPath) as! UserCell
-//        cell.user = viewModel.users.value?[indexPath.row]
-//        return cell
-//    }
-//}
 
 

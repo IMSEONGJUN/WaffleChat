@@ -35,6 +35,7 @@
 		CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB17AE724BF625A00FB7B7E /* CustomButtonForAuth.swift */; };
 		CEB3AD8324E967B8003F83C1 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB3AD8224E967B8003F83C1 /* ChatController.swift */; };
 		CEC6F3C824EC068500AE19CD /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC6F3C724EC068500AE19CD /* MessageViewModel.swift */; };
+		CED52B2624EEA7730051848A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED52B2524EEA7730051848A /* ChatViewModel.swift */; };
 		CEDD8F9724EA59590034537E /* BottomButtonOnAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDD8F9624EA59590034537E /* BottomButtonOnAuth.swift */; };
 		CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF0CC7824DAF8BD0017E452 /* APIManager.swift */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		CEB17AE724BF625A00FB7B7E /* CustomButtonForAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonForAuth.swift; sourceTree = "<group>"; };
 		CEB3AD8224E967B8003F83C1 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		CEC6F3C724EC068500AE19CD /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
+		CED52B2524EEA7730051848A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		CEDD8F9624EA59590034537E /* BottomButtonOnAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonOnAuth.swift; sourceTree = "<group>"; };
 		CEF0CC7824DAF8BD0017E452 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIManager.swift; path = WaffleChat/APIManager.swift; sourceTree = SOURCE_ROOT; };
 		E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.release.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.release.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				CE39B7AE24E14593009B0DD0 /* ConversationViewModel.swift */,
 				CE39B7B024E145C8009B0DD0 /* NewMessageViewModel.swift */,
 				CEC6F3C724EC068500AE19CD /* MessageViewModel.swift */,
+				CED52B2524EEA7730051848A /* ChatViewModel.swift */,
 				CE961AA624CEE3190094FE86 /* Authentication */,
 			);
 			path = ViewModel;
@@ -396,6 +399,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED52B2624EEA7730051848A /* ChatViewModel.swift in Sources */,
 				CEB17AE324B4721200FB7B7E /* InputTextField.swift in Sources */,
 				CE39B7B124E145C8009B0DD0 /* NewMessageViewModel.swift in Sources */,
 				CEB3AD8324E967B8003F83C1 /* ChatController.swift in Sources */,

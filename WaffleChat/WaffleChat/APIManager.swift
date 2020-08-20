@@ -41,8 +41,8 @@ class APIManager {
                                    "fromId": currentUid,
                                     "toId": user.uid,
                                     "timestamp": Timestamp(date: Date())
-                                    
                                   ]
+        
         let ref = Firestore.firestore().collection("messages")
         ref.document(currentUid).collection(user.uid).addDocument(data: data) { (_) in
             ref.document(user.uid).collection(currentUid).addDocument(data: data, completion: completion)
