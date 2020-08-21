@@ -244,13 +244,13 @@ class RegistrationController: UIViewController {
     @objc private func didTapSignUpButton() {
         print("Sign Up")
         viewModel.isRegistering.accept(true)
-        viewModel.performRegistration { (err) in
+        viewModel.performRegistration { [weak self] (err) in
             if let error = err {
                 print("failed to registration: ", error)
                 return
             }
-            self.viewModel.isRegistering.accept(false)
-            self.switchToConversationVC()
+            self?.viewModel.isRegistering.accept(false)
+            self?.switchToConversationVC()
         }
     }
     

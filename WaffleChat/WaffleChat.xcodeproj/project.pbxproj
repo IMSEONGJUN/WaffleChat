@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		AB650DE7C24B8EA28D97A79B /* Pods_WaffleChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */; };
-		CE1DA98D24DC499C00233C32 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1DA98C24DC499C00233C32 /* Models.swift */; };
 		CE39B7AF24E14593009B0DD0 /* ConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39B7AE24E14593009B0DD0 /* ConversationViewModel.swift */; };
 		CE39B7B124E145C8009B0DD0 /* NewMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39B7B024E145C8009B0DD0 /* NewMessageViewModel.swift */; };
 		CE39B7D724E17FAF009B0DD0 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39B7D624E17FAF009B0DD0 /* UserCell.swift */; };
@@ -38,12 +37,13 @@
 		CED52B2624EEA7730051848A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED52B2524EEA7730051848A /* ChatViewModel.swift */; };
 		CEDD8F9724EA59590034537E /* BottomButtonOnAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDD8F9624EA59590034537E /* BottomButtonOnAuth.swift */; };
 		CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF0CC7824DAF8BD0017E452 /* APIManager.swift */; };
+		CEF7C77F24EF665000CFF7CF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C77E24EF665000CFF7CF /* Message.swift */; };
+		CEF7C78124EF665900CFF7CF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C78024EF665900CFF7CF /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3F363E3C2492FB5307D42C85 /* Pods-WaffleChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.debug.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.debug.xcconfig"; sourceTree = "<group>"; };
 		53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaffleChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE1DA98C24DC499C00233C32 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		CE39B7AE24E14593009B0DD0 /* ConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewModel.swift; sourceTree = "<group>"; };
 		CE39B7B024E145C8009B0DD0 /* NewMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageViewModel.swift; sourceTree = "<group>"; };
 		CE39B7D624E17FAF009B0DD0 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
@@ -75,6 +75,8 @@
 		CED52B2524EEA7730051848A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		CEDD8F9624EA59590034537E /* BottomButtonOnAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonOnAuth.swift; sourceTree = "<group>"; };
 		CEF0CC7824DAF8BD0017E452 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIManager.swift; path = WaffleChat/APIManager.swift; sourceTree = SOURCE_ROOT; };
+		CEF7C77E24EF665000CFF7CF /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		CEF7C78024EF665900CFF7CF /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.release.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -187,8 +189,8 @@
 			children = (
 				CE39B7AE24E14593009B0DD0 /* ConversationViewModel.swift */,
 				CE39B7B024E145C8009B0DD0 /* NewMessageViewModel.swift */,
-				CEC6F3C724EC068500AE19CD /* MessageViewModel.swift */,
 				CED52B2524EEA7730051848A /* ChatViewModel.swift */,
+				CEC6F3C724EC068500AE19CD /* MessageViewModel.swift */,
 				CE961AA624CEE3190094FE86 /* Authentication */,
 			);
 			path = ViewModel;
@@ -278,7 +280,8 @@
 		CEF0CC7C24DAFAC50017E452 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CE1DA98C24DC499C00233C32 /* Models.swift */,
+				CEF7C77E24EF665000CFF7CF /* Message.swift */,
+				CEF7C78024EF665900CFF7CF /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -419,7 +422,8 @@
 				CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */,
 				CE87288524C46B5000E00C42 /* RegistrationViewModel.swift in Sources */,
 				CE9D2CB624EAE21D00AE5BE0 /* MessageCell.swift in Sources */,
-				CE1DA98D24DC499C00233C32 /* Models.swift in Sources */,
+				CEF7C78124EF665900CFF7CF /* User.swift in Sources */,
+				CEF7C77F24EF665000CFF7CF /* Message.swift in Sources */,
 				CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */,
 				CE4D9D2824E045A500DC933D /* NewMessageController.swift in Sources */,
 				CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */,

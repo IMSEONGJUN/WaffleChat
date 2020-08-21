@@ -43,32 +43,32 @@ class RegistrationViewModel {
     // MARK: - Bind
     func bind() {
         profileImage
-            .subscribe(onNext:{
+            .subscribe(onNext:{ [unowned self] in
                 guard let image = $0 else { return }
                 self.tempProfileImage = image
             })
             .disposed(by: bag)
         
         email
-            .subscribe(onNext: {
+            .subscribe(onNext: { [unowned self] in
                 self.tempEmail = $0
             })
             .disposed(by: bag)
         
         fullName
-            .subscribe(onNext: {
+            .subscribe(onNext: { [unowned self] in
                 self.tempFullName = $0
             })
             .disposed(by: bag)
         
         userName
-            .subscribe(onNext: {
+            .subscribe(onNext: { [unowned self] in
                 self.tempUserName = $0
             })
             .disposed(by:bag)
         
         password
-            .subscribe(onNext:{
+            .subscribe(onNext:{ [unowned self] in
                 self.tempPassword = $0
             })
             .disposed(by: bag)

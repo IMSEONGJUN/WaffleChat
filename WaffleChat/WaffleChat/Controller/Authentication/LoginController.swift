@@ -152,7 +152,8 @@ class LoginController: UIViewController {
     private func didTapLoginButton() {
         print("login")
         showActivityIndicator(true)
-        viewModel.performLogin { (error) in
+        viewModel.performLogin { [weak self] (error) in
+            guard let self = self else { return }
             self.showActivityIndicator(false)
             if let error = error {
                 print("failed to login: ", error)

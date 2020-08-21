@@ -24,15 +24,17 @@ class ChatController: UIViewController {
     var disposeBag = DisposeBag()
     var messageToSend = BehaviorRelay<String>(value: "")
     
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
-        configureNavigationBar(with: user.username, prefersLargeTitles: false)
         configureCollectionView()
         bind()
     }
     
+    
+    // MARK: - Override
     override var inputAccessoryView: UIView? {
         return customInputView
     }
@@ -80,6 +82,7 @@ class ChatController: UIViewController {
             .subscribe(onNext: { [weak self] in
                 guard let user = $0 else { return }
                 self?.user = user
+                self?.configureNavigationBar(with: user.username, prefersLargeTitles: false)
             })
             .disposed(by: disposeBag)
         
