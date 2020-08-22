@@ -147,7 +147,7 @@ class ChatController: UIViewController {
                 Observable.zip(self.customInputView.messageInputTextView.rx.text.orEmpty, self.viewModel.user)
             })
             .filter({ $0.0 != "" && $0.1 != nil })
-            .subscribe(onNext:{ [weak self] in
+            .subscribe(onNext:{ [unowned self] in
                 APIManager.shared.uploadMessage($0.0, To: $0.1!) { (error) in
                     if let error = error {
                         print("Failed to upload message:", error)
@@ -155,7 +155,7 @@ class ChatController: UIViewController {
                     }
                     print("Succesfully uploaded message")
                 }
-                self?.customInputView.clearMessageText()
+                self.customInputView.clearMessageText()
             })
             .disposed(by: disposeBag)
         
