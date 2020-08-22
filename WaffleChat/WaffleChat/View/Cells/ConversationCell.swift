@@ -13,14 +13,21 @@ class ConversationCell: UITableViewCell {
     static let reuseIdentifier = "ConversationCell"
     
     // MARK: - Properties
+    var conversation: Conversation? {
+        didSet{
+            configureData()
+        }
+    }
+    
     let profileImageView = UIImageView()
+    let nameLabel = UILabel()
     let messageLabel = UILabel()
-    let messageContainerView = UIView()
+    
     
     // MARK: - initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configure()
+        configureUI()
     }
     
     required init?(coder: NSCoder) {
@@ -28,8 +35,12 @@ class ConversationCell: UITableViewCell {
     }
     
     // MARK: - setup
-    func configure() {
-        [profileImageView, messageLabel].forEach({contentView.addSubview($0)})
+    func configureUI() {
+        [profileImageView, nameLabel, messageLabel].forEach({contentView.addSubview($0)})
+        
+    }
+    
+    func configureData() {
         
     }
 }

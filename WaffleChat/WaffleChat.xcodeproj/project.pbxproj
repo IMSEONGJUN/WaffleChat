@@ -39,6 +39,7 @@
 		CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF0CC7824DAF8BD0017E452 /* APIManager.swift */; };
 		CEF7C77F24EF665000CFF7CF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C77E24EF665000CFF7CF /* Message.swift */; };
 		CEF7C78124EF665900CFF7CF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C78024EF665900CFF7CF /* User.swift */; };
+		CEF7C78424EFB39200CFF7CF /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C78324EFB39200CFF7CF /* Conversation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		CEF0CC7824DAF8BD0017E452 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIManager.swift; path = WaffleChat/APIManager.swift; sourceTree = SOURCE_ROOT; };
 		CEF7C77E24EF665000CFF7CF /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		CEF7C78024EF665900CFF7CF /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		CEF7C78324EFB39200CFF7CF /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.release.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -282,6 +284,7 @@
 			children = (
 				CEF7C77E24EF665000CFF7CF /* Message.swift */,
 				CEF7C78024EF665900CFF7CF /* User.swift */,
+				CEF7C78324EFB39200CFF7CF /* Conversation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 				CEB17AE324B4721200FB7B7E /* InputTextField.swift in Sources */,
 				CE39B7B124E145C8009B0DD0 /* NewMessageViewModel.swift in Sources */,
 				CEB3AD8324E967B8003F83C1 /* ChatController.swift in Sources */,
+				CEF7C78424EFB39200CFF7CF /* Conversation.swift in Sources */,
 				CE9AE42324A9DC1700F77F48 /* ConversationCell.swift in Sources */,
 				CE9AE40424A9BBB800F77F48 /* AppDelegate.swift in Sources */,
 				CE9AE41F24A9C08100F77F48 /* ConversationsController.swift in Sources */,

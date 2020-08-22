@@ -15,6 +15,7 @@ class NewMessageViewModel {
 //    var users = Bindable<[User]>()
     
     var users = BehaviorRelay<[User]>(value: [])
+    lazy var totalCountOfUsers = users.map { $0.count }
     
     init() {
         fetchUsers()
@@ -29,15 +30,6 @@ class NewMessageViewModel {
                 print("Failed to fetch users: ", error)
             }
         }
-    }
-    
-//    func configure(completion: @escaping (Error?) -> Void) {
-//        APIManager.shared.fetchUsers { [weak self] (users) in
-//            self?.users.value = users
-//            completion(nil)
-//        }
-//
-//    }
-    
+    }  
     
 }

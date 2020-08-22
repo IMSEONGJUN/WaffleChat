@@ -13,7 +13,6 @@ import RxCocoa
 class ChatViewModel {
     var user = BehaviorSubject<User?>(value: nil)
     var messages = BehaviorRelay<[Message]>(value: [])
-//    var fromCurrentUser = BehaviorSubject<Bool>(value: false)
     
     init(user: User) {
         self.user.onNext(user)

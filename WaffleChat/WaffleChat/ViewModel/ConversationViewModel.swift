@@ -7,7 +7,9 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 class ConversationViewModel {
-    
+    var conversations = BehaviorRelay<[Conversation]>(value: [])
 }

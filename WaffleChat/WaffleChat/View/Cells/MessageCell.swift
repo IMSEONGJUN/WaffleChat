@@ -11,6 +11,8 @@ import UIKit
 class MessageCell: UICollectionViewCell {
     
     static let reuseID = "MessageCell"
+    
+    // MARK: - Properties
     var message: Message? {
         didSet{
             configure()
@@ -44,6 +46,8 @@ class MessageCell: UICollectionViewCell {
     var textLeadingConst: NSLayoutConstraint!
     var texttrailingConst: NSLayoutConstraint!
     
+    
+    // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
@@ -53,10 +57,12 @@ class MessageCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: - Initial Setup
     func configureUI() {
-        backgroundColor = .white
+        contentView.backgroundColor = .white
         
-        addSubview(profileImageView)
+        contentView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(10)
@@ -64,8 +70,8 @@ class MessageCell: UICollectionViewCell {
         }
         profileImageView.layer.cornerRadius = 44 / 2
         
-        addSubview(bubbleContainer)
-        addSubview(textView)
+        contentView.addSubview(bubbleContainer)
+        contentView.addSubview(textView)
         
         bubbleContainer.snp.makeConstraints {
             $0.top.leading.equalTo(textView).offset(-4)
@@ -73,11 +79,11 @@ class MessageCell: UICollectionViewCell {
         }
         
         textView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(8)
             $0.width.lessThanOrEqualTo(250)
         }
         textLeadingConst = textView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12)
-        texttrailingConst = textView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12)
+        texttrailingConst = textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12)
         
     }
     

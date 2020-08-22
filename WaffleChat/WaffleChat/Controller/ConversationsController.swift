@@ -11,8 +11,6 @@ import RxSwift
 import RxCocoa
 
 class ConversationsController: UIViewController {
-
-    private let reuseIdentifier = "ConversationCell"
     
     // MARK: - Properties
     private let newMessageButton: UIButton = {
@@ -25,6 +23,7 @@ class ConversationsController: UIViewController {
     
     let tableView = UITableView()
     var disposeBag = DisposeBag()
+    var viewModel = ConversationViewModel()
     
     
     // MARK: - Life Cycle
@@ -69,8 +68,7 @@ class ConversationsController: UIViewController {
     
     func bind() {
         navigationItem.leftBarButtonItem?.rx.tap
-            .subscribe(onNext: {
-                print("profile")
+            .subscribe(onNext: { [unowned self] in
                 self.doLogoutThisUser {[weak self] (error) in
                     if let err = error {
                         print("Failed to logged out:", err)
@@ -92,6 +90,13 @@ class ConversationsController: UIViewController {
                 self.present(newMessageVCNavi, animated: true)
             })
             .disposed(by: disposeBag)
+        
+//        viewModel.conversations
+//            .bind(to: tableView.rx.items(cellIdentifier: ConversationCell.reuseIdentifier,
+//                                         cellType: ConversationCell.self)){ indexPath, conversation, cell in
+//                                            cell.textLabel?.text = "test"
+//                                         }
+//            .disposed(by: disposeBag)
     }
 }
 

@@ -18,11 +18,10 @@ class ChatController: UIViewController {
     
     var user: User?
     
-    private lazy var customInputView = CustomInputAccessoryView(frame:
-                                                                CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
-    var viewModel: ChatViewModel
-    var disposeBag = DisposeBag()
-    var messageToSend = BehaviorRelay<String>(value: "")
+    private lazy var customInputView = CustomInputAccessoryView(frame: CGRect(x: 0, y: 0, width: view.frame.width,
+                                                                              height: 50))
+    private var viewModel: ChatViewModel
+    private var disposeBag = DisposeBag()
     
     
     // MARK: - Life Cycle
@@ -33,6 +32,10 @@ class ChatController: UIViewController {
         bind()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+    }
     
     // MARK: - Override
     override var inputAccessoryView: UIView? {
@@ -63,12 +66,12 @@ class ChatController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: MessageCell.reuseID)
-        collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
     func configureFlowLayout() -> UICollectionViewFlowLayout {
         layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: view.frame.width, height: 50)
+//        layout.itemSize = CGSize(width: view.frame.width, height: 50)
+        layout.estimatedItemSize = CGSize(width: view.frame.width, height: 50)
         layout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         layout.minimumLineSpacing = 10
         layout.scrollDirection = .vertical
@@ -89,31 +92,57 @@ class ChatController: UIViewController {
         viewModel.messages
             .bind(to: collectionView.rx.items(cellIdentifier: MessageCell.reuseID,
                                               cellType: MessageCell.self)) {[weak self] indexPath, message, cell in
-                                                cell.message?.user = self?.user
+                                                var message = message
+                                                message.user = self?.user
                                                 cell.message = message
             }
             .disposed(by: disposeBag)
-        
-        customInputView.messageInputTextView.rx.text
-            .orEmpty
-            .bind(to: messageToSend)
-            .disposed(by: disposeBag)
-        
+
         customInputView.sendButton.rx.tap
-            .map({ Observable.zip(self.messageToSend, self.viewModel.user) })
-            .flatMapLatest{$0}
-            .subscribe(onNext:{
-                APIManager.shared.uploadMessage($0.0, To: $0.1!) { [weak self] (error) in
+            .flatMapLatest({
+                Observable.zip(self.customInputView.messageInputTextView.rx.text.orEmpty, self.viewModel.user)
+            })
+            .filter({ $0.0 != "" && $0.1 != nil })
+            .subscribe(onNext:{ [weak self] in
+                APIManager.shared.uploadMessage($0.0, To: $0.1!) { (error) in
                     if let error = error {
                         print("Failed to upload message:", error)
                         return
                     }
-                    self?.customInputView.clearMessageText()
+                    
                     print("Succesfully uploaded message")
+                }
+                self?.customInputView.clearMessageText()
+            })
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .subscribe(onNext:{ _ in
+                UIView.animate(withDuration: 0.5) {
+                    self.customInputView.messageInputTextView.resignFirstResponder()
                 }
             })
             .disposed(by: disposeBag)
         
+//        NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
+//            .subscribe(onNext:{ [weak self] noti -> Void in
+//                guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+//                    return
+//                }
+//                let keyboardFrame = value.cgRectValue
+//                self?.collectionView.contentOffset.y = (keyboardFrame.height + 50)
+//            })
+//            .disposed(by: disposeBag)
+//
+//        NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
+//            .subscribe(onNext: {[weak self] noti -> Void in
+//                guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+//                    return
+//                }
+//                let keyboardFrame = value.cgRectValue
+//                self?.collectionView.contentOffset.y = -(keyboardFrame.height + 50)
+//            })
+//            .disposed(by: disposeBag)
         
     }
 }
