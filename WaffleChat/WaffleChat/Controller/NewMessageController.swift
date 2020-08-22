@@ -45,7 +45,7 @@ class NewMessageController: UIViewController {
     }
     
     private func configureNaviBar() {
-        configureNavigationBar(with: "New Message", prefersLargeTitles: false)
+        configureNavigationBar(with: "Friend List", prefersLargeTitles: false)
         navigationItem.rightBarButtonItem = cancelButton
     }
     

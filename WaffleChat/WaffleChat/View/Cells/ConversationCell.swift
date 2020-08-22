@@ -22,7 +22,11 @@ class ConversationCell: UITableViewCell {
     
     let profileImageView = UIImageView()
     let nameLabel = UILabel()
-    let messageLabel = UILabel()
+    let messageLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = .lightGray
+        return label
+    }()
     
     
     // MARK: - initializer
@@ -38,6 +42,7 @@ class ConversationCell: UITableViewCell {
     // MARK: - setup
     func configureUI() {
         selectedBackgroundView?.isHidden = true
+        
         [profileImageView, nameLabel, messageLabel].forEach({contentView.addSubview($0)})
         profileImageView.snp.makeConstraints {
             $0.top.bottom.leading.equalToSuperview().inset(10)
