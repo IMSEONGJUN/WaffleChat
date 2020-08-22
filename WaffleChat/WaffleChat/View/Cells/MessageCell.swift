@@ -64,8 +64,8 @@ class MessageCell: UICollectionViewCell {
         
         contentView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(10)
+            $0.top.leading.equalToSuperview().inset(5)
+            $0.leading.equalToSuperview().inset(10)
             $0.width.height.equalTo(44)
         }
         profileImageView.layer.cornerRadius = 44 / 2

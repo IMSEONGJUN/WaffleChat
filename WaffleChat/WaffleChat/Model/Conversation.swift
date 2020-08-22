@@ -10,5 +10,5 @@ import Foundation
 
 struct Conversation {
     var user: User
-    var lastMessage: Message
+    var recentMessage: Message
 }

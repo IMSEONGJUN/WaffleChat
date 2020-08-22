@@ -16,7 +16,8 @@ class CustomInputAccessoryView: UIView {
     let messageInputTextView: UITextView = {
        let tv = UITextView()
         tv.font = UIFont.systemFont(ofSize: 16)
-        tv.isScrollEnabled = false
+        tv.autocorrectionType = .no
+        tv.isScrollEnabled = true
         return tv
     }()
     
@@ -52,15 +53,15 @@ class CustomInputAccessoryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override var intrinsicContentSize: CGSize {
-        return .zero
-    }
+//    override var intrinsicContentSize: CGSize {
+//        return .zero
+//    }
     
     
     // MARK: - Initial Setup
     func configureUI() {
         backgroundColor = .white
-        autoresizingMask = .flexibleHeight
+//        autoresizingMask = .flexibleHeight
         
         addSubview(sendButton)
         sendButton.snp.makeConstraints {
@@ -74,8 +75,8 @@ class CustomInputAccessoryView: UIView {
         messageInputTextView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(12)
             $0.leading.equalToSuperview().offset(4)
-            $0.trailing.equalTo(sendButton.snp.leading).offset(-8)
-            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-8)
+            $0.trailing.equalTo(sendButton.snp.leading).offset(-5)
+            $0.bottom.equalToSuperview().offset(-5)
         }
         
         addSubview(placeHolderLabel)

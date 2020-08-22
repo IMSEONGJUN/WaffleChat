@@ -14,6 +14,14 @@ class APIManager {
     
     private init() {}
     
+    func fetchUser(uid: String, completion: @escaping (User) -> Void) {
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, error) in
+            guard let dic = snapshot?.data() else { return }
+            guard let user = User(user: dic) else { return }
+            completion(user)
+        }
+    }
+    
     func fetchUsers(completion: @escaping (Result<[User], Error>) -> Void) {
         Firestore.firestore().collection("users").getDocuments { (snapshot, error) in
             if let error = error {
@@ -37,15 +45,21 @@ class APIManager {
     func uploadMessage(_ message: String, To user: User, completion: ((Error?) -> Void)?) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        let data: [String: Any] = ["text": message,
+        let message: [String: Any] = ["text": message,
                                    "fromId": currentUid,
                                     "toId": user.uid,
                                     "timestamp": Timestamp(date: Date())
                                   ]
         
         let ref = Firestore.firestore().collection("messages")
-        ref.document(currentUid).collection(user.uid).addDocument(data: data) { (_) in
-            ref.document(user.uid).collection(currentUid).addDocument(data: data, completion: completion)
+        ref.document(currentUid).collection(user.uid).addDocument(data: message) { (_) in
+            NotificationCenter.default.post(name: Notifications.didFinishFetchMessage, object: nil)
+            
+            ref.document(user.uid).collection(currentUid).addDocument(data: message, completion: completion)
+            
+            ref.document(currentUid).collection("recent-messages").document(user.uid).setData(message)
+            
+            ref.document(user.uid).collection("recent-messages").document(currentUid).setData(message)
         }
     }
     
@@ -65,5 +79,25 @@ class APIManager {
                 }
             })
         }
+    }
+    
+    func fetchConversations(completion: @escaping (([Conversation]) -> Void) ) {
+        var conversations = [Conversation]()
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        let ref = Firestore.firestore().collection("messages").document(uid).collection("recent-messages").order(by: "timestamp")
+        ref.addSnapshotListener { (snapshot, error) in
+            snapshot?.documentChanges.forEach({ (change) in
+                let dic = change.document.data()
+                let message = Message(dic: dic)
+                
+                self.fetchUser(uid: message.toId) { (user) in
+                    let conversation = Conversation(user: user, recentMessage: message)
+                    conversations.append(conversation)
+                    completion(conversations)
+                }
+            })
+        }
+        
     }
 }

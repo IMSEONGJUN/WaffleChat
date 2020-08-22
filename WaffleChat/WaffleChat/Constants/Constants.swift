@@ -12,3 +12,6 @@ enum Images {
     static let logo = "logo"
 }
 
+enum Notifications {
+    static let didFinishFetchMessage = Notification.Name("didFinishFetchMessage")
+}

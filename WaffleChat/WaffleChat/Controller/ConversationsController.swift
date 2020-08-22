@@ -60,10 +60,11 @@ class ConversationsController: UIViewController {
         view.addSubview(tableView)
         tableView.backgroundColor = .systemBackground
         tableView.frame = view.frame
+        tableView.tableFooterView = UIView()
         tableView.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
-        tableView.rowHeight = 80
-        tableView.dataSource = self
-        tableView.delegate = self
+//        tableView.rowHeight = 80
+//        tableView.dataSource = self
+//        tableView.delegate = self
     }
     
     func bind() {
@@ -81,8 +82,7 @@ class ConversationsController: UIViewController {
             .disposed(by: disposeBag)
         
         newMessageButton.rx.tap
-            .subscribe(onNext:{ [weak self] in
-                guard let self = self else { return }
+            .subscribe(onNext:{ [unowned self] in
                 let newMessageVC = NewMessageController()
                 newMessageVC.delegate = self
                 let newMessageVCNavi = UINavigationController(rootViewController: newMessageVC)
@@ -91,36 +91,45 @@ class ConversationsController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-//        viewModel.conversations
-//            .bind(to: tableView.rx.items(cellIdentifier: ConversationCell.reuseIdentifier,
-//                                         cellType: ConversationCell.self)){ indexPath, conversation, cell in
-//                                            cell.textLabel?.text = "test"
-//                                         }
-//            .disposed(by: disposeBag)
+        viewModel.conversations
+            .bind(to: tableView.rx.items(cellIdentifier: ConversationCell.reuseIdentifier,
+                                         cellType: ConversationCell.self)){ indexPath, conversation, cell in
+                                            cell.conversation = conversation
+                                         }
+            .disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .subscribe(onNext: {[unowned self] indexPath in
+                guard let cell = self.tableView.cellForRow(at: indexPath) as? ConversationCell else { return }
+                guard let user = cell.conversation?.user else { return }
+                let chatVC = ChatController(user: user)
+                self.navigationController?.pushViewController(chatVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
 
 // MARK: - UITableViewDataSource
-extension ConversationsController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier, for: indexPath)
-        cell.textLabel?.text = "Test Cell"
-        return cell
-    }
-}
+//extension ConversationsController: UITableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return 3
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier, for: indexPath)
+//        cell.textLabel?.text = "Test Cell"
+//        return cell
+//    }
+//}
 
 
 // MARK: - UITableViewDelegate
-extension ConversationsController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.row)
-    }
-}
+//extension ConversationsController: UITableViewDelegate {
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        print(indexPath.row)
+//    }
+//}
 
 // MARK: - NewMessageControllerDelegate
 extension ConversationsController: NewMessageControllerDelegate {

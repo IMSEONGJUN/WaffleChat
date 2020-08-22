@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ConversationCell: UITableViewCell {
 
@@ -36,11 +37,33 @@ class ConversationCell: UITableViewCell {
     
     // MARK: - setup
     func configureUI() {
+        selectedBackgroundView?.isHidden = true
         [profileImageView, nameLabel, messageLabel].forEach({contentView.addSubview($0)})
+        profileImageView.snp.makeConstraints {
+            $0.top.leading.equalToSuperview().inset(10)
+            $0.width.height.equalTo(56)
+        }
+        profileImageView.layer.cornerRadius = 56 / 2
+        profileImageView.clipsToBounds = true
+        
+        nameLabel.snp.makeConstraints {
+            $0.top.equalTo(profileImageView)
+            $0.leading.equalTo(profileImageView.snp.trailing).offset(15)
+        }
+        
+        messageLabel.snp.makeConstraints {
+            $0.top.equalTo(nameLabel.snp.bottom).offset(5)
+            $0.leading.equalTo(nameLabel)
+            $0.bottom.equalToSuperview().offset(-15)
+        }
         
     }
     
     func configureData() {
-        
+        guard let conversation = self.conversation else { return }
+        guard let url = URL(string: conversation.user.profileImageUrl) else { return }
+        profileImageView.sd_setImage(with: url)
+        nameLabel.text = conversation.user.username
+        messageLabel.text = conversation.recentMessage.text
     }
 }
