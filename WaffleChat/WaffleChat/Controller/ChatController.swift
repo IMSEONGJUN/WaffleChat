@@ -34,13 +34,6 @@ class ChatController: UIViewController {
         configureNotification()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-//        let lastMessage = viewModel.messages.value.last
-//        let user = self.user
-        
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let count = self.viewModel.messages.value.count

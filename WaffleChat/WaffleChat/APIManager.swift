@@ -16,8 +16,8 @@ class APIManager {
     
     func fetchUser(uid: String, completion: @escaping (User) -> Void) {
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, error) in
-            guard let dic = snapshot?.data() else { return }
-            guard let user = User(user: dic) else { return }
+            guard let dic = snapshot?.data(),
+                let user = User(user: dic) else { return }
             completion(user)
         }
     }
@@ -45,11 +45,12 @@ class APIManager {
     func uploadMessage(_ message: String, To user: User, completion: ((Error?) -> Void)?) {
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        let message: [String: Any] = ["text": message,
-                                   "fromId": currentUid,
-                                    "toId": user.uid,
-                                    "timestamp": Timestamp(date: Date())
-                                  ]
+        let message: [String: Any] = [
+                                      "text": message,
+                                      "fromId": currentUid,
+                                      "toId": user.uid,
+                                      "timestamp": Timestamp(date: Date())
+                                     ]
         
         let ref = Firestore.firestore().collection("messages")
         ref.document(currentUid).collection(user.uid).addDocument(data: message) { (_) in

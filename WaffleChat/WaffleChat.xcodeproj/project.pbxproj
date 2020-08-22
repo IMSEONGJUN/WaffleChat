@@ -143,12 +143,12 @@
 			children = (
 				CE9AE42024A9D9DE00F77F48 /* Support */,
 				CE9AE41924A9BC5200F77F48 /* API */,
+				CE9AE41724A9BC4500F77F48 /* Utilities */,
 				CE9AE42B24ACC46500F77F48 /* Constants */,
 				CE9AE41C24A9BC5B00F77F48 /* View */,
 				CE9AE41B24A9BC5600F77F48 /* ViewModel */,
 				CE9AE41A24A9BC5400F77F48 /* Controller */,
 				CEF0CC7C24DAFAC50017E452 /* Model */,
-				CE9AE41724A9BC4500F77F48 /* Utilities */,
 				CE9AE40924A9BBB800F77F48 /* Main.storyboard */,
 				CE9AE40C24A9BBBA00F77F48 /* Assets.xcassets */,
 				CE9AE40E24A9BBBA00F77F48 /* LaunchScreen.storyboard */,
@@ -201,7 +201,6 @@
 		CE9AE41C24A9BC5B00F77F48 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CE9D2CB224EAC0FF00AE5BE0 /* UIView */,
 				CEB17AE624BF61E100FB7B7E /* UIButton */,
 				CEB17AE124B377E300FB7B7E /* UITextField */,
 				CEB17ADE24B373F600FB7B7E /* CustomUIView */,
@@ -246,17 +245,10 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
-		CE9D2CB224EAC0FF00AE5BE0 /* UIView */ = {
-			isa = PBXGroup;
-			children = (
-				CE9D2CB324EAC12900AE5BE0 /* CustomInputAccessoryView.swift */,
-			);
-			path = UIView;
-			sourceTree = "<group>";
-		};
 		CEB17ADE24B373F600FB7B7E /* CustomUIView */ = {
 			isa = PBXGroup;
 			children = (
+				CE9D2CB324EAC12900AE5BE0 /* CustomInputAccessoryView.swift */,
 				CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */,
 			);
 			path = CustomUIView;

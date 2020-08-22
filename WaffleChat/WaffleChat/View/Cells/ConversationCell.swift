@@ -40,7 +40,7 @@ class ConversationCell: UITableViewCell {
         selectedBackgroundView?.isHidden = true
         [profileImageView, nameLabel, messageLabel].forEach({contentView.addSubview($0)})
         profileImageView.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().inset(10)
+            $0.top.bottom.leading.equalToSuperview().inset(10)
             $0.width.height.equalTo(56)
         }
         profileImageView.layer.cornerRadius = 56 / 2
@@ -54,7 +54,7 @@ class ConversationCell: UITableViewCell {
         messageLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(5)
             $0.leading.equalTo(nameLabel)
-            $0.bottom.equalToSuperview().offset(-15)
+//            $0.bottom.equalToSuperview().offset(-15)
         }
         
     }
