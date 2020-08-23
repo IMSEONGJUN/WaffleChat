@@ -18,8 +18,8 @@ class ConversationViewModel {
     }
     
     func fetchConversations() {
-        APIManager.shared.fetchConversations { (conversations) in
-            self.conversations.accept(conversations)
+        APIManager.shared.fetchConversations { [weak self] (conversations) in
+            self?.conversations.accept(conversations)
         }
     }
 }

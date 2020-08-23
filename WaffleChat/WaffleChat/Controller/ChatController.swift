@@ -135,9 +135,10 @@ class ChatController: UIViewController {
             .disposed(by: disposeBag)
 
         
-        customInputView.sendButton.rx.tap
-            .flatMapLatest({
-                Observable.zip(self.customInputView.messageInputTextView.rx.text.orEmpty, self.viewModel.user)
+       customInputView.sendButton.rx.tap
+            .flatMapLatest({ [weak self] event -> Observable<(ControlProperty<String>.Element, User?)> in
+                guard let self = self else { return .just(("", nil))}
+                return Observable.zip(self.customInputView.messageInputTextView.rx.text.orEmpty, self.viewModel.user)
             })
             .filter({ $0.0 != "" && $0.1 != nil })
             .subscribe(onNext:{ [unowned self] in

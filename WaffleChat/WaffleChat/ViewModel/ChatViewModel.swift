@@ -22,8 +22,8 @@ class ChatViewModel {
     func fetchMessages() {
         guard let user = try? user.value() else { return }
         
-        APIManager.shared.fetchMessages(forUser: user) { (messages) in
-            self.messages.accept(messages)
+        APIManager.shared.fetchMessages(forUser: user) { [weak self] (messages) in
+            self?.messages.accept(messages)
         }
     }
 }
