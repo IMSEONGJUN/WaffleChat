@@ -58,8 +58,8 @@ class APIManager {
             
             ref.document(user.uid).collection(currentUid).addDocument(data: message, completion: completion)
             
+            // set or update Recent message of each users
             ref.document(currentUid).collection("recent-messages").document(user.uid).setData(message)
-            
             ref.document(user.uid).collection("recent-messages").document(currentUid).setData(message)
         }
     }
@@ -91,8 +91,9 @@ class APIManager {
             snapshot?.documentChanges.forEach({ (change) in
                 let dic = change.document.data()
                 let message = Message(dic: dic)
+                let id = message.toId == uid ? message.fromId : message.toId
                 
-                self.fetchUser(uid: message.toId) { (user) in
+                self.fetchUser(uid: id) { (user) in
                     let conversation = Conversation(user: user, recentMessage: message)
                     conversations.append(conversation)
                     completion(conversations)

@@ -59,7 +59,6 @@ class ConversationCell: UITableViewCell {
         messageLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(5)
             $0.leading.equalTo(nameLabel)
-//            $0.bottom.equalToSuperview().offset(-15)
         }
         
     }
