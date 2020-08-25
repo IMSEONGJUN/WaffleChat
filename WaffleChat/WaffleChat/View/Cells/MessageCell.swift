@@ -64,7 +64,7 @@ class MessageCell: UICollectionViewCell {
         
         contentView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().inset(5)
+            $0.top.equalToSuperview().inset(5)
             $0.leading.equalToSuperview().inset(10)
             $0.width.height.equalTo(44)
         }

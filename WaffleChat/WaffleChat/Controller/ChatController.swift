@@ -102,7 +102,10 @@ class ChatController: UIViewController {
     }
     
     func configureNotification() {
-        token = NotificationCenter.default.addObserver(forName: Notifications.didFinishFetchMessage, object: nil, queue: OperationQueue.main, using: { [weak self] (noti) in
+        token = NotificationCenter.default.addObserver(forName: Notifications.didFinishFetchMessage,
+                                                       object: nil,
+                                                       queue: OperationQueue.main,
+                                                       using: { [weak self] (noti) in
             guard let self = self else { return }
             print("notification comes")
             UIView.animate(withDuration: 0.1) {
@@ -116,6 +119,7 @@ class ChatController: UIViewController {
     
     // MARK: - Bind
     func bind() {
+        // State Binding
         viewModel.user
             .subscribe(onNext: { [weak self] in
                 guard let user = $0 else { return }
@@ -134,7 +138,8 @@ class ChatController: UIViewController {
             }
             .disposed(by: disposeBag)
 
-        
+       
+       // Action Binding
        customInputView.sendButton.rx.tap
             .flatMapLatest({ [weak self] event -> Observable<(ControlProperty<String>.Element, User?)> in
                 guard let self = self else { return Observable.empty()}
@@ -163,6 +168,7 @@ class ChatController: UIViewController {
             .disposed(by: disposeBag)
         
         
+        // Notification Binding
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
             .subscribe(onNext:{ [weak self] noti in
                 guard let self = self else { return }
@@ -170,14 +176,14 @@ class ChatController: UIViewController {
                     return
                 }
                 let keyboardFrame = value.cgRectValue
-                self.collectionView.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height + 30)
-                self.customInputView.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height + 30)
+                let bottomInset = self.view.safeAreaInsets.bottom
+                self.customInputView.transform = CGAffineTransform(translationX: 0,
+                                                                   y: -keyboardFrame.height + bottomInset)
             })
             .disposed(by: disposeBag)
 
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
             .subscribe(onNext: {[weak self] noti in
-                self?.collectionView.transform = .identity
                 self?.customInputView.transform = .identity
             })
             .disposed(by: disposeBag)

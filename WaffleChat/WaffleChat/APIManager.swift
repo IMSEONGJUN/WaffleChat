@@ -8,38 +8,37 @@
 
 import Foundation
 import Firebase
+import RxSwift
+import RxCocoa
 
 class APIManager {
     static let shared = APIManager()
     
     private init() {}
     
-    func fetchUser(uid: String, completion: @escaping (User) -> Void) {
-        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, error) in
-            guard let dic = snapshot?.data(),
-                let user = User(user: dic) else { return }
-            completion(user)
-        }
-    }
-    
-    func fetchUsers(completion: @escaping (Result<[User], Error>) -> Void) {
-        Firestore.firestore().collection("users").getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Failed to fetch users:", error)
-                completion(.failure(error))
-                return
+    func fetchUsers() -> Observable<[User]> {
+        return Observable<[User]>.create { (observer) -> Disposable in
+            Firestore.firestore().collection("users").getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("Failed to fetch users:", error)
+                    observer.onError(error)
+                    return
+                }
+                
+                var users = [User]()
+                snapshot?.documents.forEach({ doc in
+                    let json = doc.data()
+                    guard let user = User(user: json),
+                              user.uid != Auth.auth().currentUser?.uid else { return }
+                    users.append(user)
+                })
+                
+                observer.onNext(users)
+                observer.onCompleted()
             }
-            
-            var users = [User]()
-            snapshot?.documents.forEach({ doc in
-                let json = doc.data()
-                guard let user = User(user: json),
-                          user.uid != Auth.auth().currentUser?.uid else { return }
-                users.append(user)
-            })
-            
-            completion(.success(users))
+            return Disposables.create()
         }
+        
     }
     
     func uploadMessage(_ message: String, To user: User, completion: ((Error?) -> Void)?) {
@@ -58,7 +57,7 @@ class APIManager {
             
             ref.document(user.uid).collection(currentUid).addDocument(data: message, completion: completion)
             
-            // set or update Recent message of each users
+            // Set or Update recent-message of each users
             ref.document(currentUid).collection("recent-messages").document(user.uid).setData(message)
             ref.document(user.uid).collection("recent-messages").document(currentUid).setData(message)
         }
@@ -94,12 +93,23 @@ class APIManager {
                 let id = message.toId == uid ? message.fromId : message.toId
                 
                 self.fetchUser(uid: id) { (user) in
+                    if conversations.contains(where: {$0.user.uid == id}) {
+                        conversations.removeAll(where: {$0.user.uid == id})
+                    }
                     let conversation = Conversation(user: user, recentMessage: message)
-                    conversations.append(conversation)
+                    conversations.insert(conversation, at: 0)
                     completion(conversations)
                 }
             })
         }
         
+    }
+    
+    func fetchUser(uid: String, completion: @escaping (User) -> Void) {
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, error) in
+            guard let dic = snapshot?.data(),
+                let user = User(user: dic) else { return }
+            completion(user)
+        }
     }
 }
