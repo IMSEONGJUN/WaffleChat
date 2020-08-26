@@ -9,9 +9,9 @@
 import UIKit
 import RxSwift
 
-protocol NewMessageControllerDelegate: AnyObject {
-    func newChatStarted(toRemove controller: NewMessageController, startWithUser user: User)
-}
+//protocol NewMessageControllerDelegate: AnyObject {
+//    func newChatStarted(toRemove controller: NewMessageController, startWithUser user: User)
+//}
 
 class NewMessageController: UIViewController {
     
@@ -24,7 +24,7 @@ class NewMessageController: UIViewController {
     var disposeBag = DisposeBag()
     let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: nil)
     
-    weak var delegate: NewMessageControllerDelegate?
+//    weak var delegate: NewMessageControllerDelegate?
     
     
     // MARK: - Life Cycle
@@ -97,13 +97,13 @@ class NewMessageController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        tableView.rx.itemSelected
-            .subscribe(onNext: {[unowned self] indexPath in
-                guard let cell = self.tableView.cellForRow(at: indexPath) as? UserCell else { return }
-                guard let user = cell.user else { return }
-                self.delegate?.newChatStarted(toRemove: self, startWithUser: user)
-            })
-            .disposed(by: disposeBag)
+//        tableView.rx.itemSelected
+//            .subscribe(onNext: { [unowned self] indexPath in
+//                guard let cell = self.tableView.cellForRow(at: indexPath) as? UserCell else { return }
+//                guard let user = cell.user else { return }
+//                self.delegate?.newChatStarted(toRemove: self, startWithUser: user)
+//            })
+//            .disposed(by: disposeBag)
     }
 
 }

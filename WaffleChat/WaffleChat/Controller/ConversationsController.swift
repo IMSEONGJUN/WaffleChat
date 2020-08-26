@@ -81,7 +81,8 @@ class ConversationsController: UIViewController {
         newMessageButton.rx.tap
             .subscribe(onNext:{ [unowned self] in
                 let newMessageVC = NewMessageController()
-                newMessageVC.delegate = self
+                self.newMessageControllerBind(newMsgVC: newMessageVC)
+//                newMessageVC.delegate = self
                 let newMessageVCNavi = UINavigationController(rootViewController: newMessageVC)
                 newMessageVCNavi.modalPresentationStyle = .fullScreen
                 self.present(newMessageVCNavi, animated: true)
@@ -105,14 +106,28 @@ class ConversationsController: UIViewController {
                                          }
             .disposed(by: disposeBag)
     }
+    
+    func newMessageControllerBind(newMsgVC: NewMessageController) {
+        newMsgVC.tableView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                guard let self = self else { return }
+                guard let cell = newMsgVC.tableView.cellForRow(at: indexPath) as? UserCell else { return }
+                guard let user = cell.user else { return }
+                
+                let chatVC = ChatController(user: user)
+                newMsgVC.dismiss(animated: true)
+                self.navigationController?.pushViewController(chatVC, animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 
 // MARK: - NewMessageControllerDelegate
-extension ConversationsController: NewMessageControllerDelegate {
-    func newChatStarted(toRemove controller: NewMessageController, startWithUser user: User) {
-        controller.dismiss(animated: true)
-        let chatVC = ChatController(user: user)
-        navigationController?.pushViewController(chatVC, animated: true)
-    }
-}
+//extension ConversationsController: NewMessageControllerDelegate {
+//    func newChatStarted(toRemove controller: NewMessageController, startWithUser user: User) {
+//        controller.dismiss(animated: true)
+//        let chatVC = ChatController(user: user)
+//        navigationController?.pushViewController(chatVC, animated: true)
+//    }
+//}
