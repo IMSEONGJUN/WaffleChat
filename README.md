@@ -2,5 +2,5 @@
 ![이미지](https://github.com/IMSEONGJUN/WaffleChat/blob/master/WaffleChat/screenshot/WaffleChat2.png?raw=true)
 - Chat app created by using RxSwift and MVVM Pattern
 - Project for Reactive Programming Practice
-- Work on progress, not completed
+- Work on progress, 90% completed
 - Used Google Firestore for backend
