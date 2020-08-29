@@ -24,12 +24,14 @@ class ChatController: UIViewController {
     
     private var token: NSObjectProtocol?
     
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
         configureCollectionView()
         configureCustomInputView()
+        configureTapGesture()
         bind()
         configureNotification()
     }
@@ -38,7 +40,12 @@ class ChatController: UIViewController {
         super.viewDidAppear(animated)
         let count = self.viewModel.messages.value.count
         self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
-        
+    }
+    
+    deinit {
+        if let token = self.token {
+            NotificationCenter.default.removeObserver(token)
+        }
     }
     
     // MARK: - Override
@@ -62,11 +69,6 @@ class ChatController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        if let token = self.token {
-            NotificationCenter.default.removeObserver(token)
-        }
-    }
     
     // MARK: - Initial Setup
     func configureCollectionView() {
@@ -84,7 +86,6 @@ class ChatController: UIViewController {
     
     func configureFlowLayout() -> UICollectionViewFlowLayout {
         layout = UICollectionViewFlowLayout()
-//        layout.itemSize = CGSize(width: view.frame.width, height: 50)
         layout.estimatedItemSize = CGSize(width: view.frame.width, height: 50)
         layout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         layout.minimumLineSpacing = 10
@@ -99,6 +100,10 @@ class ChatController: UIViewController {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             $0.height.equalTo(50)
         }
+    }
+    
+    func configureTapGesture() {
+        collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(view.endEditing(_:))))
     }
     
     func configureNotification() {
@@ -159,15 +164,6 @@ class ChatController: UIViewController {
             .disposed(by: disposeBag)
         
         
-        collectionView.rx.itemSelected
-            .subscribe(onNext:{ _ in
-                UIView.animate(withDuration: 0.5) {
-                    self.customInputView.messageInputTextView.resignFirstResponder()
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        
         // Notification Binding
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
             .subscribe(onNext:{ [weak self] noti in
@@ -179,11 +175,13 @@ class ChatController: UIViewController {
                 let bottomInset = self.view.safeAreaInsets.bottom
                 
                 if self.collectionView.contentSize.height > self.collectionView.frame.height - (keyboardFrame.height + self.customInputView.frame.height) {
-                    self.collectionView.transform = CGAffineTransform(translationX: 0,
+                    self.view.transform = CGAffineTransform(translationX: 0,
                                                                       y: -keyboardFrame.height + bottomInset)
+                } else {
+                    self.customInputView.transform = CGAffineTransform(translationX: 0,
+                                                                       y: -keyboardFrame.height + bottomInset)
                 }
-                self.customInputView.transform = CGAffineTransform(translationX: 0,
-                                                                   y: -keyboardFrame.height + bottomInset)
+                
             })
             .disposed(by: disposeBag)
 
@@ -196,7 +194,7 @@ class ChatController: UIViewController {
                 let keyboardFrame = value.cgRectValue
 
                 if self.collectionView.contentSize.height > self.collectionView.frame.height - (keyboardFrame.height + self.customInputView.frame.height) {
-                    self.collectionView.transform = .identity
+                    self.view.transform = .identity
                 }
                 self.customInputView.transform = .identity
             })

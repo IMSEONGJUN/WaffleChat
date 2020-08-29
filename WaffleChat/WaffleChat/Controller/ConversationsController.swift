@@ -86,7 +86,6 @@ class ConversationsController: UIViewController {
             .subscribe(onNext:{ [unowned self] in
                 let newMessageVC = NewMessageController()
                 self.newMessageControllerBind(newMsgVC: newMessageVC)
-//                newMessageVC.delegate = self
                 let newMessageVCNavi = UINavigationController(rootViewController: newMessageVC)
                 newMessageVCNavi.modalPresentationStyle = .fullScreen
                 self.present(newMessageVCNavi, animated: true)
@@ -125,13 +124,3 @@ class ConversationsController: UIViewController {
             .disposed(by: disposeBag)
     }
 }
-
-
-// MARK: - NewMessageControllerDelegate
-//extension ConversationsController: NewMessageControllerDelegate {
-//    func newChatStarted(toRemove controller: NewMessageController, startWithUser user: User) {
-//        controller.dismiss(animated: true)
-//        let chatVC = ChatController(user: user)
-//        navigationController?.pushViewController(chatVC, animated: true)
-//    }
-//}
