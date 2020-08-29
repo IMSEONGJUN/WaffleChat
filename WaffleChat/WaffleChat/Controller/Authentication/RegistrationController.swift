@@ -190,7 +190,8 @@ class RegistrationController: UIViewController {
     
     private func notificationBinding() {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
-            .map { noti -> CGFloat in
+            .map { [weak self] noti -> CGFloat in
+                guard let self = self else { fatalError() }
                 return self.getKeyboardFrameHeight(noti: noti)
             }
             .subscribe(onNext: { [weak self] in

@@ -177,6 +177,11 @@ class ChatController: UIViewController {
                 }
                 let keyboardFrame = value.cgRectValue
                 let bottomInset = self.view.safeAreaInsets.bottom
+                
+                if self.collectionView.contentSize.height > self.collectionView.frame.height - (keyboardFrame.height + self.customInputView.frame.height) {
+                    self.collectionView.transform = CGAffineTransform(translationX: 0,
+                                                                      y: -keyboardFrame.height + bottomInset)
+                }
                 self.customInputView.transform = CGAffineTransform(translationX: 0,
                                                                    y: -keyboardFrame.height + bottomInset)
             })
@@ -184,7 +189,16 @@ class ChatController: UIViewController {
 
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
             .subscribe(onNext: {[weak self] noti in
-                self?.customInputView.transform = .identity
+                guard let self = self else { return }
+                guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+                    return
+                }
+                let keyboardFrame = value.cgRectValue
+
+                if self.collectionView.contentSize.height > self.collectionView.frame.height - (keyboardFrame.height + self.customInputView.frame.height) {
+                    self.collectionView.transform = .identity
+                }
+                self.customInputView.transform = .identity
             })
             .disposed(by: disposeBag)
         

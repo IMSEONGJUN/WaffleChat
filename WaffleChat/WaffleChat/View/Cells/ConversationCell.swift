@@ -28,6 +28,12 @@ class ConversationCell: UITableViewCell {
         return label
     }()
     
+    let timeStampLabel: UILabel = {
+       let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .darkGray
+        return label
+    }()
     
     // MARK: - initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -43,7 +49,7 @@ class ConversationCell: UITableViewCell {
     func configureUI() {
         selectedBackgroundView?.isHidden = true
         
-        [profileImageView, nameLabel, messageLabel].forEach({contentView.addSubview($0)})
+        [profileImageView, nameLabel, messageLabel, timeStampLabel].forEach({contentView.addSubview($0)})
         profileImageView.snp.makeConstraints {
             $0.top.bottom.leading.equalToSuperview().inset(10)
             $0.width.height.equalTo(56)
@@ -61,6 +67,11 @@ class ConversationCell: UITableViewCell {
             $0.leading.equalTo(nameLabel)
         }
         
+        timeStampLabel.snp.makeConstraints {
+            $0.top.equalTo(nameLabel)
+            $0.trailing.equalToSuperview().inset(15)
+        }
+        
     }
     
     func configureData() {
@@ -69,5 +80,9 @@ class ConversationCell: UITableViewCell {
         profileImageView.sd_setImage(with: url)
         nameLabel.text = conversation.user.username
         messageLabel.text = conversation.recentMessage.text
+        let date = conversation.recentMessage.timestamp.dateValue()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM.dd hh:mm a"
+        timeStampLabel.text = formatter.string(from: date)
     }
 }

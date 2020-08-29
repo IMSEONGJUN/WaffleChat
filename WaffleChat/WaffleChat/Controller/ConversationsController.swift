@@ -33,11 +33,15 @@ class ConversationsController: UIViewController {
         bind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureNavigationBar(with: "Messages", prefersLargeTitles: true)
+    }
+    
     
     // MARK: - Initial Setup
     private func configureUI() {
         view.backgroundColor = .white
-        configureNavigationBar(with: "Messages", prefersLargeTitles: true)
         configureTableView()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.circle.fill"),
                                                            style: .plain, target: nil, action: nil)
