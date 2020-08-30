@@ -23,7 +23,7 @@ class ChatController: UIViewController {
     private var disposeBag = DisposeBag()
     
     private var token: NSObjectProtocol?
-    
+    private let tapGesture = UITapGestureRecognizer()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -103,7 +103,7 @@ class ChatController: UIViewController {
     }
     
     func configureTapGesture() {
-        collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(view.endEditing(_:))))
+        collectionView.addGestureRecognizer(tapGesture)
     }
     
     func configureNotification() {
@@ -160,6 +160,12 @@ class ChatController: UIViewController {
                     print("Succesfully uploaded message")
                 }
                 self.customInputView.clearMessageText()
+            })
+            .disposed(by: disposeBag)
+        
+        tapGesture.rx.event
+            .subscribe(onNext: { [unowned self] _ in
+                self.view.endEditing(true)
             })
             .disposed(by: disposeBag)
         
