@@ -69,6 +69,7 @@ class ConversationsController: UIViewController {
     }
     
     func bind() {
+        // Action Bind
         navigationItem.leftBarButtonItem?.rx.tap
             .subscribe(onNext: { [unowned self] in
                 self.doLogoutThisUser {[weak self] (error) in
@@ -101,7 +102,7 @@ class ConversationsController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        
+        // State Bind
         viewModel.conversations
             .bind(to: tableView.rx.items(cellIdentifier: ConversationCell.reuseIdentifier,
                                          cellType: ConversationCell.self)){ indexPath, conversation, cell in
@@ -110,6 +111,8 @@ class ConversationsController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    
+    // MARK: - Binding Helper
     func newMessageControllerBind(newMsgVC: NewMessageController) {
         newMsgVC.tableView.rx.itemSelected
             .subscribe(onNext: { [weak self] indexPath in

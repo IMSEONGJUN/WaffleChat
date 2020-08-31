@@ -174,10 +174,7 @@ class ChatController: UIViewController {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
             .subscribe(onNext:{ [weak self] noti in
                 guard let self = self else { return }
-                guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
-                    return
-                }
-                let keyboardFrame = value.cgRectValue
+                let keyboardFrame = self.getKeyboardFrame(noti: noti)
                 let bottomInset = self.view.safeAreaInsets.bottom
                 
                 if self.collectionView.contentSize.height > self.collectionView.frame.height - (keyboardFrame.height + self.customInputView.frame.height) {
@@ -194,10 +191,7 @@ class ChatController: UIViewController {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
             .subscribe(onNext: {[weak self] noti in
                 guard let self = self else { return }
-                guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
-                    return
-                }
-                let keyboardFrame = value.cgRectValue
+                let keyboardFrame = self.getKeyboardFrame(noti: noti)
 
                 if self.collectionView.contentSize.height > self.collectionView.frame.height - (keyboardFrame.height + self.customInputView.frame.height) {
                     self.view.transform = .identity
@@ -206,5 +200,13 @@ class ChatController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+    }
+    
+    func getKeyboardFrame(noti: Notification) -> CGRect {
+        guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            fatalError()
+        }
+        let keyboardFrame = value.cgRectValue
+        return keyboardFrame
     }
 }
