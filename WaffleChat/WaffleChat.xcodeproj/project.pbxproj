@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		AB650DE7C24B8EA28D97A79B /* Pods_WaffleChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */; };
+		CE01B70024FD39B300D2C0FC /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01B6FF24FD39B300D2C0FC /* ProfileCell.swift */; };
+		CE01B70224FD45D400D2C0FC /* ProfileFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01B70124FD45D400D2C0FC /* ProfileFooterView.swift */; };
+		CE10B9B624FCEB9B0080546A /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10B9B524FCEB9B0080546A /* ProfileController.swift */; };
+		CE10B9B824FCECD90080546A /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10B9B724FCECD90080546A /* ProfileHeader.swift */; };
+		CE10B9BA24FD30630080546A /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10B9B924FD30630080546A /* ProfileViewModel.swift */; };
 		CE39B7AF24E14593009B0DD0 /* ConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39B7AE24E14593009B0DD0 /* ConversationViewModel.swift */; };
 		CE39B7B124E145C8009B0DD0 /* NewMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39B7B024E145C8009B0DD0 /* NewMessageViewModel.swift */; };
 		CE39B7D724E17FAF009B0DD0 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39B7D624E17FAF009B0DD0 /* UserCell.swift */; };
@@ -45,6 +50,11 @@
 /* Begin PBXFileReference section */
 		3F363E3C2492FB5307D42C85 /* Pods-WaffleChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.debug.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.debug.xcconfig"; sourceTree = "<group>"; };
 		53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaffleChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE01B6FF24FD39B300D2C0FC /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		CE01B70124FD45D400D2C0FC /* ProfileFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFooterView.swift; sourceTree = "<group>"; };
+		CE10B9B524FCEB9B0080546A /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
+		CE10B9B724FCECD90080546A /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
+		CE10B9B924FD30630080546A /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CE39B7AE24E14593009B0DD0 /* ConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewModel.swift; sourceTree = "<group>"; };
 		CE39B7B024E145C8009B0DD0 /* NewMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageViewModel.swift; sourceTree = "<group>"; };
 		CE39B7D624E17FAF009B0DD0 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
@@ -178,6 +188,7 @@
 		CE9AE41A24A9BC5400F77F48 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				CE10B9B524FCEB9B0080546A /* ProfileController.swift */,
 				CE9AE41E24A9C08100F77F48 /* ConversationsController.swift */,
 				CE4D9D2724E045A500DC933D /* NewMessageController.swift */,
 				CEB3AD8224E967B8003F83C1 /* ChatController.swift */,
@@ -189,6 +200,7 @@
 		CE9AE41B24A9BC5600F77F48 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				CE10B9B924FD30630080546A /* ProfileViewModel.swift */,
 				CE39B7AE24E14593009B0DD0 /* ConversationViewModel.swift */,
 				CE39B7B024E145C8009B0DD0 /* NewMessageViewModel.swift */,
 				CED52B2524EEA7730051848A /* ChatViewModel.swift */,
@@ -224,6 +236,7 @@
 				CE9AE42224A9DC1700F77F48 /* ConversationCell.swift */,
 				CE39B7D624E17FAF009B0DD0 /* UserCell.swift */,
 				CE9D2CB524EAE21D00AE5BE0 /* MessageCell.swift */,
+				CE01B6FF24FD39B300D2C0FC /* ProfileCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -250,6 +263,8 @@
 			children = (
 				CE9D2CB324EAC12900AE5BE0 /* CustomInputAccessoryView.swift */,
 				CEB17ADF24B3743400FB7B7E /* InputContainerView.swift */,
+				CE10B9B724FCECD90080546A /* ProfileHeader.swift */,
+				CE01B70124FD45D400D2C0FC /* ProfileFooterView.swift */,
 			);
 			path = CustomUIView;
 			sourceTree = "<group>";
@@ -405,9 +420,12 @@
 				CE9AE42324A9DC1700F77F48 /* ConversationCell.swift in Sources */,
 				CE9AE40424A9BBB800F77F48 /* AppDelegate.swift in Sources */,
 				CE9AE41F24A9C08100F77F48 /* ConversationsController.swift in Sources */,
+				CE01B70224FD45D400D2C0FC /* ProfileFooterView.swift in Sources */,
+				CE10B9B824FCECD90080546A /* ProfileHeader.swift in Sources */,
 				CE9AE42F24AE377500F77F48 /* Extensions.swift in Sources */,
 				CEB17AE024B3743400FB7B7E /* InputContainerView.swift in Sources */,
 				CEDD8F9724EA59590034537E /* BottomButtonOnAuth.swift in Sources */,
+				CE10B9BA24FD30630080546A /* ProfileViewModel.swift in Sources */,
 				CE9AE40624A9BBB800F77F48 /* SceneDelegate.swift in Sources */,
 				CE39B7D724E17FAF009B0DD0 /* UserCell.swift in Sources */,
 				CE39B7AF24E14593009B0DD0 /* ConversationViewModel.swift in Sources */,
@@ -417,12 +435,14 @@
 				CE9D2CB424EAC12900AE5BE0 /* CustomInputAccessoryView.swift in Sources */,
 				CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */,
 				CE87288524C46B5000E00C42 /* RegistrationViewModel.swift in Sources */,
+				CE10B9B624FCEB9B0080546A /* ProfileController.swift in Sources */,
 				CE9D2CB624EAE21D00AE5BE0 /* MessageCell.swift in Sources */,
 				CEF7C78124EF665900CFF7CF /* User.swift in Sources */,
 				CEF7C77F24EF665000CFF7CF /* Message.swift in Sources */,
 				CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */,
 				CE4D9D2824E045A500DC933D /* NewMessageController.swift in Sources */,
 				CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */,
+				CE01B70024FD39B300D2C0FC /* ProfileCell.swift in Sources */,
 				CE9AE42A24ACC18500F77F48 /* RegistrationController.swift in Sources */,
 				CE9AE42824ACC16A00F77F48 /* LoginController.swift in Sources */,
 			);

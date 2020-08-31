@@ -72,14 +72,11 @@ class ConversationsController: UIViewController {
         // Action Bind
         navigationItem.leftBarButtonItem?.rx.tap
             .subscribe(onNext: { [unowned self] in
-                self.doLogoutThisUser {[weak self] (error) in
-                    if let err = error {
-                        print("Failed to logged out:", err)
-                        return
-                    }
-                    print("Successfully logged out this user")
-                    self?.switchToLoginVC()
-                }
+                let profileController = ProfileController(style: .insetGrouped)
+                let navi = UINavigationController(rootViewController: profileController)
+                navi.modalPresentationStyle = .fullScreen
+                navi.modalTransitionStyle = .coverVertical
+                self.present(navi, animated: true)
             })
             .disposed(by: disposeBag)
         

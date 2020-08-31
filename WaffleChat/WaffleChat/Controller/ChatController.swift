@@ -25,6 +25,7 @@ class ChatController: UIViewController {
     private var token: NSObjectProtocol?
     private let tapGesture = UITapGestureRecognizer()
     
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -202,6 +203,8 @@ class ChatController: UIViewController {
         
     }
     
+    
+    // MARK: - Helper
     func getKeyboardFrame(noti: Notification) -> CGRect {
         guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
             fatalError()
