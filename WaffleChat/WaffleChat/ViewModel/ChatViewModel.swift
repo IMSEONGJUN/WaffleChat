@@ -22,7 +22,7 @@ class ChatViewModel {
     
     func bind() {
         self.user
-            .subscribe(onNext:{
+            .subscribe(onNext:{ [unowned self] in
                 guard let user = $0 else { return }
                 APIManager.shared.fetchMessages(forUser: user)
                     .bind(to: self.messages)

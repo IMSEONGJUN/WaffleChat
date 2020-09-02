@@ -20,7 +20,6 @@
 		CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87288224C1EE8300E00C42 /* LoginViewModel.swift */; };
 		CE87288524C46B5000E00C42 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87288424C46B5000E00C42 /* RegistrationViewModel.swift */; };
 		CE961AAC24CEF9B80094FE86 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE961AAB24CEF9B80094FE86 /* GoogleService-Info.plist */; };
-		CE961AAE24CF06620094FE86 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE961AAD24CF06620094FE86 /* Bindable.swift */; };
 		CE9AE40424A9BBB800F77F48 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE40324A9BBB800F77F48 /* AppDelegate.swift */; };
 		CE9AE40624A9BBB800F77F48 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9AE40524A9BBB800F77F48 /* SceneDelegate.swift */; };
 		CE9AE40B24A9BBB800F77F48 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE9AE40924A9BBB800F77F48 /* Main.storyboard */; };
@@ -47,6 +46,19 @@
 		CEF7C78424EFB39200CFF7CF /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C78324EFB39200CFF7CF /* Conversation.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		CE38E38E24FF804900C0A200 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		3F363E3C2492FB5307D42C85 /* Pods-WaffleChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.debug.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.debug.xcconfig"; sourceTree = "<group>"; };
 		53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaffleChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,7 +74,6 @@
 		CE87288224C1EE8300E00C42 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		CE87288424C46B5000E00C42 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		CE961AAB24CEF9B80094FE86 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		CE961AAD24CF06620094FE86 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		CE9AE40024A9BBB800F77F48 /* WaffleChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WaffleChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9AE40324A9BBB800F77F48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE9AE40524A9BBB800F77F48 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -171,7 +182,6 @@
 		CE9AE41724A9BC4500F77F48 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				CE961AAD24CF06620094FE86 /* Bindable.swift */,
 				CE9AE42E24AE377500F77F48 /* Extensions.swift */,
 			);
 			path = Utilities;
@@ -308,6 +318,7 @@
 				CE9AE3FD24A9BBB800F77F48 /* Frameworks */,
 				CE9AE3FE24A9BBB800F77F48 /* Resources */,
 				4E5C1EA09D923CBDCB5E8BB0 /* [CP] Embed Pods Frameworks */,
+				CE38E38E24FF804900C0A200 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -431,7 +442,6 @@
 				CE39B7AF24E14593009B0DD0 /* ConversationViewModel.swift in Sources */,
 				CEC6F3C824EC068500AE19CD /* MessageViewModel.swift in Sources */,
 				CE9AE42D24ACC48B00F77F48 /* Constants.swift in Sources */,
-				CE961AAE24CF06620094FE86 /* Bindable.swift in Sources */,
 				CE9D2CB424EAC12900AE5BE0 /* CustomInputAccessoryView.swift in Sources */,
 				CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */,
 				CE87288524C46B5000E00C42 /* RegistrationViewModel.swift in Sources */,
