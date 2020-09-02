@@ -12,14 +12,15 @@ import RxCocoa
 
 class ConversationViewModel {
     var conversations = BehaviorRelay<[Conversation]>(value: [])
+    var disposeBag = DisposeBag()
     
     init() {
         fetchConversations()
     }
     
     func fetchConversations() {
-        APIManager.shared.fetchConversations { [weak self] (conversations) in
-            self?.conversations.accept(conversations)
-        }
+        APIManager.shared.fetchConversations()
+            .bind(to: conversations)
+            .disposed(by: disposeBag)
     }
 }

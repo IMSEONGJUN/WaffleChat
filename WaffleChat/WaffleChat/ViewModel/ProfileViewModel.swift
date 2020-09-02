@@ -14,7 +14,7 @@ import Firebase
 class ProfileViewModel {
     
     var user = BehaviorRelay<User?>(value: nil)
-    
+    var disposeBag = DisposeBag()
     init() {
         print("viewModel")
         fetchUser()
@@ -22,14 +22,14 @@ class ProfileViewModel {
     
     func fetchUser() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        APIManager.shared.fetchUser(uid: uid) { (user) in
-            self.user.accept(user)
-        }
+        APIManager.shared.fetchUser(uid: uid)
+            .bind(to: user)
+            .disposed(by: disposeBag)
     }
-    
 }
 
 enum ProfileControllerTableViewCellType: Int, CaseIterable {
+    
     case accountInfo
     case settings
     

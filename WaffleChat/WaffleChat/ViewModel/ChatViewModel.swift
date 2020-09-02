@@ -13,18 +13,22 @@ import RxCocoa
 class ChatViewModel {
     var user = BehaviorSubject<User?>(value: nil)
     var messages = BehaviorRelay<[Message]>(value: [])
+    var disposeBag = DisposeBag()
     
     init(user: User) {
         self.user.onNext(user)
-        fetchMessages()
+        bind()
     }
     
-    func fetchMessages() {
-        guard let user = try? user.value() else { return }
-        
-        APIManager.shared.fetchMessages(forUser: user) { [weak self] (messages) in
-            self?.messages.accept(messages)
-        }
+    func bind() {
+        self.user
+            .subscribe(onNext:{
+                guard let user = $0 else { return }
+                APIManager.shared.fetchMessages(forUser: user)
+                    .bind(to: self.messages)
+                    .disposed(by: self.disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
