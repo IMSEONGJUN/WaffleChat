@@ -74,6 +74,8 @@ class ConversationCell: UITableViewCell {
         
     }
     
+    
+    // MARK: - Cell Setter
     func configureData() {
         guard let conversation = self.conversation else { return }
         guard let url = URL(string: conversation.user.profileImageUrl) else { return }

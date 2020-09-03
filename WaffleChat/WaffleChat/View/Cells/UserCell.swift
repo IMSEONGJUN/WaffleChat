@@ -43,7 +43,7 @@ class UserCell: UITableViewCell {
     }()
     
     
-    // MARK: - Life Cycle
+    // MARK: - Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
@@ -76,6 +76,8 @@ class UserCell: UITableViewCell {
         }
     }
     
+    
+    // MARK: - Cell Setter
     private func configureCell() {
         guard let user = user else { return }
         let url = URL(string: user.profileImageUrl)

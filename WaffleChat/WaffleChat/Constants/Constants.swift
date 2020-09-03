@@ -15,3 +15,13 @@ enum Images {
 enum Notifications {
     static let didFinishFetchMessage = Notification.Name("didFinishFetchMessage")
 }
+
+enum ProfileInfo {
+    static let accountInfo = "Account Info"
+    static let settings = "Settings"
+}
+
+enum IconImages {
+    static let person = "person.circle"
+    static let gear = "gear"
+}

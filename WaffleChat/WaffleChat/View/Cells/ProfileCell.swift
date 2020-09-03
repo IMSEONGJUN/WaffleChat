@@ -10,6 +10,7 @@ import UIKit
 
 class ProfileCell: UITableViewCell {
     
+    // MARK: - Properties
     static let reuseID = "ProfileCell"
     
     var cellType: ProfileControllerTableViewCellType? {
@@ -51,6 +52,8 @@ class ProfileCell: UITableViewCell {
         return label
     }()
     
+    
+    // MARK: - Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -60,6 +63,8 @@ class ProfileCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: - Configure UI
     func configure() {
         let stack = UIStackView(arrangedSubviews: [iconContainer, titleLabel])
         stack.spacing = 8
@@ -72,6 +77,8 @@ class ProfileCell: UITableViewCell {
         }
     }
     
+    
+    // MARK: - Cell Setter
     func configureCellData() {
         guard let cellType = cellType else { return }
         iconImageView.image = UIImage(systemName: cellType.iconImageName)

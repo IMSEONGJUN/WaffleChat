@@ -58,7 +58,7 @@ class MessageCell: UICollectionViewCell {
     }
     
     
-    // MARK: - Initial Setup
+    // MARK: - Initial Setup for UI
     func configureUI() {
         contentView.backgroundColor = .white
         
@@ -87,6 +87,8 @@ class MessageCell: UICollectionViewCell {
         
     }
     
+    
+    // MARK: - Cell Setter
     func configure() {
         guard let message = message else { return }
         let viewModel = MessageViewModel(message: message)

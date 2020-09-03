@@ -35,15 +35,15 @@ enum ProfileControllerTableViewCellType: Int, CaseIterable {
     
     var description: String {
         switch self {
-        case .accountInfo: return "Account Info"
-        case .settings: return "Settings"
+        case .accountInfo: return ProfileInfo.accountInfo
+        case .settings: return ProfileInfo.settings
         }
     }
         
     var iconImageName: String {
         switch self {
-        case .accountInfo: return "person.circle"
-        case .settings: return "gear"
+        case .accountInfo: return IconImages.person
+        case .settings: return IconImages.gear
         }
     }
         

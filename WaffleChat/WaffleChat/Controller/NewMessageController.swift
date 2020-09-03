@@ -54,7 +54,6 @@ class NewMessageController: UIViewController {
     }
     
     private func configureSearchBar() {
-        searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Search"
         searchController.searchBar.tintColor = .white
         searchController.obscuresBackgroundDuringPresentation = false
@@ -92,14 +91,6 @@ class NewMessageController: UIViewController {
             .disposed(by: disposeBag)
     }
 
-}
-
-
-// MARK: - UISearchResultsUpdating
-extension NewMessageController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        
-    }
 }
 
 
