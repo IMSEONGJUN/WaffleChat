@@ -111,8 +111,6 @@ class LoginController: UIViewController {
     private func stateBinding() {
         viewModel.isValidForm
             .observeOn(MainScheduler.instance)
-//            .map { _ in true}
-//            .startWith(true) // viewModel.isValidForm Observable의 시퀀스가 시작되는 시점에 가장먼저 true를 방출하고 시작한다.
             .subscribe(onNext: { [weak self] in
                 print($0)
                 self?.loginButton.isEnabled = $0

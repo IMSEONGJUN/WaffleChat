@@ -113,7 +113,6 @@ class ChatController: UIViewController {
                                                        queue: OperationQueue.main,
                                                        using: { [weak self] (noti) in
             guard let self = self else { return }
-            print("notification comes")
             UIView.animate(withDuration: 0.1) {
                 let count = self.viewModel.messages.value.count
                 self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
@@ -147,8 +146,7 @@ class ChatController: UIViewController {
        
        // Action Binding
        customInputView.sendButton.rx.tap
-            .flatMapLatest({ [weak self] event -> Observable<(ControlProperty<String>.Element, User?)> in
-                guard let self = self else { return Observable.empty()}
+            .flatMapLatest({ [unowned self] event -> Observable<(ControlProperty<String>.Element, User?)> in
                 return Observable.zip(self.customInputView.messageInputTextView.rx.text.orEmpty, self.viewModel.user)
             })
             .filter({ $0.0 != "" && $0.1 != nil })

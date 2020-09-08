@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 import JGProgressHUD
 
 func isValidEmailAddress(email: String) -> Bool {
