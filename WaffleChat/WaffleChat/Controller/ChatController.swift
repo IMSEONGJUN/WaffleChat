@@ -113,11 +113,9 @@ class ChatController: UIViewController {
                                                        queue: OperationQueue.main,
                                                        using: { [weak self] (noti) in
             guard let self = self else { return }
-            UIView.animate(withDuration: 0.1) {
-                let count = self.viewModel.messages.value.count
-                self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
-                self.collectionView.layoutIfNeeded()
-            }
+            let count = self.viewModel.messages.value.count
+            self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
+            self.collectionView.layoutIfNeeded()
         })
     }
     

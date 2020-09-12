@@ -18,6 +18,7 @@ class MessageCell: UICollectionViewCell {
             configure()
         }
     }
+    
     private let profileImageView: UIImageView = {
        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
