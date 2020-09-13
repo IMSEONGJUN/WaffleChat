@@ -116,8 +116,8 @@ class ConversationsController: UIViewController {
                 guard let self = self else { return }
                 guard let cell = newMsgVC.tableView.cellForRow(at: indexPath) as? UserCell else { return }
                 guard let user = cell.user else { return }
-                
                 let chatVC = ChatController(user: user)
+                newMsgVC.searchController.dismiss(animated: true)
                 newMsgVC.dismiss(animated: true)
                 self.navigationController?.pushViewController(chatVC, animated: true)
             })

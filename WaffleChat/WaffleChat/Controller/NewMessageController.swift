@@ -90,6 +90,28 @@ class NewMessageController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        searchController.searchBar.rx.cancelButtonClicked
+            .subscribe(onNext: { [unowned self] in
+                self.viewModel.fetchUsers()
+            })
+            .disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .map{ $0.lowercased() }
+            .subscribe(onNext: { [unowned self] str in
+                if str == "" {
+                    self.viewModel.fetchUsers()
+                    return
+                }
+                let filteredUsers = self.viewModel.filteredUsers
+                                                  .filter{ $0.fullname.lowercased().contains(str)
+                                                           || $0.username.lowercased().contains(str) }
+                self.viewModel.users.accept(filteredUsers)
+            })
+            .disposed(by: disposeBag)
     }
 
 }

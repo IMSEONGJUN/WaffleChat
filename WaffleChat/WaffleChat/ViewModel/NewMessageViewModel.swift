@@ -16,8 +16,10 @@ class NewMessageViewModel {
     
     var users = BehaviorRelay<[User]>(value: [])
     var disposeBag = DisposeBag()
+    lazy var filteredUsers = users.value
     
     lazy var totalCountOfUsers = users.map { $0.count }
+    
     
     init() {
         fetchUsers()
