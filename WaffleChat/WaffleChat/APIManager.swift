@@ -17,11 +17,14 @@ class APIManager {
     static let shared = APIManager()
     var disposeBag = DisposeBag()
     
+    let messageRef = Firestore.firestore().collection("messages")
+    let userRef = Firestore.firestore().collection("users")
+    
     private init() {}
     
     func fetchUsers() -> Observable<[User]> {
         return Observable<[User]>.create { (observer) -> Disposable in
-            Firestore.firestore().collection("users").getDocuments { (snapshot, error) in
+            self.userRef.getDocuments { (snapshot, error) in
                 if let error = error {
                     print("Failed to fetch users:", error)
                     observer.onError(error)
@@ -46,7 +49,7 @@ class APIManager {
     
     func fetchUser(uid: String) -> Observable<User> {
         return Observable.create { (observer) -> Disposable in
-            Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, error) in
+            self.userRef.document(uid).getDocument { (snapshot, error) in
                 guard let dic = snapshot?.data(),
                     let user = User(user: dic) else { return }
                 observer.onNext(user)
@@ -54,15 +57,14 @@ class APIManager {
             }
             return Disposables.create()
         }
-        
     }
     
     func fetchMessages(forUser user: User) -> Observable<[Message]> {
         guard let currentUid = Auth.auth().currentUser?.uid else { return Observable.empty() }
         return Observable.create { (observer) -> Disposable in
             var messages = [Message]()
-            let ref = Firestore.firestore().collection("messages")
-            let query = ref.document(currentUid).collection(user.uid).order(by: "timestamp")
+            
+            let query = self.messageRef.document(currentUid).collection(user.uid).order(by: "timestamp")
             
             query.addSnapshotListener { (snapshot, error) in
                 snapshot?.documentChanges.forEach({ (change) in
@@ -85,7 +87,7 @@ class APIManager {
         
         return Observable.create { (observer) -> Disposable in
             var conversations = [Conversation]()
-            let ref = Firestore.firestore().collection("messages").document(uid).collection("recent-messages").order(by: "timestamp")
+            let ref = self.messageRef.document(uid).collection("recent-messages").order(by: "timestamp")
             
             ref.addSnapshotListener { (snapshot, error) in
                 snapshot?.documentChanges.forEach({ (change) in
@@ -108,6 +110,7 @@ class APIManager {
             }
             
             return Disposables.create {
+                print("Disposables")
                 observer.onCompleted()
             }
         }
