@@ -70,6 +70,7 @@ final class RegistrationController: UIViewController {
         configureGoToLoginPageButton()
         bind()
         setTapGesture()
+        emailTextField.keyboardType = .emailAddress
     }
     
     
@@ -78,7 +79,7 @@ final class RegistrationController: UIViewController {
         view.addSubview(plusPhotoButton)
         plusPhotoButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().offset(100)
+            $0.top.equalToSuperview().offset(50)
             $0.width.height.equalTo(200)
         }
     }

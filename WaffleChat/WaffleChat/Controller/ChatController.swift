@@ -24,7 +24,7 @@ final class ChatController: UIViewController {
     
     private var token: NSObjectProtocol?
     private let tapGesture = UITapGestureRecognizer()
-    
+    let coverView = UIView()
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -37,10 +37,26 @@ final class ChatController: UIViewController {
         configureNotification()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        coverView.backgroundColor = .white
+        coverView.frame = collectionView.bounds
+        collectionView.addSubview(coverView)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let count = self.viewModel.messages.value.count
-        self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
+        if collectionView.contentSize.height > collectionView.frame.height {
+            let collectionViewContentHeight = collectionView.contentSize.height
+            let collectionViewHeight = collectionView.frame.height
+            
+            let number = Int(collectionView.contentSize.height / collectionView.frame.height)
+            let remainder = collectionViewContentHeight.truncatingRemainder(dividingBy: collectionViewHeight)
+            
+            let lengthToScroll = ( (collectionViewHeight * CGFloat(number)) + remainder ) - collectionViewHeight
+            collectionView.contentOffset.y = lengthToScroll
+        }
+        coverView.removeFromSuperview()
     }
     
     deinit {
