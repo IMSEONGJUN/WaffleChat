@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessageCell: UICollectionViewCell {
+final class MessageCell: UICollectionViewCell {
     
     static let reuseID = "MessageCell"
     

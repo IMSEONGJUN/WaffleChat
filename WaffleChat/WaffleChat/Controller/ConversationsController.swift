@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ConversationsController: UIViewController {
+final class ConversationsController: UIViewController {
     
     // MARK: - Properties
     private let newMessageButton: UIButton = {

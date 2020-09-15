@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileCell: UITableViewCell {
+final class ProfileCell: UITableViewCell {
     
     // MARK: - Properties
     static let reuseID = "ProfileCell"

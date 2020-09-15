@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileFooterView: UIView {
+final class ProfileFooterView: UIView {
     
     let logoutButton: UIButton = {
         let btn = UIButton(type: .system)

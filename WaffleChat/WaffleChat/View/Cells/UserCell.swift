@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import SDWebImage
 
-class UserCell: UITableViewCell {
+final class UserCell: UITableViewCell {
 
     static let reuseIdentifier = "UserCell"
     

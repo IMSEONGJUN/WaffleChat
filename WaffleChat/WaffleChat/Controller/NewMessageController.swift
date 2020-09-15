@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 
-class NewMessageController: UIViewController {
+final class NewMessageController: UIViewController {
     
     // MARK: - Properties
     let tableView = UITableView()

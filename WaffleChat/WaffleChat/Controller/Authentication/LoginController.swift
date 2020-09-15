@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import JGProgressHUD
 
-class LoginController: UIViewController {
+final class LoginController: UIViewController {
 
     // MARK: - Properties
     private let logoImageView: UIImageView = {

@@ -13,7 +13,7 @@ import FirebaseAuth
 import RxSwift
 import RxCocoa
 
-class APIManager {
+final class APIManager {
     static let shared = APIManager()
     var disposeBag = DisposeBag()
     

@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ProfileController: UITableViewController {
+final class ProfileController: UITableViewController {
     
     // MARK: - Properties
     private lazy var headerView = ProfileHeader(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 380))

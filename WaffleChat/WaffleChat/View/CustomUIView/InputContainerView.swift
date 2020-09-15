@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class InputContainerView: UIView {
+final class InputContainerView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class NewMessageViewModel {
+final class NewMessageViewModel {
     
 //    var users = Bindable<[User]>()
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BottomButtonOnAuth: UIButton {
+final class BottomButtonOnAuth: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

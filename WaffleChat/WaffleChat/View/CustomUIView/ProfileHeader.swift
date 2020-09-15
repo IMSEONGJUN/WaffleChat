@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ProfileHeader: UIView {
+final class ProfileHeader: UIView {
     
     // MARK: - Properties
     

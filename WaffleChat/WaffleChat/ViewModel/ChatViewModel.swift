@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class ChatViewModel {
+final class ChatViewModel {
     var user = BehaviorSubject<User?>(value: nil)
     var messages = BehaviorRelay<[Message]>(value: [])
     var disposeBag = DisposeBag()

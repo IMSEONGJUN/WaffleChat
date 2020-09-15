@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-class ConversationCell: UITableViewCell {
+final class ConversationCell: UITableViewCell {
 
     static let reuseIdentifier = "ConversationCell"
     

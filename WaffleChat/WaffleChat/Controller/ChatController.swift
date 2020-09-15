@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ChatController: UIViewController {
+final class ChatController: UIViewController {
 
     // MARK: - Properties
     private var collectionView: UICollectionView!

@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import JGProgressHUD
 
-class RegistrationController: UIViewController {
+final class RegistrationController: UIViewController {
 
     // MARK: - Properties
     private let plusPhotoButton: UIButton = {

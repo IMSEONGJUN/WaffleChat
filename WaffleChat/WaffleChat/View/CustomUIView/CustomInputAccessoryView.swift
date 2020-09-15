@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class CustomInputAccessoryView: UIView {
+final class CustomInputAccessoryView: UIView {
 
     // MARK: - Properties
     let messageInputTextView: UITextView = {

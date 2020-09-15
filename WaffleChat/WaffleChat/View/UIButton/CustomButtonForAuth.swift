@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomButtonForAuth: UIButton {
+final class CustomButtonForAuth: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

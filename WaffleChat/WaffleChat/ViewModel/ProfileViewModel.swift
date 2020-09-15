@@ -11,10 +11,11 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-class ProfileViewModel {
+final class ProfileViewModel {
     
     var user = BehaviorRelay<User?>(value: nil)
     var disposeBag = DisposeBag()
+    
     init() {
         print("viewModel")
         fetchUser()

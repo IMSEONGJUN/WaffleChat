@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-class LoginViewModel {
+final class LoginViewModel {
     
     let emailObservable = BehaviorSubject<String>(value: "")
     let passwordObservable = BehaviorSubject<String>(value: "")

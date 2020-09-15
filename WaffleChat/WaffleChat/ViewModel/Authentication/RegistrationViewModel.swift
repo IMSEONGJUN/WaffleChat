@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-class RegistrationViewModel {
+final class RegistrationViewModel {
     
     // MARK: - Properties
     let profileImage = PublishRelay<UIImage?>()
