@@ -68,6 +68,8 @@ final class ConversationsController: UIViewController {
         tableView.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
     }
     
+    
+    // MARK: - Binding
     func bind() {
         // Action Bind
         navigationItem.leftBarButtonItem?.rx.tap

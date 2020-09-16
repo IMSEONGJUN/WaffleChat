@@ -46,7 +46,7 @@ final class ProfileController: UITableViewController {
     }
     
     
-    // MARK: - Bind
+    // MARK: - Binding
     func bind() {
         headerView.dismissButton.rx.tap
             .subscribe(onNext: { [unowned self] in

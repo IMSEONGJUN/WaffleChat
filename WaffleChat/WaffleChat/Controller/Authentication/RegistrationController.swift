@@ -35,27 +35,19 @@ final class RegistrationController: UIViewController {
     private let userNameTextField = InputTextField(placeHolder: "Username")
     
     private lazy var passwordContainer = InputContainerView(image: #imageLiteral(resourceName: "ic_lock_outline_white_2x"), textField: passwordTextField)
-    private let passwordTextField: InputTextField = {
-        let tf = InputTextField(placeHolder: "Password")
-        tf.isSecureTextEntry = true
-        return tf
-    }()
+    private let passwordTextField = InputTextField(placeHolder: "Password")
+        
+    private let signUpButton: UIButton = CustomButtonForAuth(title: "Sign Up", color: #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1))
     
-    private let signUpButton: UIButton = {
-       let btn = CustomButtonForAuth(title: "Sign Up", color: #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1))
-        btn.addTarget(self, action: #selector(didTapSignUpButton), for: .touchUpInside)
-        return btn
-    }()
+    private let goToLoginPageButton = BottomButtonOnAuth(firstText: "Already have an account? ", secondText: "Log In")
     
-    let goToLoginPageButton = BottomButtonOnAuth(firstText: "Already have an account? ", secondText: "Log In")
-    
-    lazy var stackContents = [emailContainer,
+    private lazy var stackContents = [emailContainer,
                               fullNameContainer,
                               userNameContainer,
                               passwordContainer,
                               signUpButton]
     
-    let stack = UIStackView()
+    private let stack = UIStackView()
     
     let viewModel = RegistrationViewModel()
     var disposeBag = DisposeBag()
@@ -64,17 +56,22 @@ final class RegistrationController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUIAttributeThings()
         configureGradientLayer()
         configurePlusPhotoButton()
         configureInputContextStackView()
         configureGoToLoginPageButton()
         bind()
         setTapGesture()
-        emailTextField.keyboardType = .emailAddress
     }
     
     
     // MARK: - Initial Setup
+    private func configureUIAttributeThings() {
+        passwordTextField.isSecureTextEntry = true
+        emailTextField.keyboardType = .emailAddress
+    }
+    
     private func configurePlusPhotoButton() {
         view.addSubview(plusPhotoButton)
         plusPhotoButton.snp.makeConstraints {
@@ -103,7 +100,6 @@ final class RegistrationController: UIViewController {
     }
     
     private func configureGoToLoginPageButton() {
-        goToLoginPageButton.addTarget(self, action: #selector(didTapGoToLoginPageButton), for: .touchUpInside)
         view.addSubview(goToLoginPageButton)
         goToLoginPageButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -126,7 +122,20 @@ final class RegistrationController: UIViewController {
     private func userActionBinding() {
         plusPhotoButton.rx.tap
             .subscribe(onNext: { [weak self] in
-                self?.didTapPlusPhotoButton()
+                guard let self = self else { return }
+                self.didTapPlusPhotoButton(viewController: self)
+            })
+            .disposed(by: disposeBag)
+        
+        signUpButton.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                self.didTapSignUpButton()
+            })
+            .disposed(by: disposeBag)
+        
+        goToLoginPageButton.rx.tap
+            .subscribe(onNext:{ [unowned self] in
+                self.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -217,33 +226,7 @@ final class RegistrationController: UIViewController {
 
     
     // MARK: - Action Handler
-    @objc private func didTapPlusPhotoButton() {
-        self.view.endEditing(true)
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        let alert = UIAlertController(title: "Select ImageSource", message: "", preferredStyle: .alert)
-        
-        let takePhoto = UIAlertAction(title: "Take photo", style: .default) { (_) in
-            guard UIImagePickerController.isSourceTypeAvailable(.camera) else { return }
-            imagePicker.sourceType = .camera
-            imagePicker.videoQuality = .typeHigh
-            self.present(imagePicker, animated: true)
-        }
-        
-        let album = UIAlertAction(title: "Photo Album", style: .default) { (_) in
-            imagePicker.sourceType = .savedPhotosAlbum
-            self.present(imagePicker, animated: true)
-        }
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
-        
-        alert.addAction(takePhoto)
-        alert.addAction(album)
-        alert.addAction(cancel)
-        self.present(alert, animated: true)
-    }
-    
-    @objc private func didTapSignUpButton() {
+    private func didTapSignUpButton() {
         print("Sign Up")
         viewModel.isRegistering.accept(true)
         viewModel.performRegistration { [weak self] (err) in
@@ -254,10 +237,6 @@ final class RegistrationController: UIViewController {
             self?.viewModel.isRegistering.accept(false)
             self?.switchToConversationVC()
         }
-    }
-    
-    @objc private func didTapGoToLoginPageButton() {
-        navigationController?.popViewController(animated: true)
     }
     
     

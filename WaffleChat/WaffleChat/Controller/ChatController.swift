@@ -136,7 +136,7 @@ final class ChatController: UIViewController {
     }
     
     
-    // MARK: - Bind
+    // MARK: - Binding
     func bind() {
         // State Binding
         viewModel.user
