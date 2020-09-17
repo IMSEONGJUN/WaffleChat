@@ -19,6 +19,13 @@ final class MessageCell: UICollectionViewCell {
         }
     }
     
+    private let timeStampLabel: UILabel = {
+       let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .darkGray
+        return label
+    }()
+    
     private let profileImageView: UIImageView = {
        let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
@@ -46,6 +53,9 @@ final class MessageCell: UICollectionViewCell {
     
     var textLeadingConst: NSLayoutConstraint!
     var texttrailingConst: NSLayoutConstraint!
+    
+    var timelabelLeadingConst: NSLayoutConstraint!
+    var timelabelTrailingConst: NSLayoutConstraint!
     
     
     // MARK: - Initializer
@@ -86,6 +96,13 @@ final class MessageCell: UICollectionViewCell {
         textLeadingConst = textView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12)
         texttrailingConst = textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12)
         
+        contentView.addSubview(timeStampLabel)
+        timeStampLabel.snp.makeConstraints {
+            $0.bottom.equalTo(textView.snp.bottom)
+        }
+        
+        timelabelLeadingConst = timeStampLabel.leadingAnchor.constraint(equalTo: textView.trailingAnchor, constant: 12)
+        timelabelTrailingConst = timeStampLabel.trailingAnchor.constraint(equalTo: textView.leadingAnchor, constant: -12)
     }
     
     
@@ -97,8 +114,16 @@ final class MessageCell: UICollectionViewCell {
         textView.textColor = viewModel.messageTextColor
         textView.text = message.text
         
+        let date = message.timestamp.dateValue()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM.dd hh:mm a"
+        timeStampLabel.text = formatter.string(from: date)
+        
         textLeadingConst.isActive = viewModel.leadingAnchorActive
         texttrailingConst.isActive = viewModel.trailingingAnchorActive
+        
+        timelabelLeadingConst.isActive = viewModel.leadingAnchorActive
+        timelabelTrailingConst.isActive = viewModel.trailingingAnchorActive
         
         profileImageView.isHidden = viewModel.shouldHideProfileImage
         profileImageView.sd_setImage(with: viewModel.profileImageUrl)
