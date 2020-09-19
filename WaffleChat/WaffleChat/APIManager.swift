@@ -84,9 +84,7 @@ final class APIManager {
     }
     
     func fetchConversations() -> Observable<[Conversation]> {
-        guard let uid = Auth.auth().currentUser?.uid else { return Observable.empty()}
-        var conversationCount = 0
-        var fromUser: User?
+        guard let uid = Auth.auth().currentUser?.uid else { return Observable.empty() }
         return Observable.create { (observer) -> Disposable in
             var conversations = [Conversation]()
             let ref = self.messageRef.document(uid).collection("recent-messages").order(by: "timestamp")
@@ -105,8 +103,6 @@ final class APIManager {
                         .subscribe(onNext:{ user -> Void in
                             let conversation = Conversation(user: user, recentMessage: message)
                             conversations.insert(conversation, at: 0)
-                            fromUser = user
-                            conversationCount += 1
                             observer.onNext(conversations)
                         })
                         .disposed(by: self.disposeBag)
@@ -142,39 +138,39 @@ final class APIManager {
         }
     }
     
-    func configureUserNotification() {
-        let center = UNUserNotificationCenter.current()
-        let content = UNMutableNotificationContent()
-        content.title = "Waffle Chat"
-        content.body = "Rise and shine! It's morning time!"
-         
-        // Configure the trigger for a 7am wakeup.
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        // Create the request object.
-        let request = UNNotificationRequest(identifier: "NewMessage", content: content, trigger: trigger)
-        center.add(request) { (error : Error?) in
-            if let theError = error {
-                print(theError.localizedDescription)
-            }
-        }
-        
-        let generalCategory = UNNotificationCategory(identifier: "GENERAL",
-                                                     actions: [],
-                                                     intentIdentifiers: [],
-                                                     options: .customDismissAction)
-        
-        let readAction = UNNotificationAction(identifier: "Read Message",
-                                              title: "Stop",
-                                              options: .foreground)
-        // Register the category.
-        center.setNotificationCategories([generalCategory])
-        let expiredCategory = UNNotificationCategory(identifier: "READ",
-                                                     actions: [readAction],
-                                                     intentIdentifiers: [],
-                                                     options: UNNotificationCategoryOptions(rawValue: 0))
-         
-        // Register the notification categories.
-        center.setNotificationCategories([generalCategory, expiredCategory])
-    }
+//    func configureUserNotification() {
+//        let center = UNUserNotificationCenter.current()
+//        let content = UNMutableNotificationContent()
+//        content.title = "Waffle Chat"
+//        content.body = "Rise and shine! It's morning time!"
+//
+//        // Configure the trigger for a 7am wakeup.
+//
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+//        // Create the request object.
+//        let request = UNNotificationRequest(identifier: "NewMessage", content: content, trigger: trigger)
+//        center.add(request) { (error : Error?) in
+//            if let theError = error {
+//                print(theError.localizedDescription)
+//            }
+//        }
+//
+//        let generalCategory = UNNotificationCategory(identifier: "GENERAL",
+//                                                     actions: [],
+//                                                     intentIdentifiers: [],
+//                                                     options: .customDismissAction)
+//
+//        let readAction = UNNotificationAction(identifier: "Read Message",
+//                                              title: "Stop",
+//                                              options: .foreground)
+//        // Register the category.
+//        center.setNotificationCategories([generalCategory])
+//        let expiredCategory = UNNotificationCategory(identifier: "READ",
+//                                                     actions: [readAction],
+//                                                     intentIdentifiers: [],
+//                                                     options: UNNotificationCategoryOptions(rawValue: 0))
+//
+//        // Register the notification categories.
+//        center.setNotificationCategories([generalCategory, expiredCategory])
+//    }
 }

@@ -160,8 +160,8 @@ final class ChatController: UIViewController {
        
        // Action Binding
        customInputView.sendButton.rx.tap
-            .flatMapLatest({ [unowned self] event -> Observable<(ControlProperty<String>.Element, User?)> in
-                return Observable.zip(self.customInputView.messageInputTextView.rx.text.orEmpty, self.viewModel.user)
+            .flatMapLatest({ [unowned self] _ in
+                Observable.zip(self.viewModel.inputText, self.viewModel.user)
             })
             .filter({ $0.0 != "" && $0.1 != nil })
             .subscribe(onNext:{ [unowned self] in
@@ -181,6 +181,12 @@ final class ChatController: UIViewController {
                 self.view.endEditing(true)
             })
             .disposed(by: disposeBag)
+        
+        customInputView.messageInputTextView.rx.text
+            .orEmpty
+            .bind(to: viewModel.inputText)
+            .disposed(by: disposeBag)
+            
         
         
         // Notification Binding

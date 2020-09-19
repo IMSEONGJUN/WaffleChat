@@ -76,12 +76,20 @@ final class NewMessageController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        viewModel.isNetworking
+            .subscribe(onNext: {[weak self] in
+                if $0 {
+                    self?.refresh.beginRefreshing()
+                } else {
+                    self?.refresh.endRefreshing()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        
         // Action Bind
         refresh.rx.controlEvent(.valueChanged)
-            .subscribe(onNext: { [unowned self] in
-                self.viewModel.fetchUsers()
-                self.refresh.endRefreshing()
-            })
+            .bind(to: viewModel.refreshPulled)
             .disposed(by: disposeBag)
         
         cancelButton.rx.tap

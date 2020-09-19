@@ -13,6 +13,8 @@ import RxCocoa
 final class ChatViewModel {
     var user = BehaviorSubject<User?>(value: nil)
     var messages = BehaviorRelay<[Message]>(value: [])
+    var inputText = BehaviorRelay<String>(value: "")
+    
     var disposeBag = DisposeBag()
     
     init(user: User) {

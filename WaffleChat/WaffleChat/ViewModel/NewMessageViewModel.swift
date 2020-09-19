@@ -13,21 +13,34 @@ import RxCocoa
 final class NewMessageViewModel {
     
 //    var users = Bindable<[User]>()
-    
+    var refreshPulled = PublishSubject<Void>()
+    var isNetworking = PublishSubject<Bool>()
     var users = BehaviorRelay<[User]>(value: [])
-    var disposeBag = DisposeBag()
     lazy var filteredUsers = users.value
     
-    lazy var totalCountOfUsers = users.map { $0.count }
-    
+    var disposeBag = DisposeBag()
     
     init() {
+        bind()
         fetchUsers()
     }
     
-    func fetchUsers()  {
+    func fetchUsers() {
         APIManager.shared.fetchUsers()
+            .do(onNext: { [weak self] _ in
+                self?.isNetworking.onNext(false)
+            })
             .bind(to: users)
+            .disposed(by: disposeBag)
+    }
+    
+    func bind()  {
+        refreshPulled
+            .do(onNext: { [unowned self] _ in
+                self.fetchUsers()
+            })
+            .map{ _ in true }
+            .bind(to: isNetworking)
             .disposed(by: disposeBag)
     }  
     
