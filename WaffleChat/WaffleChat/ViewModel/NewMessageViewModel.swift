@@ -11,8 +11,7 @@ import RxSwift
 import RxCocoa
 
 final class NewMessageViewModel {
-    
-//    var users = Bindable<[User]>()
+
     var refreshPulled = PublishSubject<Void>()
     var isNetworking = PublishSubject<Bool>()
     var users = BehaviorRelay<[User]>(value: [])

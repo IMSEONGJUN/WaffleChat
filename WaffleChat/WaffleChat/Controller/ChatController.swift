@@ -157,23 +157,16 @@ final class ChatController: UIViewController {
             }
             .disposed(by: disposeBag)
 
+        viewModel.uploadedMessage
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.customInputView.clearMessageText()
+            })
+            .disposed(by: disposeBag)
        
        // Action Binding
-       customInputView.sendButton.rx.tap
-            .flatMapLatest({ [unowned self] _ in
-                Observable.zip(self.viewModel.inputText, self.viewModel.user)
-            })
-            .filter({ $0.0 != "" && $0.1 != nil })
-            .subscribe(onNext:{ [unowned self] in
-                APIManager.shared.uploadMessage($0.0, To: $0.1!) { (error) in
-                    if let error = error {
-                        print("Failed to upload message:", error)
-                        return
-                    }
-                    print("Succesfully uploaded message")
-                }
-                self.customInputView.clearMessageText()
-            })
+        customInputView.sendButton.rx.tap
+            .bind(to: viewModel.sendButtonTapped)
             .disposed(by: disposeBag)
         
         tapGesture.rx.event
