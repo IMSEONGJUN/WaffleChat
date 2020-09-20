@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import BackgroundTasks
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

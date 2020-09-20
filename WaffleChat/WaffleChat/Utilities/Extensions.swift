@@ -120,7 +120,8 @@ extension UIViewController {
             navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
         }
     
-    func didTapPlusPhotoButton<T: UIImagePickerControllerDelegate>(viewController: T) where T : UINavigationControllerDelegate {
+    func didTapPlusPhotoButton<T: UIImagePickerControllerDelegate>(viewController: T)
+                                                                            where T : UINavigationControllerDelegate {
         self.view.endEditing(true)
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = viewController

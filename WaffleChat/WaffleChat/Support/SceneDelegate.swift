@@ -9,12 +9,14 @@
 import UIKit
 import Firebase
 import BackgroundTasks
+import RxSwift
+import RxCocoa
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    var disposeBag = DisposeBag()
     
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -34,9 +36,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.didReceiveMessage",
-                                        using: nil) { task in
-            self.handleAppRefresh(task: task as! BGAppRefreshTask)
-            
+                                        using: nil) { _ in
+            APIManager.shared.newMessage
+                .subscribe(onNext: { [weak self] in
+                    print("background Task!")
+                    self?.configureUserNotification(fromUser: $0.user, body: $0.recentMessage.text)
+                })
+                .disposed(by: self.disposeBag)
         }
 
         
@@ -44,7 +50,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func handleAppRefresh(task: BGAppRefreshTask) {
-        
         
     }
 
@@ -107,6 +112,41 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
         }
         
         // Else handle actions for other notification types. . .
+    }
+    
+    func configureUserNotification(fromUser: User, body: String) {
+        let center = UNUserNotificationCenter.current()
+        let content = UNMutableNotificationContent()
+        content.title = "Waffle Chat"
+        content.body = "\(fromUser.fullname): " + body
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        
+        // Create the request object.
+        let request = UNNotificationRequest(identifier: "NewMessage", content: content, trigger: trigger)
+        center.add(request) { (error : Error?) in
+            if let theError = error {
+                print(theError.localizedDescription)
+            }
+        }
+        
+        let generalCategory = UNNotificationCategory(identifier: "GENERAL",
+                                                     actions: [],
+                                                     intentIdentifiers: [],
+                                                     options: .customDismissAction)
+        
+        let readAction = UNNotificationAction(identifier: "Read Message",
+                                              title: "Stop",
+                                              options: .foreground)
+        // Register the category.
+        center.setNotificationCategories([generalCategory])
+        let expiredCategory = UNNotificationCategory(identifier: "READ",
+                                                     actions: [readAction],
+                                                     intentIdentifiers: [],
+                                                     options: UNNotificationCategoryOptions(rawValue: 0))
+        
+        // Register the notification categories.
+        center.setNotificationCategories([generalCategory, expiredCategory])
     }
 
 }

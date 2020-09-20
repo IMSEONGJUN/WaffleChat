@@ -20,6 +20,7 @@ final class APIManager {
     
     let messageRef = Firestore.firestore().collection("messages")
     let userRef = Firestore.firestore().collection("users")
+    var newMessage = PublishRelay<Conversation>()
     
     private init() {}
     
@@ -100,9 +101,10 @@ final class APIManager {
                     }
                     
                     self.fetchUser(uid: id)
-                        .subscribe(onNext:{ user -> Void in
+                        .subscribe(onNext:{ [weak self] user -> Void in
                             let conversation = Conversation(user: user, recentMessage: message)
                             conversations.insert(conversation, at: 0)
+                            self?.newMessage.accept(conversation)
                             observer.onNext(conversations)
                         })
                         .disposed(by: self.disposeBag)
@@ -138,39 +140,5 @@ final class APIManager {
         }
     }
     
-//    func configureUserNotification() {
-//        let center = UNUserNotificationCenter.current()
-//        let content = UNMutableNotificationContent()
-//        content.title = "Waffle Chat"
-//        content.body = "Rise and shine! It's morning time!"
-//
-//        // Configure the trigger for a 7am wakeup.
-//
-//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-//        // Create the request object.
-//        let request = UNNotificationRequest(identifier: "NewMessage", content: content, trigger: trigger)
-//        center.add(request) { (error : Error?) in
-//            if let theError = error {
-//                print(theError.localizedDescription)
-//            }
-//        }
-//
-//        let generalCategory = UNNotificationCategory(identifier: "GENERAL",
-//                                                     actions: [],
-//                                                     intentIdentifiers: [],
-//                                                     options: .customDismissAction)
-//
-//        let readAction = UNNotificationAction(identifier: "Read Message",
-//                                              title: "Stop",
-//                                              options: .foreground)
-//        // Register the category.
-//        center.setNotificationCategories([generalCategory])
-//        let expiredCategory = UNNotificationCategory(identifier: "READ",
-//                                                     actions: [readAction],
-//                                                     intentIdentifiers: [],
-//                                                     options: UNNotificationCategoryOptions(rawValue: 0))
-//
-//        // Register the notification categories.
-//        center.setNotificationCategories([generalCategory, expiredCategory])
-//    }
+//    
 }

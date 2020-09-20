@@ -25,7 +25,9 @@ final class ChatViewModel {
     
     func bind() {
         sendButtonTapped
-            .flatMapLatest{[unowned self] in Observable.zip(self.inputText, self.user) }
+            .flatMapLatest{[unowned self] in
+                Observable.zip(self.inputText, self.user)
+            }
             .subscribe(onNext: {
                 APIManager.shared.uploadMessage($0.0, To: $0.1!) { (error) in
                     if let error = error {
