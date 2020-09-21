@@ -24,6 +24,9 @@ final class ProfileViewModel {
     func fetchUser() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         APIManager.shared.fetchUser(uid: uid)
+            .do(onError: {
+                print("failed to fetch profile: ", $0)
+            })
             .bind(to: user)
             .disposed(by: disposeBag)
     }

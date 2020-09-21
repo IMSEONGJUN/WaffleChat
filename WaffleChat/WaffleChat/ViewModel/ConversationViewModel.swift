@@ -20,6 +20,9 @@ final class ConversationViewModel {
     
     func fetchConversations() {
         APIManager.shared.fetchConversations()
+            .do(onError: {
+                print("failed to fetch conversations: ", $0)
+            })
             .bind(to: conversations)
             .disposed(by: disposeBag)
     }

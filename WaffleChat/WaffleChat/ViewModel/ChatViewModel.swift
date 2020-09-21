@@ -15,7 +15,7 @@ final class ChatViewModel {
     var messages = BehaviorRelay<[Message]>(value: [])
     var inputText = BehaviorRelay<String>(value: "")
     var sendButtonTapped = PublishSubject<Void>()
-    var uploadedMessage = PublishSubject<Bool>()
+    var isMessageUploaded = PublishSubject<Bool>()
     var disposeBag = DisposeBag()
     
     init(user: User) {
@@ -34,7 +34,7 @@ final class ChatViewModel {
                         print("Failed to upload message:", error)
                         return
                     }
-                    self.uploadedMessage.onNext(true)
+                    self.isMessageUploaded.onNext(true)
                     print("Succesfully uploaded message")
                 }
             })
@@ -45,6 +45,9 @@ final class ChatViewModel {
             .subscribe(onNext:{ [unowned self] in
                 guard let user = $0 else { return }
                 APIManager.shared.fetchMessages(forUser: user)
+                    .do(onError: {
+                        print("failed to fetch messages: ", $0)
+                    })
                     .bind(to: self.messages)
                     .disposed(by: self.disposeBag)
             })

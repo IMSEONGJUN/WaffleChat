@@ -29,6 +29,9 @@ final class NewMessageViewModel {
             .do(onNext: { [weak self] _ in
                 self?.isNetworking.onNext(false)
             })
+            .do(onError: {
+                print("failed to fetch users: ", $0)
+            })
             .bind(to: users)
             .disposed(by: disposeBag)
     }

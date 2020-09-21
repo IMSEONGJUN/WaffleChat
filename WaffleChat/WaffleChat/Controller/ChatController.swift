@@ -157,7 +157,7 @@ final class ChatController: UIViewController {
             }
             .disposed(by: disposeBag)
 
-        viewModel.uploadedMessage
+        viewModel.isMessageUploaded
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
                 self?.customInputView.clearMessageText()
