@@ -128,9 +128,8 @@ final class RegistrationController: UIViewController {
             .disposed(by: disposeBag)
         
         signUpButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                self.didTapSignUpButton()
-            })
+            .map{ _ in Void() }
+            .bind(to: viewModel.signupButtonTapped)
             .disposed(by: disposeBag)
         
         goToLoginPageButton.rx.tap
@@ -166,7 +165,7 @@ final class RegistrationController: UIViewController {
     
     private func stateBinding() {
         viewModel.isFormValid
-            .subscribe(onNext: { [weak self] in
+            .drive(onNext: { [weak self] in
                 print("Registration")
                 self?.signUpButton.isEnabled = $0
                 self?.signUpButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
@@ -187,14 +186,16 @@ final class RegistrationController: UIViewController {
         viewModel.isRegistering
             .subscribe(onNext: {[weak self] in
                 guard let self = self else { return }
-                if $0 {
-                    self.hud.textLabel.text = "Registering..."
-                    self.hud.show(in: self.view)
-                } else {
-                    self.hud.dismiss()
-                }
+                self.showActivityIndicator($0, withText: "Registering")
             })
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
+        
+        viewModel.isRegistered
+            .filter{ $0 == true }
+            .subscribe(onNext: { [weak self] _ in
+                self?.switchToConversationVC()
+            })
+            .disposed(by: disposeBag)
         
     }
     
@@ -222,21 +223,6 @@ final class RegistrationController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-    }
-
-    
-    // MARK: - Action Handler
-    private func didTapSignUpButton() {
-        print("Sign Up")
-        viewModel.isRegistering.accept(true)
-        viewModel.performRegistration { [weak self] (err) in
-            if let error = err {
-                print("failed to registration: ", error)
-                return
-            }
-            self?.viewModel.isRegistering.accept(false)
-            self?.switchToConversationVC()
-        }
     }
     
     

@@ -13,7 +13,7 @@ import Firebase
 
 final class ProfileViewModel {
     
-    var user = BehaviorRelay<User?>(value: nil)
+    let user = BehaviorRelay<User?>(value: nil)
     var disposeBag = DisposeBag()
     
     init() {

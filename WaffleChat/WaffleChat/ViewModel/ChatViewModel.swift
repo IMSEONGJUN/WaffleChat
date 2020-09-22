@@ -11,11 +11,11 @@ import RxSwift
 import RxCocoa
 
 final class ChatViewModel {
-    var user = BehaviorSubject<User?>(value: nil)
-    var messages = BehaviorRelay<[Message]>(value: [])
-    var inputText = BehaviorRelay<String>(value: "")
-    var sendButtonTapped = PublishSubject<Void>()
-    var isMessageUploaded = PublishSubject<Bool>()
+    let user = BehaviorSubject<User?>(value: nil)
+    let messages = BehaviorRelay<[Message]>(value: [])
+    let inputText = BehaviorRelay<String>(value: "")
+    let sendButtonTapped = PublishSubject<Void>()
+    let isMessageUploaded = PublishSubject<Bool>()
     var disposeBag = DisposeBag()
     
     init(user: User) {

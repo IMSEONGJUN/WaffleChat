@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 final class ConversationViewModel {
-    var conversations = BehaviorRelay<[Conversation]>(value: [])
+    let conversations = BehaviorRelay<[Conversation]>(value: [])
     var disposeBag = DisposeBag()
     
     init() {

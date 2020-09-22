@@ -12,9 +12,9 @@ import RxCocoa
 
 final class NewMessageViewModel {
 
-    var refreshPulled = PublishSubject<Void>()
-    var isNetworking = PublishSubject<Bool>()
-    var users = BehaviorRelay<[User]>(value: [])
+    let refreshPulled = PublishSubject<Void>()
+    let isNetworking = PublishSubject<Bool>()
+    let users = BehaviorRelay<[User]>(value: [])
     lazy var filteredUsers = users.value
     
     var disposeBag = DisposeBag()
@@ -44,6 +44,8 @@ final class NewMessageViewModel {
             .map{ _ in true }
             .bind(to: isNetworking)
             .disposed(by: disposeBag)
+        
+        
     }  
     
 }
