@@ -99,10 +99,16 @@ final class ConversationsController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        tableView.rx.itemSelected
+            .subscribe(onNext: { [unowned self] in
+                self.tableView.deselectRow(at: $0, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         // State Bind
         viewModel.conversations
             .bind(to: tableView.rx.items(cellIdentifier: ConversationCell.reuseIdentifier,
-                                         cellType: ConversationCell.self)){ indexPath, conversation, cell in
+                                         cellType: ConversationCell.self)){ row, conversation, cell in
                                             cell.conversation = conversation
                                          }
             .disposed(by: disposeBag)

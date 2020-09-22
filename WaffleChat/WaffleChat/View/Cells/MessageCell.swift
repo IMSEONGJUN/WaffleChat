@@ -72,7 +72,7 @@ final class MessageCell: UICollectionViewCell {
     // MARK: - Initial Setup for UI
     func configureUI() {
         contentView.backgroundColor = .white
-        
+        selectedBackgroundView?.isHidden = true
         contentView.addSubview(profileImageView)
         profileImageView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(5)

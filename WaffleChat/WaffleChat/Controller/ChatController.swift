@@ -34,7 +34,6 @@ final class ChatController: UIViewController {
         configureCustomInputView()
         configureTapGesture()
         bind()
-        configureNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,11 +58,6 @@ final class ChatController: UIViewController {
         coverView.removeFromSuperview()
     }
     
-    deinit {
-        if let token = self.token {
-            NotificationCenter.default.removeObserver(token)
-        }
-    }
     
     // MARK: - Override
 //    override var inputAccessoryView: UIView? {
@@ -123,18 +117,6 @@ final class ChatController: UIViewController {
         collectionView.addGestureRecognizer(tapGesture)
     }
     
-    func configureNotification() {
-        token = NotificationCenter.default.addObserver(forName: Notifications.didFinishFetchMessage,
-                                                       object: nil,
-                                                       queue: OperationQueue.main,
-                                                       using: { [weak self] (noti) in
-            guard let self = self else { return }
-            let count = self.viewModel.messages.value.count
-            self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
-            self.collectionView.layoutIfNeeded()
-        })
-    }
-    
     
     // MARK: - Binding
     func bind() {
@@ -150,7 +132,7 @@ final class ChatController: UIViewController {
         
         viewModel.messages
             .bind(to: collectionView.rx.items(cellIdentifier: MessageCell.reuseID,
-                                              cellType: MessageCell.self)) { [weak self] row, message, cell in
+                                              cellType: MessageCell.self)) { [weak self] index, message, cell in
                                                 var message = message
                                                 message.user = self?.user
                                                 cell.message = message
@@ -181,20 +163,26 @@ final class ChatController: UIViewController {
             .disposed(by: disposeBag)
             
         
-        
         // Notification Binding
+        NotificationCenter.default.rx.notification(Notifications.didFinishFetchMessage)
+            .bind { [weak self] (noti) in
+                guard let self = self else { return }
+                let count = self.viewModel.messages.value.count
+                self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
+                self.collectionView.layoutIfNeeded()
+            }
+            .disposed(by: disposeBag)
+        
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
             .subscribe(onNext:{ [weak self] noti in
                 guard let self = self else { return }
-                let keyboardFrame = self.getKeyboardFrame(noti: noti)
+                let height = self.getKeyboardFrameHeight(noti: noti)
                 let bottomInset = self.view.safeAreaInsets.bottom
                 
-                if self.collectionView.contentSize.height > self.collectionView.frame.height - (keyboardFrame.height + self.customInputView.frame.height) {
-                    self.view.transform = CGAffineTransform(translationX: 0,
-                                                                      y: -keyboardFrame.height + bottomInset)
+                if self.collectionView.contentSize.height > self.collectionView.frame.height - (height + self.customInputView.frame.height) {
+                    self.view.transform = CGAffineTransform(translationX: 0, y: -height + bottomInset)
                 } else {
-                    self.customInputView.transform = CGAffineTransform(translationX: 0,
-                                                                       y: -keyboardFrame.height + bottomInset)
+                    self.customInputView.transform = CGAffineTransform(translationX: 0, y: -height + bottomInset)
                 }
                 
             })
@@ -203,9 +191,9 @@ final class ChatController: UIViewController {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
             .subscribe(onNext: {[weak self] noti in
                 guard let self = self else { return }
-                let keyboardFrame = self.getKeyboardFrame(noti: noti)
+                let height = self.getKeyboardFrameHeight(noti: noti)
 
-                if self.collectionView.contentSize.height > self.collectionView.frame.height - (keyboardFrame.height + self.customInputView.frame.height) {
+                if self.collectionView.contentSize.height > self.collectionView.frame.height - (height + self.customInputView.frame.height) {
                     self.view.transform = .identity
                 }
                 self.customInputView.transform = .identity
@@ -216,11 +204,11 @@ final class ChatController: UIViewController {
     
     
     // MARK: - Helper
-    func getKeyboardFrame(noti: Notification) -> CGRect {
+    func getKeyboardFrameHeight(noti: Notification) -> CGFloat {
         guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
             fatalError()
         }
         let keyboardFrame = value.cgRectValue
-        return keyboardFrame
+        return keyboardFrame.height
     }
 }

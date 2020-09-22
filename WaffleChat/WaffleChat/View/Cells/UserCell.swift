@@ -57,7 +57,7 @@ final class UserCell: UITableViewCell {
     // MARK: - Initial Setup
     private func configureUI() {
         addSubview(profileImageView)
-        
+        selectedBackgroundView?.isHidden = true
         profileImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(12)

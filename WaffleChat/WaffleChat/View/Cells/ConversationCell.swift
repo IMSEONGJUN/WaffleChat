@@ -47,9 +47,10 @@ final class ConversationCell: UITableViewCell {
     
     // MARK: - setup
     func configureUI() {
-        selectedBackgroundView?.isHidden = true
+        
         
         [profileImageView, nameLabel, messageLabel, timeStampLabel].forEach({contentView.addSubview($0)})
+        selectedBackgroundView?.isHidden = true
         profileImageView.snp.makeConstraints {
             $0.top.bottom.leading.equalToSuperview().inset(10)
             $0.width.height.equalTo(56)
