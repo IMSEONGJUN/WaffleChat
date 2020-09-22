@@ -23,6 +23,7 @@ final class ChatController: UIViewController {
     private let tapGesture = UITapGestureRecognizer()
     let coverView = UIView()
     
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()

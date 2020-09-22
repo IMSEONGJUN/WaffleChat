@@ -23,6 +23,7 @@ final class ConversationViewModel {
             .do(onError: {
                 print("failed to fetch conversations: ", $0)
             })
+            .catchErrorJustReturn([])
             .bind(to: conversations)
             .disposed(by: disposeBag)
     }

@@ -48,6 +48,7 @@ final class ChatViewModel {
                     .do(onError: {
                         print("failed to fetch messages: ", $0)
                     })
+                    .catchErrorJustReturn([])
                     .bind(to: self.messages)
                     .disposed(by: self.disposeBag)
             })

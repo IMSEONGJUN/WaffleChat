@@ -32,6 +32,7 @@ final class NewMessageViewModel {
             .do(onError: {
                 print("failed to fetch users: ", $0)
             })
+            .catchErrorJustReturn([])
             .bind(to: users)
             .disposed(by: disposeBag)
     }
