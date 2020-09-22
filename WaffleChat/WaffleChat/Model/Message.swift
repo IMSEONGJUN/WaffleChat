@@ -28,4 +28,8 @@ struct Message {
         self.isFromCurrentUser = fromId == Auth.auth().currentUser?.uid
     }
     
+    init(original: Message, user: User) {
+        self = original
+        self.user = user
+    }
 }

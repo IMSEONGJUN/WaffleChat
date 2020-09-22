@@ -16,13 +16,10 @@ final class ChatController: UIViewController {
     private var collectionView: UICollectionView!
     private var layout: UICollectionViewFlowLayout!
     
-    var user: User?
-    
     private let customInputView = CustomInputAccessoryView()
     private var viewModel: ChatViewModel
     private var disposeBag = DisposeBag()
     
-    private var token: NSObjectProtocol?
     private let tapGesture = UITapGestureRecognizer()
     let coverView = UIView()
     
@@ -124,17 +121,16 @@ final class ChatController: UIViewController {
         viewModel.user
             .subscribe(onNext: { [weak self] in
                 guard let user = $0 else { return }
-                self?.user = user
                 self?.configureNavigationBar(with: user.username, prefersLargeTitles: false)
             })
             .disposed(by: disposeBag)
         
-        
-        viewModel.messages
+        Observable.combineLatest(viewModel.messages, viewModel.user)
+            .map{ (messages, user) -> [Message] in
+                messages.map{ Message(original: $0, user: user!) }
+            }
             .bind(to: collectionView.rx.items(cellIdentifier: MessageCell.reuseID,
-                                              cellType: MessageCell.self)) { [weak self] index, message, cell in
-                                                var message = message
-                                                message.user = self?.user
+                                              cellType: MessageCell.self)) { index, message, cell in
                                                 cell.message = message
             }
             .disposed(by: disposeBag)
@@ -146,6 +142,7 @@ final class ChatController: UIViewController {
             })
             .disposed(by: disposeBag)
        
+        
        // Action Binding
         customInputView.sendButton.rx.tap
             .bind(to: viewModel.sendButtonTapped)
