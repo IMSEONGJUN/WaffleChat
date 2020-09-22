@@ -92,11 +92,9 @@ final class ConversationsController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        tableView.rx.itemSelected
-            .subscribe(onNext: {[unowned self] indexPath in
-                guard let cell = self.tableView.cellForRow(at: indexPath) as? ConversationCell else { return }
-                guard let user = cell.conversation?.user else { return }
-                let chatVC = ChatController(user: user)
+        tableView.rx.modelSelected(Conversation.self)
+            .subscribe(onNext: {[unowned self] conversation in
+                let chatVC = ChatController(user: conversation.user)
                 self.navigationController?.pushViewController(chatVC, animated: true)
             })
             .disposed(by: disposeBag)
@@ -113,15 +111,12 @@ final class ConversationsController: UIViewController {
     
     // MARK: - Binding Helper
     func newMessageControllerBind(newMsgVC: NewMessageController) {
-        newMsgVC.tableView.rx.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
-                guard let self = self else { return }
-                guard let cell = newMsgVC.tableView.cellForRow(at: indexPath) as? UserCell else { return }
-                guard let user = cell.user else { return }
+        newMsgVC.tableView.rx.modelSelected(User.self)
+            .subscribe(onNext: { [weak self] user in
                 let chatVC = ChatController(user: user)
                 newMsgVC.searchController.dismiss(animated: true)
                 newMsgVC.dismiss(animated: true)
-                self.navigationController?.pushViewController(chatVC, animated: true)
+                self?.navigationController?.pushViewController(chatVC, animated: true)
             })
             .disposed(by: disposeBag)
     }

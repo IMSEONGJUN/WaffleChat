@@ -150,7 +150,7 @@ final class ChatController: UIViewController {
         
         viewModel.messages
             .bind(to: collectionView.rx.items(cellIdentifier: MessageCell.reuseID,
-                                              cellType: MessageCell.self)) {[weak self] indexPath, message, cell in
+                                              cellType: MessageCell.self)) { [weak self] row, message, cell in
                                                 var message = message
                                                 message.user = self?.user
                                                 cell.message = message

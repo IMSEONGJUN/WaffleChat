@@ -15,6 +15,7 @@ final class LoginViewModel {
     
     let emailObservable = BehaviorSubject<String>(value: "")
     let passwordObservable = BehaviorSubject<String>(value: "")
+    let loginButtonTapped = PublishSubject<Void>()
     
     lazy var isValidForm = Observable.combineLatest(emailObservable, passwordObservable)
                             { isValidEmailAddress(email: $0) && $1.count > 6 }

@@ -16,7 +16,6 @@ final class RegistrationViewModel {
     typealias Register = (profileImage: UIImage?, email: String, fullName: String, userName: String, password: String)
     // MARK: - Properties
     let profileImage = PublishRelay<UIImage?>()
-    
     let email = PublishRelay<String>()
     let fullName = PublishRelay<String>()
     let userName = PublishRelay<String>()
@@ -68,6 +67,8 @@ final class RegistrationViewModel {
             .subscribe(onNext: {
                 self.isRegistering.accept(!$0)
                 self.isRegistered.accept($0)
+            }, onError: { (error) in
+                print("failed to register",error)
             })
             .disposed(by: bag)
     }
