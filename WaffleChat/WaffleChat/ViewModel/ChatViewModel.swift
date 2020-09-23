@@ -25,7 +25,7 @@ final class ChatViewModel {
     
     func bind() {
         sendButtonTapped
-            .flatMapLatest{[unowned self] in
+            .flatMapLatest{ [unowned self] in
                 Observable.zip(self.inputText, self.user)
             }
             .subscribe(onNext: {

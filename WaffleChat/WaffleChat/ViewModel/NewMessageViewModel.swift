@@ -14,14 +14,17 @@ final class NewMessageViewModel {
 
     let refreshPulled = PublishSubject<Void>()
     let isNetworking = PublishSubject<Bool>()
+    
     let users = BehaviorRelay<[User]>(value: [])
     lazy var filteredUsers = users.value
+    
+    let filterKey = PublishRelay<String>()
     
     var disposeBag = DisposeBag()
     
     init() {
-        bind()
         fetchUsers()
+        bind()
     }
     
     func fetchUsers() {
@@ -47,6 +50,21 @@ final class NewMessageViewModel {
             .disposed(by: disposeBag)
         
         
-    }  
-    
+        filterKey
+            .distinctUntilChanged()
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .map{ $0.lowercased() }
+            .subscribe(onNext: { [unowned self] str in
+                if str == "" {
+                    self.fetchUsers()
+                    return
+                }
+                let filtered = filteredUsers.filter{ $0.fullname.lowercased().contains(str)
+                                                    || $0.username.lowercased().contains(str) }
+                self.users.accept(filtered)
+            })
+            .disposed(by: disposeBag)
+        
+    }
 }
+

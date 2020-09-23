@@ -63,11 +63,6 @@ final class LoginController: UIViewController {
         navigationController?.navigationBar.barStyle = .default
     }
     
-    private func binding() {
-        stateBinding()
-        userActionBinding()
-    }
-    
     private func configureLogoImageView() {
         view.addSubview(logoImageView)
         logoImageView.snp.makeConstraints {
@@ -106,24 +101,13 @@ final class LoginController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
-    
-    // MARK: - Binding
-    private func stateBinding() {
-        viewModel.isValidForm
-            .drive(onNext: { [weak self] in
-                self?.loginButton.isEnabled = $0
-                self?.loginButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
-            })
-            .disposed(by: disposeBag)
-        
-        viewModel.isLoginCompleted
-            .emit(onNext: { [weak self] _ in
-                self?.showActivityIndicator(false)
-                self?.switchToConversationVC()
-            })
-            .disposed(by: disposeBag)
+    private func binding() {
+        stateBinding()
+        userActionBinding()
     }
     
+    
+    // MARK: - Binding
     private func userActionBinding() {
         emailTextField.rx.text
             .orEmpty
@@ -138,8 +122,8 @@ final class LoginController: UIViewController {
             .disposed(by: disposeBag)
         
         loginButton.rx.tap
-            .do(onNext: {
-                self.showActivityIndicator(true)
+            .do(onNext: { [weak self] _ in
+                self?.showActivityIndicator(true)
             })
             .bind(to: viewModel.loginButtonTapped)
             .disposed(by: disposeBag)
@@ -150,7 +134,21 @@ final class LoginController: UIViewController {
                 self?.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func stateBinding() {
+        viewModel.isValidForm
+            .drive(onNext: { [weak self] in
+                self?.loginButton.isEnabled = $0
+                self?.loginButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
+            })
+            .disposed(by: disposeBag)
         
-        
+        viewModel.isLoginCompleted
+            .emit(onNext: { [weak self] _ in
+                self?.showActivityIndicator(false)
+                self?.switchToConversationVC()
+            })
+            .disposed(by: disposeBag)
     }
 }

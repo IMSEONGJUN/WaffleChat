@@ -68,24 +68,6 @@ final class NewMessageController: UIViewController {
     
     // MARK: - Binding
     private func bind() {
-        // State Bind
-        viewModel.users
-            .bind(to: tableView.rx.items(cellIdentifier: UserCell.reuseIdentifier,
-                                         cellType: UserCell.self)) { indexPath, user, cell in
-                cell.user = user
-            }
-            .disposed(by: disposeBag)
-        
-        viewModel.isNetworking
-            .subscribe(onNext: {[weak self] in
-                if $0 {
-                    self?.refresh.beginRefreshing()
-                } else {
-                    self?.refresh.endRefreshing()
-                }
-            })
-            .disposed(by: disposeBag)
-        
         
         // Action Bind
         refresh.rx.controlEvent(.valueChanged)
@@ -106,18 +88,25 @@ final class NewMessageController: UIViewController {
         
         searchController.searchBar.rx.text
             .orEmpty
-            .distinctUntilChanged()
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .map{ $0.lowercased() }
-            .subscribe(onNext: { [unowned self] str in
-                if str == "" {
-                    self.viewModel.fetchUsers()
-                    return
+            .bind(to: viewModel.filterKey)
+            .disposed(by: disposeBag)
+        
+        
+        // State Bind
+        viewModel.users
+            .bind(to: tableView.rx.items(cellIdentifier: UserCell.reuseIdentifier,
+                                         cellType: UserCell.self)) { indexPath, user, cell in
+                cell.user = user
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.isNetworking
+            .subscribe(onNext: {[weak self] in
+                if $0 {
+                    self?.refresh.beginRefreshing()
+                } else {
+                    self?.refresh.endRefreshing()
                 }
-                let filteredUsers = self.viewModel.filteredUsers
-                                                  .filter{ $0.fullname.lowercased().contains(str)
-                                                           || $0.username.lowercased().contains(str) }
-                self.viewModel.users.accept(filteredUsers)
             })
             .disposed(by: disposeBag)
     }

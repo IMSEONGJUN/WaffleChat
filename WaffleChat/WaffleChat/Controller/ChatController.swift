@@ -118,6 +118,24 @@ final class ChatController: UIViewController {
     
     // MARK: - Binding
     func bind() {
+        
+        // Action Binding
+         customInputView.sendButton.rx.tap
+             .bind(to: viewModel.sendButtonTapped)
+             .disposed(by: disposeBag)
+         
+         tapGesture.rx.event
+             .subscribe(onNext: { [unowned self] _ in
+                 self.view.endEditing(true)
+             })
+             .disposed(by: disposeBag)
+         
+         customInputView.messageInputTextView.rx.text
+             .orEmpty
+             .bind(to: viewModel.inputText)
+             .disposed(by: disposeBag)
+        
+        
         // State Binding
         viewModel.user
             .subscribe(onNext: { [weak self] in
@@ -143,24 +161,7 @@ final class ChatController: UIViewController {
             })
             .disposed(by: disposeBag)
        
-        
-       // Action Binding
-        customInputView.sendButton.rx.tap
-            .bind(to: viewModel.sendButtonTapped)
-            .disposed(by: disposeBag)
-        
-        tapGesture.rx.event
-            .subscribe(onNext: { [unowned self] _ in
-                self.view.endEditing(true)
-            })
-            .disposed(by: disposeBag)
-        
-        customInputView.messageInputTextView.rx.text
-            .orEmpty
-            .bind(to: viewModel.inputText)
-            .disposed(by: disposeBag)
-            
-        
+
         // Notification Binding
         NotificationCenter.default.rx.notification(Notifications.didFinishFetchMessage)
             .bind { [weak self] (noti) in
