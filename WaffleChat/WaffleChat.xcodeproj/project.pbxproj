@@ -10,6 +10,7 @@
 		AB650DE7C24B8EA28D97A79B /* Pods_WaffleChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */; };
 		CE01B70024FD39B300D2C0FC /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01B6FF24FD39B300D2C0FC /* ProfileCell.swift */; };
 		CE01B70224FD45D400D2C0FC /* ProfileFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01B70124FD45D400D2C0FC /* ProfileFooterView.swift */; };
+		CE0706E5251AF60C000E1A1D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE0706E4251AF60C000E1A1D /* APIManager.swift */; };
 		CE10B9B624FCEB9B0080546A /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10B9B524FCEB9B0080546A /* ProfileController.swift */; };
 		CE10B9B824FCECD90080546A /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10B9B724FCECD90080546A /* ProfileHeader.swift */; };
 		CE10B9BA24FD30630080546A /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE10B9B924FD30630080546A /* ProfileViewModel.swift */; };
@@ -40,7 +41,6 @@
 		CEC6F3C824EC068500AE19CD /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC6F3C724EC068500AE19CD /* MessageViewModel.swift */; };
 		CED52B2624EEA7730051848A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED52B2524EEA7730051848A /* ChatViewModel.swift */; };
 		CEDD8F9724EA59590034537E /* BottomButtonOnAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDD8F9624EA59590034537E /* BottomButtonOnAuth.swift */; };
-		CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF0CC7824DAF8BD0017E452 /* APIManager.swift */; };
 		CEF7C77F24EF665000CFF7CF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C77E24EF665000CFF7CF /* Message.swift */; };
 		CEF7C78124EF665900CFF7CF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C78024EF665900CFF7CF /* User.swift */; };
 		CEF7C78424EFB39200CFF7CF /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C78324EFB39200CFF7CF /* Conversation.swift */; };
@@ -64,6 +64,7 @@
 		53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaffleChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE01B6FF24FD39B300D2C0FC /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		CE01B70124FD45D400D2C0FC /* ProfileFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFooterView.swift; sourceTree = "<group>"; };
+		CE0706E4251AF60C000E1A1D /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		CE10B9B524FCEB9B0080546A /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		CE10B9B724FCECD90080546A /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
 		CE10B9B924FD30630080546A /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -97,7 +98,6 @@
 		CEC6F3C724EC068500AE19CD /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 		CED52B2524EEA7730051848A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		CEDD8F9624EA59590034537E /* BottomButtonOnAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonOnAuth.swift; sourceTree = "<group>"; };
-		CEF0CC7824DAF8BD0017E452 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIManager.swift; path = WaffleChat/APIManager.swift; sourceTree = SOURCE_ROOT; };
 		CEF7C77E24EF665000CFF7CF /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		CEF7C78024EF665900CFF7CF /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CEF7C78324EFB39200CFF7CF /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
@@ -133,6 +133,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		CE0706DF251AF520000E1A1D /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				CE0706E4251AF60C000E1A1D /* APIManager.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		CE961AA624CEE3190094FE86 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,13 +172,13 @@
 			isa = PBXGroup;
 			children = (
 				CEBDB4A32518EDA200408DF7 /* WaffleChat.entitlements */,
+				CE0706DF251AF520000E1A1D /* Service */,
 				CE9AE42024A9D9DE00F77F48 /* Support */,
-				CE9AE41924A9BC5200F77F48 /* API */,
 				CE9AE41724A9BC4500F77F48 /* Utilities */,
 				CE9AE42B24ACC46500F77F48 /* Constants */,
 				CE9AE41C24A9BC5B00F77F48 /* View */,
-				CE9AE41B24A9BC5600F77F48 /* ViewModel */,
 				CE9AE41A24A9BC5400F77F48 /* Controller */,
+				CE9AE41B24A9BC5600F77F48 /* ViewModel */,
 				CEF0CC7C24DAFAC50017E452 /* Model */,
 				CE9AE40924A9BBB800F77F48 /* Main.storyboard */,
 				CE9AE40C24A9BBBA00F77F48 /* Assets.xcassets */,
@@ -189,22 +197,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		CE9AE41924A9BC5200F77F48 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				CEF0CC7824DAF8BD0017E452 /* APIManager.swift */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
 		CE9AE41A24A9BC5400F77F48 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CE10B9B524FCEB9B0080546A /* ProfileController.swift */,
+				CE9AE42624ACC12800F77F48 /* Authentication */,
+				CEB3AD8224E967B8003F83C1 /* ChatController.swift */,
 				CE9AE41E24A9C08100F77F48 /* ConversationsController.swift */,
 				CE4D9D2724E045A500DC933D /* NewMessageController.swift */,
-				CEB3AD8224E967B8003F83C1 /* ChatController.swift */,
-				CE9AE42624ACC12800F77F48 /* Authentication */,
+				CE10B9B524FCEB9B0080546A /* ProfileController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -212,12 +212,12 @@
 		CE9AE41B24A9BC5600F77F48 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				CE10B9B924FD30630080546A /* ProfileViewModel.swift */,
+				CE961AA624CEE3190094FE86 /* Authentication */,
+				CED52B2524EEA7730051848A /* ChatViewModel.swift */,
 				CE39B7AE24E14593009B0DD0 /* ConversationViewModel.swift */,
 				CE39B7B024E145C8009B0DD0 /* NewMessageViewModel.swift */,
-				CED52B2524EEA7730051848A /* ChatViewModel.swift */,
 				CEC6F3C724EC068500AE19CD /* MessageViewModel.swift */,
-				CE961AA624CEE3190094FE86 /* Authentication */,
+				CE10B9B924FD30630080546A /* ProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -425,6 +425,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0706E5251AF60C000E1A1D /* APIManager.swift in Sources */,
 				CED52B2624EEA7730051848A /* ChatViewModel.swift in Sources */,
 				CEB17AE324B4721200FB7B7E /* InputTextField.swift in Sources */,
 				CE39B7B124E145C8009B0DD0 /* NewMessageViewModel.swift in Sources */,
@@ -453,7 +454,6 @@
 				CEF7C77F24EF665000CFF7CF /* Message.swift in Sources */,
 				CEB17AE824BF625A00FB7B7E /* CustomButtonForAuth.swift in Sources */,
 				CE4D9D2824E045A500DC933D /* NewMessageController.swift in Sources */,
-				CEF0CC7924DAF8BD0017E452 /* APIManager.swift in Sources */,
 				CE01B70024FD39B300D2C0FC /* ProfileCell.swift in Sources */,
 				CE9AE42A24ACC18500F77F48 /* RegistrationController.swift in Sources */,
 				CE9AE42824ACC16A00F77F48 /* LoginController.swift in Sources */,
