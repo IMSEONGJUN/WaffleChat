@@ -140,5 +140,18 @@ final class APIManager {
         }
     }
     
+    
+    func performLogin(email: String, password: String) -> Observable<Bool> {
+        Observable.create { (observer) -> Disposable in
+            Auth.auth().signIn(withEmail: email, password: password) { (_, error) in
+                if let error = error {
+                    observer.onError(error)
+                }
+                observer.onNext(true)
+            }
+            return Disposables.create()
+        }
+    }
+    
 //    
 }

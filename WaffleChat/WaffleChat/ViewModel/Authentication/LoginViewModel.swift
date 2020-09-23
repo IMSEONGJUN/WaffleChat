@@ -13,28 +13,28 @@ import Firebase
 
 final class LoginViewModel {
     
-    let emailObservable = BehaviorSubject<String>(value: "")
-    let passwordObservable = BehaviorSubject<String>(value: "")
+    let email = BehaviorSubject<String>(value: "")
+    let password = BehaviorSubject<String>(value: "")
     let loginButtonTapped = PublishSubject<Void>()
+    let isLoginCompleted: Signal<Bool>
+    let isValidForm: Driver<Bool>
     
-    lazy var isValidForm = Observable.combineLatest(emailObservable, passwordObservable)
-                            { isValidEmailAddress(email: $0) && $1.count > 6 }
-    
-    func performLogin(completion: @escaping (Error?) -> Void) {
-        guard let email = try? emailObservable.value() else { return }
-        guard let password = try? passwordObservable.value() else { return }
+    init() {
+        self.isValidForm = Observable
+            .combineLatest(
+                email,
+                password
+            )
+            .map { isValidEmailAddress(email: $0) && $1.count > 6 }
+            .asDriver(onErrorJustReturn: false)
         
-        Auth.auth().signIn(withEmail: email, password: password) { (_, error) in
-            completion(error)
-        }
+        isLoginCompleted = loginButtonTapped
+            .withLatestFrom(
+                Observable.combineLatest(email, password)
+            )
+            .flatMapLatest {
+                APIManager.shared.performLogin(email: $0, password: $1)
+            }
+            .asSignal(onErrorJustReturn: false)
     }
-    
 }
-
-// << 코드 작성 중 배운점 >>
-// Observable.combineLatest는 합한 observable들 중에서 한개라도 값을 방출하면 합해진 모든 Observable에서 가장 최근에 방출된 값을 모두 묶어서 방출하는 새로운 Observable을 만든다.
-// 그러나 Observable.merge는 합한 Observable중 가장 최근에 방출하는 1개의 값을 1개의 시퀀스로 만들어 내보내는 Observable을 만든다.
-// ex)  Observable.merge(ob1, ob2)
-//       .map{ value -> Int in
-//         return Int(value)
-//       }

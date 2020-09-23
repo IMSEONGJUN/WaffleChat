@@ -110,11 +110,16 @@ final class LoginController: UIViewController {
     // MARK: - Binding
     private func stateBinding() {
         viewModel.isValidForm
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                print($0)
+            .drive(onNext: { [weak self] in
                 self?.loginButton.isEnabled = $0
                 self?.loginButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.isLoginCompleted
+            .emit(onNext: { [weak self] _ in
+                self?.showActivityIndicator(false)
+                self?.switchToConversationVC()
             })
             .disposed(by: disposeBag)
     }
@@ -123,47 +128,29 @@ final class LoginController: UIViewController {
         emailTextField.rx.text
             .orEmpty
             .distinctUntilChanged()
-            .bind(to: viewModel.emailObservable)
+            .bind(to: viewModel.email)
             .disposed(by: disposeBag)
 
         passwordTextField.rx.text
             .orEmpty
             .distinctUntilChanged()
-            .bind(to: viewModel.passwordObservable)
+            .bind(to: viewModel.password)
             .disposed(by: disposeBag)
         
         loginButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                self?.didTapLoginButton()
+            .do(onNext: {
+                self.showActivityIndicator(true)
             })
+            .bind(to: viewModel.loginButtonTapped)
             .disposed(by: disposeBag)
         
         goToSignUpPageButton.rx.tap
             .subscribe(onNext: { [weak self] in
-                self?.didTapGoToSignUpPageButton()
+                let vc = RegistrationController()
+                self?.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
-    }
-    
-    
-    // MARK: - Action Handler
-    private func didTapLoginButton() {
-        print("login")
-        showActivityIndicator(true)
-        viewModel.performLogin { [weak self] (error) in
-            guard let self = self else { return }
-            self.showActivityIndicator(false)
-            if let error = error {
-                print("failed to login: ", error)
-                return
-            }
-            print("Successfully logged in")
-            self.switchToConversationVC()
-        }
-    }
-    
-    private func didTapGoToSignUpPageButton() {
-        let vc = RegistrationController()
-        navigationController?.pushViewController(vc, animated: true)
+        
+        
     }
 }
