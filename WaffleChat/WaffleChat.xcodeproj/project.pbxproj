@@ -172,10 +172,10 @@
 			isa = PBXGroup;
 			children = (
 				CEBDB4A32518EDA200408DF7 /* WaffleChat.entitlements */,
-				CE0706DF251AF520000E1A1D /* Service */,
 				CE9AE42024A9D9DE00F77F48 /* Support */,
 				CE9AE41724A9BC4500F77F48 /* Utilities */,
 				CE9AE42B24ACC46500F77F48 /* Constants */,
+				CE0706DF251AF520000E1A1D /* Service */,
 				CE9AE41C24A9BC5B00F77F48 /* View */,
 				CE9AE41A24A9BC5400F77F48 /* Controller */,
 				CE9AE41B24A9BC5600F77F48 /* ViewModel */,

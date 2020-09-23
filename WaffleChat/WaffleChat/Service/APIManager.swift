@@ -86,11 +86,13 @@ final class APIManager {
     
     func fetchConversations() -> Observable<[Conversation]> {
         guard let uid = Auth.auth().currentUser?.uid else { return Observable.empty() }
+        let ref = self.messageRef.document(uid).collection("recent-messages").order(by: "timestamp")
+        
         return Observable.create { (observer) -> Disposable in
-            var conversations = [Conversation]()
-            let ref = self.messageRef.document(uid).collection("recent-messages").order(by: "timestamp")
-            
             ref.addSnapshotListener { (snapshot, error) in
+                
+                var conversations = [Conversation]()
+                
                 snapshot?.documentChanges.forEach({ (change) in
                     let dic = change.document.data()
                     let message = Message(dic: dic)
