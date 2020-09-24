@@ -14,6 +14,7 @@ import Firebase
 final class RegistrationViewModel {
     
     typealias Register = (profileImage: UIImage?, email: String, fullName: String, userName: String, password: String)
+    
     // MARK: - Properties
     let profileImage = PublishRelay<UIImage?>()
     let email = PublishRelay<String>()
@@ -26,7 +27,8 @@ final class RegistrationViewModel {
     let isRegistering = BehaviorRelay<Bool>(value: false)
     let isRegistered = BehaviorRelay<Bool>(value: false)
     let isFormValid: Driver<Bool>
-    var bag = DisposeBag()
+    
+    var disposeBag = DisposeBag()
     
     // MARK: - Initializer
     init() {
@@ -60,17 +62,17 @@ final class RegistrationViewModel {
         
         signupButtonTapped
             .withLatestFrom(registrationValues)
-            .do(onNext:{ _ in self.isRegistering.accept(true) })
+            .do(onNext:{ [unowned self] _ in self.isRegistering.accept(true) })
             .flatMapLatest{
                 self.performRegistration(values: $0)
             }
-            .subscribe(onNext: {
+            .subscribe(onNext: { [unowned self] in
                 self.isRegistering.accept(!$0)
                 self.isRegistered.accept($0)
             }, onError: { (error) in
                 print("failed to register",error)
             })
-            .disposed(by: bag)
+            .disposed(by: disposeBag)
     }
     
     
@@ -86,7 +88,7 @@ final class RegistrationViewModel {
                     .subscribe(onNext: {
                         observer.onNext($0)
                     })
-                    .disposed(by: self.bag)
+                    .disposed(by: self.disposeBag)
             }
             return Disposables.create()
         }
@@ -115,7 +117,7 @@ final class RegistrationViewModel {
                         .subscribe(onNext: {
                             observer.onNext($0)
                         })
-                        .disposed(by: self.bag)
+                        .disposed(by: self.disposeBag)
                 }
             }
             return Disposables.create()

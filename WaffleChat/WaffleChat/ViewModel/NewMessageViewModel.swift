@@ -52,7 +52,7 @@ final class NewMessageViewModel {
         
         filterKey
             .distinctUntilChanged()
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .map{ $0.lowercased() }
             .subscribe(onNext: { [unowned self] str in
                 if str == "" {

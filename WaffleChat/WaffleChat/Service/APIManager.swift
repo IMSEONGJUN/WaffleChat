@@ -151,6 +151,7 @@ final class APIManager {
                     observer.onError(error)
                 }
                 observer.onNext(true)
+                observer.onCompleted()
             }
             return Disposables.create()
         }
