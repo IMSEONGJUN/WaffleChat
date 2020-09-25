@@ -12,6 +12,17 @@ import RxSwift
 import RxCocoa
 import JGProgressHUD
 
+protocol LoginViewModelBindable {
+    // Input
+    var email: BehaviorSubject<String> { get }
+    var password: BehaviorSubject<String> { get }
+    var loginButtonTapped: PublishSubject<Void> { get }
+    
+    // Output
+    var isLoginCompleted: Signal<Bool> { get }
+    var isValidForm: Driver<Bool> { get }
+}
+
 final class LoginController: UIViewController {
 
     // MARK: - Properties
@@ -33,7 +44,7 @@ final class LoginController: UIViewController {
      
     private let goToSignUpPageButton = BottomButtonOnAuth(firstText: "Don't have an account? ", secondText: "Sign Up")
     
-    var viewModel = LoginViewModel()
+    var viewModel: LoginViewModelBindable!
     var disposeBag = DisposeBag()
     
     
@@ -42,11 +53,10 @@ final class LoginController: UIViewController {
         super.viewDidLoad()
         loginCheck()
         configureUI()
-        binding()
     }
     
     
-    // MARK: - Initial Setup
+    // MARK: - Initial UI Setup
     private func configureUI() {
         configureDetailAttributesOfUI()
         configureGradientLayer()
@@ -101,14 +111,14 @@ final class LoginController: UIViewController {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
     
-    private func binding() {
-        stateBinding()
-        userActionBinding()
-    }
-    
     
     // MARK: - Binding
-    private func userActionBinding() {
+    func bind(_ viewModelBindable: LoginViewModelBindable) {
+        // DI
+        self.viewModel = viewModelBindable
+        
+        
+        // Input -> ViewModel
         emailTextField.rx.text
             .orEmpty
             .distinctUntilChanged()
@@ -131,12 +141,14 @@ final class LoginController: UIViewController {
         goToSignUpPageButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 let vc = RegistrationController()
+                let viewModel = RegistrationViewModel()
+                vc.bind(viewModel)
                 self?.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
-    }
-    
-    private func stateBinding() {
+        
+        
+        // viewModel -> Output
         viewModel.isValidForm
             .drive(onNext: { [weak self] in
                 self?.loginButton.isEnabled = $0

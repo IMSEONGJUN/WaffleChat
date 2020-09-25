@@ -22,8 +22,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-//        window?.rootViewController = UINavigationController(rootViewController: ConversationsController())
-        window?.rootViewController = UINavigationController(rootViewController: LoginController())
+        
+        let loginController = LoginController()
+        loginController.bind(LoginViewModel())
+        window?.rootViewController = UINavigationController(rootViewController: loginController)
         window?.makeKeyAndVisible()
         
         let center = UNUserNotificationCenter.current()

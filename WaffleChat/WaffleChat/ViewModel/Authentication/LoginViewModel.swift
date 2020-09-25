@@ -11,15 +11,16 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-final class LoginViewModel {
+struct LoginViewModel: LoginViewModelBindable {
     
     let email = BehaviorSubject<String>(value: "")
     let password = BehaviorSubject<String>(value: "")
     let loginButtonTapped = PublishSubject<Void>()
+    
     let isLoginCompleted: Signal<Bool>
     let isValidForm: Driver<Bool>
     
-    init() {
+    init(_ model: AuthManager = AuthManager()) {
         self.isValidForm = Observable
             .combineLatest(
                 email,
@@ -33,7 +34,7 @@ final class LoginViewModel {
                 Observable.combineLatest(email, password)
             )
             .flatMapLatest {
-                APIManager.shared.performLogin(email: $0, password: $1)
+                model.performLogin(email: $0, password: $1)
             }
             .asSignal(onErrorJustReturn: false)
     }

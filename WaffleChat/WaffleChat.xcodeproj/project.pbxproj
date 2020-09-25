@@ -18,6 +18,9 @@
 		CE39B7B124E145C8009B0DD0 /* NewMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39B7B024E145C8009B0DD0 /* NewMessageViewModel.swift */; };
 		CE39B7D724E17FAF009B0DD0 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39B7D624E17FAF009B0DD0 /* UserCell.swift */; };
 		CE4D9D2824E045A500DC933D /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D9D2724E045A500DC933D /* NewMessageController.swift */; };
+		CE77968A251DBE4500466CC3 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE779689251DBE4500466CC3 /* AuthManager.swift */; };
+		CE77968D251DD21900466CC3 /* ViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE77968C251DD21900466CC3 /* ViewType.swift */; };
+		CE77968F251DD22700466CC3 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE77968E251DD22700466CC3 /* ViewModelType.swift */; };
 		CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87288224C1EE8300E00C42 /* LoginViewModel.swift */; };
 		CE87288524C46B5000E00C42 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE87288424C46B5000E00C42 /* RegistrationViewModel.swift */; };
 		CE961AAC24CEF9B80094FE86 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE961AAB24CEF9B80094FE86 /* GoogleService-Info.plist */; };
@@ -72,6 +75,9 @@
 		CE39B7B024E145C8009B0DD0 /* NewMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageViewModel.swift; sourceTree = "<group>"; };
 		CE39B7D624E17FAF009B0DD0 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		CE4D9D2724E045A500DC933D /* NewMessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
+		CE779689251DBE4500466CC3 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		CE77968C251DD21900466CC3 /* ViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewType.swift; sourceTree = "<group>"; };
+		CE77968E251DD22700466CC3 /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		CE87288224C1EE8300E00C42 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		CE87288424C46B5000E00C42 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		CE961AAB24CEF9B80094FE86 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -137,8 +143,18 @@
 			isa = PBXGroup;
 			children = (
 				CE0706E4251AF60C000E1A1D /* APIManager.swift */,
+				CE779689251DBE4500466CC3 /* AuthManager.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		CE77968B251DD1EF00466CC3 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				CE77968C251DD21900466CC3 /* ViewType.swift */,
+				CE77968E251DD22700466CC3 /* ViewModelType.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		CE961AA624CEE3190094FE86 /* Authentication */ = {
@@ -177,6 +193,7 @@
 				CE9AE42B24ACC46500F77F48 /* Constants */,
 				CE0706DF251AF520000E1A1D /* Service */,
 				CE9AE41C24A9BC5B00F77F48 /* View */,
+				CE77968B251DD1EF00466CC3 /* Base */,
 				CE9AE41A24A9BC5400F77F48 /* Controller */,
 				CE9AE41B24A9BC5600F77F48 /* ViewModel */,
 				CEF0CC7C24DAFAC50017E452 /* Model */,
@@ -438,12 +455,15 @@
 				CE10B9B824FCECD90080546A /* ProfileHeader.swift in Sources */,
 				CE9AE42F24AE377500F77F48 /* Extensions.swift in Sources */,
 				CEB17AE024B3743400FB7B7E /* InputContainerView.swift in Sources */,
+				CE77968F251DD22700466CC3 /* ViewModelType.swift in Sources */,
 				CEDD8F9724EA59590034537E /* BottomButtonOnAuth.swift in Sources */,
 				CE10B9BA24FD30630080546A /* ProfileViewModel.swift in Sources */,
 				CE9AE40624A9BBB800F77F48 /* SceneDelegate.swift in Sources */,
+				CE77968D251DD21900466CC3 /* ViewType.swift in Sources */,
 				CE39B7D724E17FAF009B0DD0 /* UserCell.swift in Sources */,
 				CE39B7AF24E14593009B0DD0 /* ConversationViewModel.swift in Sources */,
 				CEC6F3C824EC068500AE19CD /* MessageViewModel.swift in Sources */,
+				CE77968A251DBE4500466CC3 /* AuthManager.swift in Sources */,
 				CE9AE42D24ACC48B00F77F48 /* Constants.swift in Sources */,
 				CE9D2CB424EAC12900AE5BE0 /* CustomInputAccessoryView.swift in Sources */,
 				CE87288324C1EE8300E00C42 /* LoginViewModel.swift in Sources */,

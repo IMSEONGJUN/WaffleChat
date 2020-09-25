@@ -11,27 +11,32 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-final class RegistrationViewModel {
-    
-    typealias Register = (profileImage: UIImage?, email: String, fullName: String, userName: String, password: String)
+struct RegistrationViewModel: RegistrationViewModelBindable {
     
     // MARK: - Properties
-    let profileImage = PublishRelay<UIImage?>()
-    let email = PublishRelay<String>()
-    let fullName = PublishRelay<String>()
-    let userName = PublishRelay<String>()
-    let password = PublishRelay<String>()
-    let registrationValues = PublishRelay<Register>()
-    let signupButtonTapped = PublishSubject<Void>()
+    var profileImage = PublishRelay<UIImage?>()
+    var email = PublishRelay<String>()
+    var fullName = PublishRelay<String>()
+    var userName = PublishRelay<String>()
+    var password = PublishRelay<String>()
+    var registrationValues = PublishRelay<Register>()
+    var signupButtonTapped = PublishRelay<Void>()
     
-    let isRegistering = BehaviorRelay<Bool>(value: false)
-    let isRegistered = BehaviorRelay<Bool>(value: false)
-    let isFormValid: Driver<Bool>
+    var isRegistering: Driver<Bool>
+    var isRegistered: Signal<Bool>
+    var isFormValid: Driver<Bool>
     
     var disposeBag = DisposeBag()
     
+    
     // MARK: - Initializer
-    init() {
+    init(_ model: AuthManager = AuthManager()) {
+        
+        let onRegistering = PublishRelay<Bool>()
+        isRegistering = onRegistering.asDriver(onErrorJustReturn: false)
+        let onRegistered = PublishRelay<Bool>()
+        isRegistered = onRegistered.asSignal(onErrorJustReturn: false)
+        
         isFormValid = Observable
             .combineLatest(
                 email,
@@ -59,90 +64,18 @@ final class RegistrationViewModel {
             )
             .map { ($0,$1,$2,$3,$4) }
             
-        
         signupButtonTapped
-            .withLatestFrom(registrationValues)
-            .do(onNext:{ [unowned self] _ in self.isRegistering.accept(true) })
-            .flatMapLatest{
-                self.performRegistration(values: $0)
-            }
-            .subscribe(onNext: { [unowned self] in
-                self.isRegistering.accept(!$0)
-                self.isRegistered.accept($0)
-            }, onError: { (error) in
-                print("failed to register",error)
+            .withLatestFrom(
+                registrationValues
+            )
+            .do(onNext:{ _ in
+                onRegistering.accept(true)
+            })
+            .flatMapLatest( model.performRegistration )
+            .subscribe(onNext: {
+                onRegistering.accept(false)
+                onRegistered.accept($0 ? true : false)
             })
             .disposed(by: disposeBag)
-    }
-    
-    
-    // MARK: - Registration Logic
-    func performRegistration(values: Register) -> Observable<Bool> {
-        Observable.create { (observer) -> Disposable in
-            Auth.auth().createUser(withEmail: values.email, password: values.password) { (result, error) in
-                if let error = error {
-                    observer.onError(error)
-                    return
-                }
-                self.saveImageToFirebase(values: values)
-                    .subscribe(onNext: {
-                        observer.onNext($0)
-                    })
-                    .disposed(by: self.disposeBag)
-            }
-            return Disposables.create()
-        }
-        
-    }
-    
-    private func saveImageToFirebase(values: Register) -> Observable<Bool> {
-        let filename = UUID().uuidString
-        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
-        let imageData = values.profileImage?.jpegData(compressionQuality: 0.75) ?? Data()
-        
-        return Observable.create { (observer) -> Disposable in
-            ref.putData(imageData, metadata: nil) { (_, error) in
-                if let error = error {
-                    observer.onError(error)
-                    return
-                }
-                
-                ref.downloadURL { (url, error) in
-                    if let error = error {
-                        observer.onError(error)
-                        return
-                    }
-                    let imageURL = url?.absoluteString ?? ""
-                    self.saveInfoToFirestore(values: values, imageURL: imageURL)
-                        .subscribe(onNext: {
-                            observer.onNext($0)
-                        })
-                        .disposed(by: self.disposeBag)
-                }
-            }
-            return Disposables.create()
-        }
-    }
-    
-    private func saveInfoToFirestore(values: Register, imageURL: String) -> Observable<Bool> {
-        let uid = Auth.auth().currentUser?.uid ?? ""
-        
-        let docData:[String: Any] = [
-            "email": values.email,
-            "fullname": values.fullName,
-            "profileImageURL": imageURL,
-            "uid": uid,
-            "username": values.userName.lowercased()
-        ]
-        return Observable<Bool>.create { (observer) -> Disposable in
-            Firestore.firestore().collection("users").document(uid).setData(docData) { (error) in
-                if let error = error {
-                    observer.onError(error)
-                    return
-                }
-                observer.onNext(true)
-            }
-            return Disposables.create()
-        }
     }
 }

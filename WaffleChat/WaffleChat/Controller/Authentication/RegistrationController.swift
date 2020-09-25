@@ -11,6 +11,24 @@ import RxSwift
 import RxCocoa
 import JGProgressHUD
 
+typealias Register = (profileImage: UIImage?, email: String, fullName: String, userName: String, password: String)
+
+protocol RegistrationViewModelBindable {
+    // Input
+    var profileImage: PublishRelay<UIImage?> { get }
+    var email: PublishRelay<String> { get }
+    var fullName: PublishRelay<String> { get }
+    var userName: PublishRelay<String> { get }
+    var password: PublishRelay<String> { get }
+    var registrationValues: PublishRelay<Register> { get }
+    var signupButtonTapped: PublishRelay<Void> { get }
+    
+    // Output
+    var isRegistering: Driver<Bool> { get }
+    var isRegistered: Signal<Bool> { get }
+    var isFormValid: Driver<Bool> { get }
+}
+
 final class RegistrationController: UIViewController {
 
     // MARK: - Properties
@@ -49,7 +67,7 @@ final class RegistrationController: UIViewController {
     
     private let stack = UIStackView()
     
-    let viewModel = RegistrationViewModel()
+    var viewModel: RegistrationViewModelBindable!
     var disposeBag = DisposeBag()
     
     
@@ -61,12 +79,11 @@ final class RegistrationController: UIViewController {
         configurePlusPhotoButton()
         configureInputContextStackView()
         configureGoToLoginPageButton()
-        bind()
         setTapGesture()
     }
     
     
-    // MARK: - Initial Setup
+    // MARK: - Initial UI Setup
     private func configureUIAttributeThings() {
         passwordTextField.isSecureTextEntry = true
         emailTextField.keyboardType = .emailAddress
@@ -112,14 +129,12 @@ final class RegistrationController: UIViewController {
     }
     
     
-    // MARK: - Binding for Async data stream
-    private func bind() {
-        userActionBinding()
-        stateBinding()
-        notificationBinding()
-    }
-    
-    private func userActionBinding() {
+    // MARK: - Binding
+    func bind(_ viewModelBindable: RegistrationViewModelBindable) {
+        // DI
+        self.viewModel = viewModelBindable
+        
+        // Input -> ViewModel
         plusPhotoButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
@@ -129,6 +144,7 @@ final class RegistrationController: UIViewController {
         
         signUpButton.rx.tap
             .map{ _ in Void() }
+            .debug()
             .bind(to: viewModel.signupButtonTapped)
             .disposed(by: disposeBag)
         
@@ -161,9 +177,9 @@ final class RegistrationController: UIViewController {
             .distinctUntilChanged()
             .bind(to: viewModel.password)
             .disposed(by: disposeBag)
-    }
-    
-    private func stateBinding() {
+        
+        
+        // viewModel -> Output
         viewModel.isFormValid
             .drive(onNext: { [weak self] in
                 print("Registration")
@@ -184,7 +200,7 @@ final class RegistrationController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.isRegistering
-            .subscribe(onNext: {[weak self] in
+            .drive(onNext: {[weak self] in
                 guard let self = self else { return }
                 self.showActivityIndicator($0, withText: "Registering")
             })
@@ -192,14 +208,13 @@ final class RegistrationController: UIViewController {
         
         viewModel.isRegistered
             .filter{ $0 == true }
-            .subscribe(onNext: { [weak self] _ in
+            .emit(onNext: { [weak self] _ in
                 self?.switchToConversationVC()
             })
             .disposed(by: disposeBag)
         
-    }
-    
-    private func notificationBinding() {
+        
+        // Notification binding
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
             .map { [weak self] noti -> CGFloat in
                 guard let self = self else { fatalError() }
@@ -222,9 +237,8 @@ final class RegistrationController: UIViewController {
                 })
             })
             .disposed(by: disposeBag)
-        
     }
-    
+
     
     // MARK: - Helper
     private func getKeyboardFrameHeight(noti: Notification) -> CGFloat {
@@ -243,6 +257,7 @@ final class RegistrationController: UIViewController {
 extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        print("finished image pick")
         let image = info[.originalImage] as? UIImage
         viewModel.profileImage.accept(image)
         picker.dismiss(animated: true)

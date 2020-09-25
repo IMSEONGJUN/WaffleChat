@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import JGProgressHUD
+import RxSwift
+import RxCocoa
 
 func isValidEmailAddress(email: String) -> Bool {
     let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
@@ -75,7 +77,10 @@ extension UIViewController {
             if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
                 let window = UIWindow(windowScene: windowScene)
                 window.backgroundColor = .systemBackground
-                let rootVC = UINavigationController(rootViewController: LoginController())
+                let loginVC = LoginController()
+                let loginViewModel = LoginViewModel()
+                loginVC.bind(loginViewModel)
+                let rootVC = UINavigationController(rootViewController: loginVC)
                 window.rootViewController = rootVC
                 
                 let sceneDelegate = windowScene.delegate as? SceneDelegate
@@ -86,7 +91,11 @@ extension UIViewController {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let window = UIWindow(frame: UIScreen.main.bounds)
             window.backgroundColor = .systemBackground
-            window.rootViewController = UINavigationController(rootViewController: LoginController())
+            let loginVC = LoginController()
+            let loginViewModel = LoginViewModel()
+            loginVC.bind(loginViewModel)
+            let rootVC = UINavigationController(rootViewController: loginVC)
+            window.rootViewController = UINavigationController(rootViewController: rootVC)
             window.makeKeyAndVisible()
             appDelegate.window = window
         }
