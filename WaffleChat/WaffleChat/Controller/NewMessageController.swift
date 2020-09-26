@@ -8,30 +8,45 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
-final class NewMessageController: UIViewController {
+protocol NewMessageViewModelBindable: ViewModelType {
+    // Input -> ViewModel
+    var refreshPulled: PublishRelay<Void> { get }
+    var filterKey: PublishRelay<String> { get }
+    var searchCancelButtonTapped: PublishRelay<Void> { get }
+    
+    // ViewModel -> OutPut
+    var users: BehaviorRelay<[User]> { get }
+    var isNetworking: PublishRelay<Bool> { get }
+    
+}
+
+final class NewMessageController: UIViewController, ViewType {
     
     // MARK: - Properties
     let tableView = UITableView()
     let refresh = UIRefreshControl()
     let searchController = UISearchController()
     
-    let viewModel = NewMessageViewModel()
-    var disposeBag = DisposeBag()
+    var viewModel: NewMessageViewModelBindable!
+    var disposeBag: DisposeBag!
+    
     let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: nil)
     
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        bind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureNavigationBar(with: "Friend List", prefersLargeTitles: false)
+    }
     
     // MARK: - Initial Setup
-    private func configureUI() {
-        view.backgroundColor = .yellow
+    func setupUI() {
         configureTableView()
         configureNaviBar()
         configureSearchBar()
@@ -39,7 +54,6 @@ final class NewMessageController: UIViewController {
     }
     
     private func configureNaviBar() {
-        configureNavigationBar(with: "Friend List", prefersLargeTitles: false)
         navigationItem.rightBarButtonItem = cancelButton
     }
     
@@ -67,23 +81,15 @@ final class NewMessageController: UIViewController {
     
     
     // MARK: - Binding
-    private func bind() {
+    func bind() {
         
         // Action Bind
         refresh.rx.controlEvent(.valueChanged)
             .bind(to: viewModel.refreshPulled)
             .disposed(by: disposeBag)
         
-        cancelButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                self.dismiss(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
         searchController.searchBar.rx.cancelButtonClicked
-            .subscribe(onNext: { [unowned self] in
-                self.viewModel.fetchUsers()
-            })
+            .bind(to: viewModel.searchCancelButtonTapped)
             .disposed(by: disposeBag)
         
         searchController.searchBar.rx.text
@@ -91,6 +97,12 @@ final class NewMessageController: UIViewController {
             .bind(to: viewModel.filterKey)
             .disposed(by: disposeBag)
         
+        // UI Bind
+        cancelButton.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                self.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
         
         // State Bind
         viewModel.users
@@ -101,6 +113,7 @@ final class NewMessageController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.isNetworking
+            .observeOn(MainScheduler.instance)
             .subscribe(onNext: {[weak self] in
                 if $0 {
                     self?.refresh.beginRefreshing()

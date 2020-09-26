@@ -25,17 +25,5 @@ struct ConversationViewModel: ConversationViewModelBindable {
             .catchErrorJustReturn([])
             .bind(to: conversations)
             .disposed(by: disposeBag)
-//        fetchConversations()
     }
-    
-//    func fetchConversations() {
-//        APIManager.shared.fetchConversations()
-//            .do(onError: {
-//                print("failed to fetch conversations: ", $0)
-//            })
-//            .debug()
-//            .catchErrorJustReturn([])
-//            .bind(to: conversations)
-//            .disposed(by: disposeBag)
-//    }
 }

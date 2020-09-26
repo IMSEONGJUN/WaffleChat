@@ -10,61 +10,70 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class NewMessageViewModel {
-
-    let refreshPulled = PublishSubject<Void>()
-    let isNetworking = PublishSubject<Bool>()
-    
-    let users = BehaviorRelay<[User]>(value: [])
-    lazy var filteredUsers = users.value
-    
+struct NewMessageViewModel: NewMessageViewModelBindable {
+    // Input
+    let refreshPulled = PublishRelay<Void>()
     let filterKey = PublishRelay<String>()
+    let searchCancelButtonTapped = PublishRelay<Void>()
     
+    // Output
+    var users = BehaviorRelay<[User]>(value: [])
+    var isNetworking = PublishRelay<Bool>()
+    
+    //lazy var filteredUsers = users.value
     var disposeBag = DisposeBag()
     
-    init() {
-        fetchUsers()
-        bind()
-    }
-    
-    func fetchUsers() {
-        APIManager.shared.fetchUsers()
-            .do(onNext: { [weak self] _ in
-                self?.isNetworking.onNext(false)
-            })
-            .do(onError: {
-                print("failed to fetch users: ", $0)
-            })
-            .catchErrorJustReturn([])
+    init(_ model: APIManager = .shared) {
+
+        let fetchedUsers = model.fetchUsers().share()
+        let baseUsersForFiltering = PublishRelay<[User]>()
+        let onNetworking = PublishRelay<Bool>()
+        isNetworking = onNetworking
+        
+        fetchedUsers
             .bind(to: users)
             .disposed(by: disposeBag)
-    }
-    
-    func bind()  {
-        refreshPulled
-            .do(onNext: { [unowned self] _ in
-                self.fetchUsers()
-            })
-            .map{ _ in true }
-            .bind(to: isNetworking)
+        
+        fetchedUsers
+            .bind(to: baseUsersForFiltering)
+            .disposed(by: disposeBag)
+        
+        let reFetchedUsers = Observable
+            .merge(
+                refreshPulled.asObservable(),
+                searchCancelButtonTapped.asObservable()
+            )
+            .do(onNext: { onNetworking.accept(true) })
+            .flatMapLatest(model.fetchUsers)
+            .catchErrorJustReturn([])
+        
+        reFetchedUsers
+            .map{ _ in false }
+            .bind(to: onNetworking)
             .disposed(by: disposeBag)
         
         
-        filterKey
+        
+        let inputText = filterKey
             .distinctUntilChanged()
             .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .map{ $0.lowercased() }
-            .subscribe(onNext: { [unowned self] str in
-                if str == "" {
-                    self.fetchUsers()
-                    return
-                }
-                let filtered = filteredUsers.filter{ $0.fullname.lowercased().contains(str)
-                                                    || $0.username.lowercased().contains(str) }
-                self.users.accept(filtered)
-            })
+            .share()
+        
+        Observable.combineLatest(inputText, baseUsersForFiltering)
+            .filter { $0.0 != ""}
+            .map{ text, users -> [User] in
+                return users.filter{ $0.fullname.lowercased().contains(text)
+                    || $0.username.lowercased().contains(text)}
+            }
+            .bind(to: users)
             .disposed(by: disposeBag)
         
+        inputText
+            .filter{ $0 == ""}
+            .map { _ in Void()}
+            .flatMapLatest(model.fetchUsers)
+            .bind(to: users)
+            .disposed(by: disposeBag)
     }
 }
-

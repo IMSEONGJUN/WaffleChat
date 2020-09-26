@@ -11,12 +11,13 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-class AuthManager {
+final class AuthManager {
     
     init() { }
     
     var disposeBag = DisposeBag()
     
+    // MARK: - Login
     func performLogin(email: String, password: String) -> Observable<Bool> {
         Observable.create { (observer) -> Disposable in
             Auth.auth().signIn(withEmail: email, password: password) { (_, error) in

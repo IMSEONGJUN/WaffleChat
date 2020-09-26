@@ -88,7 +88,7 @@ final class ConversationsController: UIViewController, ViewType {
         
         newMessageButton.rx.tap
             .subscribe(onNext:{ [unowned self] in
-                let newMessageVC = NewMessageController()
+                let newMessageVC = NewMessageController.create(with: NewMessageViewModel())
                 self.newMessageControllerBind(newMsgVC: newMessageVC)
                 let newMessageVCNavi = UINavigationController(rootViewController: newMessageVC)
                 newMessageVCNavi.modalPresentationStyle = .fullScreen

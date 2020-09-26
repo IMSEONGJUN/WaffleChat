@@ -12,12 +12,13 @@ import RxSwift
 // MARK: - BaseView Protocol
 
 protocol ViewType: class {
+    
     associatedtype VM
+    
     var viewModel: VM! { get set }
     var disposeBag: DisposeBag! { get set }
     func setupUI()
     func bind()
-    
 }
 
 extension ViewType where Self: UIViewController {

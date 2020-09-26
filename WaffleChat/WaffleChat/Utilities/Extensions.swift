@@ -59,13 +59,6 @@ extension UIViewController {
 
     }
     
-//    func loginCheck() {
-//        if Auth.auth().currentUser != nil {
-//            print("already logged in")
-//            switchToConversationVC()
-//        }
-//    }
-    
     func doLogoutThisUser(completion: (Error?) -> Void) {
         do{
            try Auth.auth().signOut()

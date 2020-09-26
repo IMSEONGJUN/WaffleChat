@@ -55,6 +55,7 @@ final class ProfileHeader: UIView {
     // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
+        configureGradientLayer()
         configureUI()
         bind()
     }
@@ -66,7 +67,6 @@ final class ProfileHeader: UIView {
     
     // MARK: - Initial Setup
     func configureUI() {
-        configureGradientLayer()
         [dismissButton, profileImageView].forEach({addSubview($0)})
         
         dismissButton.snp.makeConstraints {
