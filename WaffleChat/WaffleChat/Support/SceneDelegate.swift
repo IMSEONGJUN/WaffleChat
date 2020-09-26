@@ -16,46 +16,37 @@ import RxCocoa
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    var disposeBag = DisposeBag()
-    
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        
-        let loginController = LoginController()
-        loginController.bind(LoginViewModel())
-        window?.rootViewController = UINavigationController(rootViewController: loginController)
-        window?.makeKeyAndVisible()
-        
-        let center = UNUserNotificationCenter.current()
-        center.delegate = self
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-            // Enable or disable features based on authorization.
-            if granted {
-                print("Authorized")
-            }
-        }
-        
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.didReceiveMessage",
-                                        using: nil) { _ in
-            APIManager.shared.newMessage
-                .subscribe(onNext: { [weak self] in
-                    print("background Task!")
-                    self?.configureUserNotification(fromUser: $0.user, body: $0.recentMessage.text)
-                })
-                .disposed(by: self.disposeBag)
+        if loginCheck() {
+            switchToConversationVC()
+        } else {
+            let loginController = LoginController.create(with: LoginViewModel())
+            window?.rootViewController = UINavigationController(rootViewController: loginController)
+            window?.makeKeyAndVisible()
         }
 
-        
-        
     }
 
-    func handleAppRefresh(task: BGAppRefreshTask) {
-        
+    func switchToConversationVC() {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            window.backgroundColor = .systemBackground
+            let conversationVC = ConversationsController.create(with: ConversationViewModel())
+            let rootVC = UINavigationController(rootViewController: conversationVC)
+            window.rootViewController = rootVC
+            
+            let sceneDelegate = windowScene.delegate as? SceneDelegate
+            window.makeKeyAndVisible()
+            sceneDelegate?.window = window
+        }
     }
-
     
+    func loginCheck() -> Bool {
+        return Auth.auth().currentUser != nil
+    }
     
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
@@ -152,3 +143,21 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
     }
 
 }
+//        let center = UNUserNotificationCenter.current()
+//        center.delegate = self
+//        center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+//            // Enable or disable features based on authorization.
+//            if granted {
+//                print("Authorized")
+//            }
+//        }
+//
+//        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.didReceiveMessage",
+//                                        using: nil) { _ in
+//            APIManager.shared.newMessage
+//                .subscribe(onNext: { [weak self] in
+//                    print("background Task!")
+//                    self?.configureUserNotification(fromUser: $0.user, body: $0.recentMessage.text)
+//                })
+//                .disposed(by: self.disposeBag)
+//        }

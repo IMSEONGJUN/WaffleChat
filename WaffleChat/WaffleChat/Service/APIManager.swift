@@ -87,11 +87,9 @@ final class APIManager {
     func fetchConversations() -> Observable<[Conversation]> {
         guard let uid = Auth.auth().currentUser?.uid else { return Observable.empty() }
         let ref = self.messageRef.document(uid).collection("recent-messages").order(by: "timestamp")
-        
+        var conversations = [Conversation]()
         return Observable.create { (observer) -> Disposable in
             ref.addSnapshotListener { (snapshot, error) in
-                
-                var conversations = [Conversation]()
                 
                 snapshot?.documentChanges.forEach({ (change) in
                     let dic = change.document.data()
@@ -121,8 +119,8 @@ final class APIManager {
         }
     }
     
-    func uploadMessage(_ message: String, To user: User, completion: ((Error?) -> Void)?) {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+    func uploadMessage(_ message: String, To user: User) -> Observable<Bool> {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return Observable.just(false)}
         
         let message: [String: Any] = [
                                       "text": message,
@@ -132,14 +130,22 @@ final class APIManager {
                                      ]
         
         let ref = Firestore.firestore().collection("messages")
-        ref.document(currentUid).collection(user.uid).addDocument(data: message) { (_) in
-            NotificationCenter.default.post(name: Notifications.didFinishFetchMessage, object: nil)
-            
-            ref.document(user.uid).collection(currentUid).addDocument(data: message, completion: completion)
-            
-            // Set or Update recent-message of each users
-            ref.document(currentUid).collection("recent-messages").document(user.uid).setData(message)
-            ref.document(user.uid).collection("recent-messages").document(currentUid).setData(message)
+        
+        return Observable.create { (observer) -> Disposable in
+            ref.document(currentUid).collection(user.uid).addDocument(data: message) { (_) in
+                NotificationCenter.default.post(name: Notifications.didFinishFetchMessage, object: nil)
+                
+                ref.document(user.uid).collection(currentUid).addDocument(data: message) { (_) in
+                    // Set or Update recent-message of each users
+                    ref.document(currentUid).collection("recent-messages").document(user.uid).setData(message)
+                    ref.document(user.uid).collection("recent-messages").document(currentUid).setData(message)
+                    observer.onNext(true)
+                }
+            }
+            return Disposables.create{
+                observer.onCompleted()
+            }
         }
+        
     }
 }

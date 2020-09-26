@@ -10,15 +10,26 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class ChatController: UIViewController {
+protocol ChatViewModelBindable : ViewModelType {
+    // Input
+    var userData: BehaviorRelay<User?> { get }
+    var inputText: BehaviorRelay<String> { get }
+    var sendButtonTapped: PublishSubject<Void> { get }
+    
+    // Output
+    var isMessageUploaded: Driver<Bool> { get }
+    var messages: BehaviorRelay<[Message]> { get }
+}
+
+final class ChatController: UIViewController, ViewType {
 
     // MARK: - Properties
     private var collectionView: UICollectionView!
     private var layout: UICollectionViewFlowLayout!
     
     private let customInputView = CustomInputAccessoryView()
-    private var viewModel: ChatViewModel
-    private var disposeBag = DisposeBag()
+    var viewModel: ChatViewModelBindable!
+    var disposeBag: DisposeBag!
     
     private let tapGesture = UITapGestureRecognizer()
     let coverView = UIView()
@@ -27,11 +38,11 @@ final class ChatController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function)
-        configureCollectionView()
-        configureCustomInputView()
-        configureTapGesture()
-        bind()
+//        print(#function)
+//        configureCollectionView()
+//        configureCustomInputView()
+//        configureTapGesture()
+//        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,18 +79,25 @@ final class ChatController: UIViewController {
     
     
     // MARK: - Custom Initializer
-    init(user: User) {
-        self.viewModel = ChatViewModel(user: user)
-        print("init")
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    init(user: User) {
+//        self.viewModel = ChatViewModel(user: user)
+//        print("init")
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     
     // MARK: - Initial Setup
+    
+    func setupUI() {
+        configureCollectionView()
+        configureCustomInputView()
+        configureTapGesture()
+    }
+    
     func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureFlowLayout())
         view.addSubview(collectionView)
@@ -137,14 +155,14 @@ final class ChatController: UIViewController {
         
         
         // State Binding
-        viewModel.user
+        viewModel.userData
             .subscribe(onNext: { [weak self] in
                 guard let user = $0 else { return }
                 self?.configureNavigationBar(with: user.username, prefersLargeTitles: false)
             })
             .disposed(by: disposeBag)
         
-        Observable.combineLatest(viewModel.messages, viewModel.user)
+        Observable.combineLatest(viewModel.messages, viewModel.userData)
             .map{ (messages, user) -> [Message] in
                 messages.map{ Message(original: $0, user: user!) }
             }
@@ -155,8 +173,8 @@ final class ChatController: UIViewController {
             .disposed(by: disposeBag)
 
         viewModel.isMessageUploaded
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
+            .filter{ $0 }
+            .drive(onNext: { [weak self] _ in
                 self?.customInputView.clearMessageText()
             })
             .disposed(by: disposeBag)

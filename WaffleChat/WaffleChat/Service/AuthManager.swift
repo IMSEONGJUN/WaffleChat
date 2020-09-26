@@ -24,9 +24,11 @@ class AuthManager {
                     observer.onError(error)
                 }
                 observer.onNext(true)
+            }
+            
+            return Disposables.create{
                 observer.onCompleted()
             }
-            return Disposables.create()
         }
     }
     

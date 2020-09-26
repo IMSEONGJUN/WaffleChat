@@ -14,17 +14,17 @@ import Firebase
 struct RegistrationViewModel: RegistrationViewModelBindable {
     
     // MARK: - Properties
-    var profileImage = PublishRelay<UIImage?>()
-    var email = PublishRelay<String>()
-    var fullName = PublishRelay<String>()
-    var userName = PublishRelay<String>()
-    var password = PublishRelay<String>()
-    var registrationValues = PublishRelay<Register>()
-    var signupButtonTapped = PublishRelay<Void>()
+    let profileImage = PublishRelay<UIImage?>()
+    let email = PublishRelay<String>()
+    let fullName = PublishRelay<String>()
+    let userName = PublishRelay<String>()
+    let password = PublishRelay<String>()
+    let registrationValues = PublishRelay<Register>()
+    let signupButtonTapped = PublishRelay<Void>()
     
-    var isRegistering: Driver<Bool>
-    var isRegistered: Signal<Bool>
-    var isFormValid: Driver<Bool>
+    let isRegistering: Driver<Bool>
+    let isRegistered: Signal<Bool>
+    let isFormValid: Driver<Bool>
     
     var disposeBag = DisposeBag()
     

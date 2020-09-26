@@ -10,49 +10,39 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class ChatViewModel {
-    let user = BehaviorSubject<User?>(value: nil)
-    let messages = BehaviorRelay<[Message]>(value: [])
+struct ChatViewModel: ChatViewModelBindable {
+    // Input
+    let userData = BehaviorRelay<User?>(value: nil)
     let inputText = BehaviorRelay<String>(value: "")
     let sendButtonTapped = PublishSubject<Void>()
-    let isMessageUploaded = PublishSubject<Bool>()
+    
+    // Output
+    let isMessageUploaded: Driver<Bool>
+    let messages = BehaviorRelay<[Message]>(value: [])
+    
     var disposeBag = DisposeBag()
     
-    init(user: User) {
-        self.user.onNext(user)
-        bind()
-    }
-    
-    func bind() {
-        sendButtonTapped
-            .flatMapLatest{ [unowned self] in
-                Observable.zip(self.inputText, self.user)
+    init(user: User, model: APIManager = .shared) {
+        self.userData.accept(user)
+        
+        model.fetchMessages(forUser: user)
+            .catchErrorJustReturn([])
+            .bind(to: messages)
+            .disposed(by: disposeBag)
+        
+        let source = Observable
+            .combineLatest(
+                inputText,
+                userData
+            )
+        
+        isMessageUploaded = sendButtonTapped
+            .withLatestFrom(source)
+            .filter{ $0.0 != ""}
+            .flatMapLatest{
+                model.uploadMessage($0.0, To: $0.1!)
             }
-            .subscribe(onNext: {
-                APIManager.shared.uploadMessage($0.0, To: $0.1!) { (error) in
-                    if let error = error {
-                        print("Failed to upload message:", error)
-                        return
-                    }
-                    self.isMessageUploaded.onNext(true)
-                    print("Succesfully uploaded message")
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        
-        user
-            .subscribe(onNext:{ [unowned self] in
-                guard let user = $0 else { return }
-                APIManager.shared.fetchMessages(forUser: user)
-                    .do(onError: {
-                        print("failed to fetch messages: ", $0)
-                    })
-                    .catchErrorJustReturn([])
-                    .bind(to: self.messages)
-                    .disposed(by: self.disposeBag)
-            })
-            .disposed(by: disposeBag)
+            .asDriver(onErrorJustReturn: false)
     }
 }
 

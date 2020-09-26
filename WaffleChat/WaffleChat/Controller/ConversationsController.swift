@@ -10,7 +10,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class ConversationsController: UIViewController {
+protocol ConversationViewModelBindable: ViewModelType {
+    //Output
+    var conversations: BehaviorRelay<[Conversation]> { get }
+}
+
+
+final class ConversationsController: UIViewController, ViewType {
     
     // MARK: - Properties
     private let newMessageButton: UIButton = {
@@ -22,15 +28,14 @@ final class ConversationsController: UIViewController {
     }()
     
     let tableView = UITableView()
-    var disposeBag = DisposeBag()
-    var viewModel = ConversationViewModel()
+    var disposeBag: DisposeBag!
+    var viewModel: ConversationViewModelBindable!
     
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
-        bind()
+        print("ConversationVC viewDidLoad")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,13 +45,12 @@ final class ConversationsController: UIViewController {
     
     
     // MARK: - Initial Setup
-    private func configureUI() {
+    func setupUI() {
         view.backgroundColor = .white
         configureTableView()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.circle.fill"),
                                                            style: .plain, target: nil, action: nil)
         configureNewMessageButton()
-        
     }
     
     private func configureNewMessageButton() {
@@ -71,7 +75,7 @@ final class ConversationsController: UIViewController {
     
     // MARK: - Binding
     func bind() {
-        // Action Bind
+        // Input -> ViewModel
         navigationItem.leftBarButtonItem?.rx.tap
             .subscribe(onNext: { [unowned self] in
                 let profileController = ProfileController(style: .insetGrouped)
@@ -94,7 +98,7 @@ final class ConversationsController: UIViewController {
         
         tableView.rx.modelSelected(Conversation.self)
             .subscribe(onNext: {[unowned self] conversation in
-                let chatVC = ChatController(user: conversation.user)
+                let chatVC = ChatController.create(with: ChatViewModel(user: conversation.user))
                 self.navigationController?.pushViewController(chatVC, animated: true)
             })
             .disposed(by: disposeBag)
@@ -105,7 +109,7 @@ final class ConversationsController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        // State Bind
+        // ViewModel -> Output
         viewModel.conversations
             .bind(to: tableView.rx.items(cellIdentifier: ConversationCell.reuseIdentifier,
                                          cellType: ConversationCell.self)){ row, conversation, cell in
@@ -119,7 +123,7 @@ final class ConversationsController: UIViewController {
     func newMessageControllerBind(newMsgVC: NewMessageController) {
         newMsgVC.tableView.rx.modelSelected(User.self)
             .subscribe(onNext: { [weak self] user in
-                let chatVC = ChatController(user: user)
+                let chatVC = ChatController.create(with: ChatViewModel(user: user))
                 newMsgVC.searchController.dismiss(animated: true)
                 newMsgVC.dismiss(animated: true)
                 self?.navigationController?.pushViewController(chatVC, animated: true)

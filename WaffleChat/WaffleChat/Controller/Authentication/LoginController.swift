@@ -12,18 +12,18 @@ import RxSwift
 import RxCocoa
 import JGProgressHUD
 
-protocol LoginViewModelBindable {
+protocol LoginViewModelBindable: ViewModelType {
     // Input
     var email: BehaviorSubject<String> { get }
     var password: BehaviorSubject<String> { get }
-    var loginButtonTapped: PublishSubject<Void> { get }
+    var loginButtonTapped: PublishRelay<Void> { get }
     
     // Output
     var isLoginCompleted: Signal<Bool> { get }
     var isValidForm: Driver<Bool> { get }
 }
 
-final class LoginController: UIViewController {
+final class LoginController: UIViewController, ViewType {
 
     // MARK: - Properties
     private let logoImageView: UIImageView = {
@@ -45,26 +45,44 @@ final class LoginController: UIViewController {
     private let goToSignUpPageButton = BottomButtonOnAuth(firstText: "Don't have an account? ", secondText: "Sign Up")
     
     var viewModel: LoginViewModelBindable!
-    var disposeBag = DisposeBag()
+    var disposeBag: DisposeBag!
     
     
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        loginCheck()
-        configureUI()
+        print(#function)
+//        loginCheck()
+//        configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(#function)
+        navigationController?.navigationBar.isHidden = true
+    }
     
     // MARK: - Initial UI Setup
-    private func configureUI() {
+    func setupUI() {
+        print(#function)
         configureDetailAttributesOfUI()
         configureGradientLayer()
         configureLogoImageView()
         configureGoToSignUpPageButton()
         configureAuthenticationStackView()
         configureTapGesture()
+        print("setupUI END == ")
     }
+    
+    
+//    private func configureUI() {
+//        configureDetailAttributesOfUI()
+//        configureGradientLayer()
+//        configureLogoImageView()
+//        configureGoToSignUpPageButton()
+//        configureAuthenticationStackView()
+//        configureTapGesture()
+//    }
     
     private func configureDetailAttributesOfUI() {
         emailTextField.keyboardType = .emailAddress
@@ -113,11 +131,7 @@ final class LoginController: UIViewController {
     
     
     // MARK: - Binding
-    func bind(_ viewModelBindable: LoginViewModelBindable) {
-        // DI
-        self.viewModel = viewModelBindable
-        
-        
+    func bind() {
         // Input -> ViewModel
         emailTextField.rx.text
             .orEmpty
@@ -140,9 +154,7 @@ final class LoginController: UIViewController {
         
         goToSignUpPageButton.rx.tap
             .subscribe(onNext: { [weak self] in
-                let vc = RegistrationController()
-                let viewModel = RegistrationViewModel()
-                vc.bind(viewModel)
+                let vc = RegistrationController.create(with: RegistrationViewModel())
                 self?.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
@@ -164,3 +176,52 @@ final class LoginController: UIViewController {
             .disposed(by: disposeBag)
     }
 }
+    
+//    func bind(_ viewModelBindable: LoginViewModelBindable) {
+//
+//        // Input -> ViewModel
+//        emailTextField.rx.text
+//            .orEmpty
+//            .distinctUntilChanged()
+//            .bind(to: viewModel.email)
+//            .disposed(by: disposeBag)
+//
+//        passwordTextField.rx.text
+//            .orEmpty
+//            .distinctUntilChanged()
+//            .bind(to: viewModel.password)
+//            .disposed(by: disposeBag)
+//
+//        loginButton.rx.tap
+//            .do(onNext: { [weak self] _ in
+//                self?.showActivityIndicator(true)
+//            })
+//            .bind(to: viewModel.loginButtonTapped)
+//            .disposed(by: disposeBag)
+//
+//        goToSignUpPageButton.rx.tap
+//            .subscribe(onNext: { [weak self] in
+//                let vc = RegistrationController()
+//                let viewModel = RegistrationViewModel()
+//                vc.bind(viewModel)
+//                self?.navigationController?.pushViewController(vc, animated: true)
+//            })
+//            .disposed(by: disposeBag)
+//
+//
+//        // viewModel -> Output
+//        viewModel.isValidForm
+//            .drive(onNext: { [weak self] in
+//                self?.loginButton.isEnabled = $0
+//                self?.loginButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
+//            })
+//            .disposed(by: disposeBag)
+//
+//        viewModel.isLoginCompleted
+//            .emit(onNext: { [weak self] _ in
+//                self?.showActivityIndicator(false)
+//                self?.switchToConversationVC()
+//            })
+//            .disposed(by: disposeBag)
+//    }
+

@@ -13,7 +13,7 @@ import JGProgressHUD
 
 typealias Register = (profileImage: UIImage?, email: String, fullName: String, userName: String, password: String)
 
-protocol RegistrationViewModelBindable {
+protocol RegistrationViewModelBindable: ViewModelType {
     // Input
     var profileImage: PublishRelay<UIImage?> { get }
     var email: PublishRelay<String> { get }
@@ -29,7 +29,7 @@ protocol RegistrationViewModelBindable {
     var isFormValid: Driver<Bool> { get }
 }
 
-final class RegistrationController: UIViewController {
+final class RegistrationController: UIViewController, ViewType {
 
     // MARK: - Properties
     private let plusPhotoButton: UIButton = {
@@ -68,12 +68,17 @@ final class RegistrationController: UIViewController {
     private let stack = UIStackView()
     
     var viewModel: RegistrationViewModelBindable!
-    var disposeBag = DisposeBag()
+    var disposeBag: DisposeBag!
     
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    
+    // MARK: - Initial UI Setup
+    func setupUI() {
         configureUIAttributeThings()
         configureGradientLayer()
         configurePlusPhotoButton()
@@ -82,8 +87,6 @@ final class RegistrationController: UIViewController {
         setTapGesture()
     }
     
-    
-    // MARK: - Initial UI Setup
     private func configureUIAttributeThings() {
         passwordTextField.isSecureTextEntry = true
         emailTextField.keyboardType = .emailAddress
@@ -130,10 +133,7 @@ final class RegistrationController: UIViewController {
     
     
     // MARK: - Binding
-    func bind(_ viewModelBindable: RegistrationViewModelBindable) {
-        // DI
-        self.viewModel = viewModelBindable
-        
+    func bind() {
         // Input -> ViewModel
         plusPhotoButton.rx.tap
             .subscribe(onNext: { [weak self] in

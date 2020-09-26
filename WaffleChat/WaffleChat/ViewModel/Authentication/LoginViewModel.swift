@@ -15,7 +15,7 @@ struct LoginViewModel: LoginViewModelBindable {
     
     let email = BehaviorSubject<String>(value: "")
     let password = BehaviorSubject<String>(value: "")
-    let loginButtonTapped = PublishSubject<Void>()
+    let loginButtonTapped = PublishRelay<Void>()
     
     let isLoginCompleted: Signal<Bool>
     let isValidForm: Driver<Bool>
@@ -26,7 +26,10 @@ struct LoginViewModel: LoginViewModelBindable {
                 email,
                 password
             )
-            .map { isValidEmailAddress(email: $0) && $1.count > 6 }
+            .map {
+                isValidEmailAddress(email: $0)
+                && $1.count > 6
+            }
             .asDriver(onErrorJustReturn: false)
         
         isLoginCompleted = loginButtonTapped
