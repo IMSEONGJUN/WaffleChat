@@ -20,7 +20,6 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
     var users = BehaviorRelay<[User]>(value: [])
     var isNetworking = PublishRelay<Bool>()
     
-    //lazy var filteredUsers = users.value
     var disposeBag = DisposeBag()
     
     init(_ model: APIManager = .shared) {

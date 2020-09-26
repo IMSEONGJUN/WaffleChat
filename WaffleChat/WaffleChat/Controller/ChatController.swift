@@ -38,11 +38,6 @@ final class ChatController: UIViewController, ViewType {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print(#function)
-//        configureCollectionView()
-//        configureCustomInputView()
-//        configureTapGesture()
-//        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,43 +50,14 @@ final class ChatController: UIViewController, ViewType {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if collectionView.contentSize.height > collectionView.frame.height {
-            let collectionViewContentHeight = collectionView.contentSize.height
-            let collectionViewHeight = collectionView.frame.height
-            
-            let number = Int(collectionView.contentSize.height / collectionView.frame.height)
-            let remainder = collectionViewContentHeight.truncatingRemainder(dividingBy: collectionViewHeight)
-            
-            let lengthToScroll = ( (collectionViewHeight * CGFloat(number)) + remainder ) - collectionViewHeight
+            let lengthToScroll = collectionView.contentSize.height - collectionView.frame.height
             collectionView.contentOffset.y = lengthToScroll
         }
         coverView.removeFromSuperview()
     }
     
     
-    // MARK: - Override
-//    override var inputAccessoryView: UIView? {
-//        return customInputView
-//    }
-//
-//    override var canBecomeFirstResponder: Bool {
-//        return true
-//    }
-    
-    
-    // MARK: - Custom Initializer
-//    init(user: User) {
-//        self.viewModel = ChatViewModel(user: user)
-//        print("init")
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//    
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
-    
     // MARK: - Initial Setup
-    
     func setupUI() {
         configureCollectionView()
         configureCustomInputView()
@@ -137,7 +103,7 @@ final class ChatController: UIViewController, ViewType {
     // MARK: - Binding
     func bind() {
         
-        // Action Binding
+        // Input -> ViewModel
          customInputView.sendButton.rx.tap
              .bind(to: viewModel.sendButtonTapped)
              .disposed(by: disposeBag)
@@ -154,7 +120,7 @@ final class ChatController: UIViewController, ViewType {
              .disposed(by: disposeBag)
         
         
-        // State Binding
+        // ViewModel -> Output
         viewModel.userData
             .subscribe(onNext: { [weak self] in
                 guard let user = $0 else { return }
@@ -229,3 +195,18 @@ final class ChatController: UIViewController, ViewType {
         return keyboardFrame.height
     }
 }
+
+
+
+/// CollectionView ContentOffSet Reference
+///   let divisionIntValue = Int(collectionViewContentHeight / collectionViewHeight)
+///   let remainder = collectionViewContentHeight.truncatingRemainder(dividingBy: collectionViewHeight)
+
+// MARK: - Override
+//    override var inputAccessoryView: UIView? {
+//        return customInputView
+//    }
+//
+//    override var canBecomeFirstResponder: Bool {
+//        return true
+//    }

@@ -32,7 +32,7 @@ protocol RegistrationViewModelBindable: ViewModelType {
 final class RegistrationController: UIViewController, ViewType {
 
     // MARK: - Properties
-    private let plusPhotoButton: UIButton = {
+    let plusPhotoButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setImage(#imageLiteral(resourceName: "plus_photo"), for: .normal)
         btn.tintColor = .brown
@@ -40,8 +40,6 @@ final class RegistrationController: UIViewController, ViewType {
         btn.clipsToBounds = true
         return btn
     }()
-    
-    let hud = JGProgressHUD(style: .dark)
     
     private lazy var emailContainer = InputContainerView(image: #imageLiteral(resourceName: "ic_mail_outline_white_2x"), textField: emailTextField)
     private let emailTextField = InputTextField(placeHolder: "Email")
@@ -182,21 +180,13 @@ final class RegistrationController: UIViewController, ViewType {
         // viewModel -> Output
         viewModel.isFormValid
             .drive(onNext: { [weak self] in
-                print("Registration")
                 self?.signUpButton.isEnabled = $0
                 self?.signUpButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
             })
             .disposed(by: disposeBag)
         
         viewModel.profileImage
-            .subscribe(onNext: { [weak self] in
-                print("changed image")
-                guard let self = self else { return }
-                self.plusPhotoButton.setImage($0?.withRenderingMode(.alwaysOriginal), for: .normal)
-                self.plusPhotoButton.layer.cornerRadius = self.plusPhotoButton.frame.width / 2
-                self.plusPhotoButton.layer.borderWidth = 3
-                self.plusPhotoButton.layer.borderColor = UIColor.white.cgColor
-            })
+            .bind(to: self.rx.setProfileImage)
             .disposed(by: disposeBag)
         
         viewModel.isRegistering
@@ -261,5 +251,18 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
         let image = info[.originalImage] as? UIImage
         viewModel.profileImage.accept(image)
         picker.dismiss(animated: true)
+    }
+}
+
+
+// MARK: - Custom Binder
+extension Reactive where Base: RegistrationController {
+    var setProfileImage: Binder<UIImage?> {
+        return Binder(base) { base, image in
+            base.plusPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            base.plusPhotoButton.layer.cornerRadius = base.plusPhotoButton.frame.width / 2
+            base.plusPhotoButton.layer.borderWidth = 3
+            base.plusPhotoButton.layer.borderColor = UIColor.white.cgColor
+        }
     }
 }

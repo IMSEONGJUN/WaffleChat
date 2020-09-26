@@ -63,9 +63,8 @@ final class APIManager {
     
     func fetchMessages(forUser user: User) -> Observable<[Message]> {
         guard let currentUid = Auth.auth().currentUser?.uid else { return Observable.empty() }
+        var messages = [Message]()
         return Observable.create { (observer) -> Disposable in
-            var messages = [Message]()
-            
             let query = self.messageRef.document(currentUid).collection(user.uid).order(by: "timestamp")
             
             query.addSnapshotListener { (snapshot, error) in

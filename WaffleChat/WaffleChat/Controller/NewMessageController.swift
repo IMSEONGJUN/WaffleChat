@@ -59,7 +59,6 @@ final class NewMessageController: UIViewController, ViewType {
     
     private func configureTableView() {
         view.addSubview(tableView)
-        
         tableView.frame = view.frame
         tableView.backgroundColor = .white
         tableView.rowHeight = 80
@@ -83,7 +82,7 @@ final class NewMessageController: UIViewController, ViewType {
     // MARK: - Binding
     func bind() {
         
-        // Action Bind
+        // Input -> ViewModel
         refresh.rx.controlEvent(.valueChanged)
             .bind(to: viewModel.refreshPulled)
             .disposed(by: disposeBag)
@@ -104,7 +103,7 @@ final class NewMessageController: UIViewController, ViewType {
             })
             .disposed(by: disposeBag)
         
-        // State Bind
+        // ViewModel -> Output
         viewModel.users
             .bind(to: tableView.rx.items(cellIdentifier: UserCell.reuseIdentifier,
                                          cellType: UserCell.self)) { indexPath, user, cell in
