@@ -78,7 +78,7 @@ final class ConversationsController: UIViewController, ViewType {
         // Input -> ViewModel
         navigationItem.leftBarButtonItem?.rx.tap
             .subscribe(onNext: { [unowned self] in
-                let profileController = ProfileController(style: .insetGrouped)
+                let profileController = ProfileController.create(with: ProfileViewModel())
                 let navi = UINavigationController(rootViewController: profileController)
                 navi.modalPresentationStyle = .fullScreen
                 navi.modalTransitionStyle = .coverVertical

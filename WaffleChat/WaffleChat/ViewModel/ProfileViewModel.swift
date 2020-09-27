@@ -11,24 +11,15 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-final class ProfileViewModel {
+struct ProfileViewModel: ProfileViewModelBindable {
+    // Output
+    var user: Driver<User?>
     
-    let user = BehaviorRelay<User?>(value: nil)
-    var disposeBag = DisposeBag()
-    
-    init() {
-        print("viewModel")
-        fetchUser()
-    }
-    
-    func fetchUser() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        APIManager.shared.fetchUser(uid: uid)
-            .do(onError: {
-                print("failed to fetch profile: ", $0)
-            })
-            .bind(to: user)
-            .disposed(by: disposeBag)
+    init(_ model: APIManager = .shared) {
+        let uid = Auth.auth().currentUser?.uid
+        user = model.fetchUser(uid: uid ?? "")
+            .retry(2)
+            .asDriver(onErrorJustReturn: nil)
     }
 }
 

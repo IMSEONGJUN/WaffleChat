@@ -49,7 +49,7 @@ final class APIManager {
         
     }
     
-    func fetchUser(uid: String) -> Observable<User> {
+    func fetchUser(uid: String) -> Observable<User?> {
         return Observable.create { (observer) -> Disposable in
             self.userRef.document(uid).getDocument { (snapshot, error) in
                 guard let dic = snapshot?.data(),
@@ -101,7 +101,8 @@ final class APIManager {
                     
                     self.fetchUser(uid: id)
                         .subscribe(onNext:{ [weak self] user -> Void in
-                            let conversation = Conversation(user: user, recentMessage: message)
+                            guard let data = user else { return }
+                            let conversation = Conversation(user: data, recentMessage: message)
                             conversations.insert(conversation, at: 0)
                             self?.newMessage.accept(conversation)
                             let conver = conversations.sorted(by: {$0.recentMessage.timestamp.dateValue() > $1.recentMessage.timestamp.dateValue()})

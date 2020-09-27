@@ -10,33 +10,34 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class ProfileController: UITableViewController {
+protocol ProfileViewModelBindable: ViewModelType {
+    var user: Driver<User?> { get }
+}
+
+final class ProfileController: UITableViewController, ViewType {
     
     // MARK: - Properties
     private lazy var headerView = ProfileHeader(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 380))
     private lazy var footerView = ProfileFooterView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 100))
     
-    let disposeBag = DisposeBag()
-    let viewModel = ProfileViewModel()
+    var disposeBag: DisposeBag!
+    var viewModel: ProfileViewModelBindable!
     
     
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("controller")
-        configureUI()
-        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
-        
     }
     
     
     // MARK: - Initial setup
-    func configureUI() {
+    func setupUI() {
+        tableView = UITableView(frame: view.frame, style: .insetGrouped)
         tableView.backgroundColor = .white
         tableView.tableHeaderView = headerView
         tableView.contentInsetAdjustmentBehavior = .never
@@ -56,7 +57,7 @@ final class ProfileController: UITableViewController {
             .disposed(by: disposeBag)
         
         viewModel.user
-            .subscribe(onNext: { [unowned self] in
+            .drive(onNext: { [unowned self] in
                 guard let user = $0 else { return }
                 self.headerView.user.accept(user)
             })
