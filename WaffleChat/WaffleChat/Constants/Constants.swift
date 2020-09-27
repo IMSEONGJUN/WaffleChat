@@ -13,7 +13,8 @@ enum Images {
 }
 
 enum Notifications {
-    static let didFinishFetchMessage = Notification.Name("didFinishFetchMessage")
+    static let didFinishUploadMessage = Notification.Name("didFinishUploadMessage")
+    static let didFinishFetchMessage = Notification.Name("didFinishUploadMessage")
 }
 
 enum ProfileInfo {

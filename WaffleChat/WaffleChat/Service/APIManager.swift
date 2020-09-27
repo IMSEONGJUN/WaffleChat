@@ -72,9 +72,9 @@ final class APIManager {
                     if change.type == .added {
                         let dic = change.document.data()
                         messages.append(Message(dic: dic))
-                        observer.onNext(messages)
                     }
                 })
+                observer.onNext(messages)
             }
             
             return Disposables.create {
@@ -87,6 +87,7 @@ final class APIManager {
         guard let uid = Auth.auth().currentUser?.uid else { return Observable.empty() }
         let ref = self.messageRef.document(uid).collection("recent-messages").order(by: "timestamp")
         var conversations = [Conversation]()
+        var sortedConversations = [Conversation]()
         return Observable.create { (observer) -> Disposable in
             ref.addSnapshotListener { (snapshot, error) in
                 
@@ -100,16 +101,16 @@ final class APIManager {
                     }
                     
                     self.fetchUser(uid: id)
-                        .subscribe(onNext:{ [weak self] user -> Void in
+                        .subscribe(onNext:{ user -> Void in
                             guard let data = user else { return }
                             let conversation = Conversation(user: data, recentMessage: message)
                             conversations.insert(conversation, at: 0)
-                            self?.newMessage.accept(conversation)
-                            let conver = conversations.sorted(by: {$0.recentMessage.timestamp.dateValue() > $1.recentMessage.timestamp.dateValue()})
-                            observer.onNext(conver)
+                            sortedConversations = conversations.sorted(by: {$0.recentMessage.timestamp.dateValue() > $1.recentMessage.timestamp.dateValue()})
+                            observer.onNext(sortedConversations)
                         })
                         .disposed(by: self.disposeBag)
                 })
+                
             }
             
             return Disposables.create {
@@ -133,10 +134,11 @@ final class APIManager {
         
         return Observable.create { (observer) -> Disposable in
             ref.document(currentUid).collection(user.uid).addDocument(data: message) { (_) in
-                NotificationCenter.default.post(name: Notifications.didFinishFetchMessage, object: nil)
+//                NotificationCenter.default.post(name: Notifications.didFinishUploadMessage, object: nil)
                 
                 ref.document(user.uid).collection(currentUid).addDocument(data: message) { (_) in
                     // Set or Update recent-message of each users
+                    
                     ref.document(currentUid).collection("recent-messages").document(user.uid).setData(message)
                     ref.document(user.uid).collection("recent-messages").document(currentUid).setData(message)
                     observer.onNext(true)

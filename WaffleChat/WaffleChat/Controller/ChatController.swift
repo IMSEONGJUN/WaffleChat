@@ -150,9 +150,10 @@ final class ChatController: UIViewController, ViewType {
         NotificationCenter.default.rx.notification(Notifications.didFinishFetchMessage)
             .bind { [weak self] (noti) in
                 guard let self = self else { return }
-                let count = self.viewModel.messages.value.count
-                self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
-                self.collectionView.layoutIfNeeded()
+                if self.collectionView.contentSize.height > self.collectionView.frame.height {
+                    let lengthToScroll = self.collectionView.contentSize.height - self.collectionView.frame.height
+                    self.collectionView.contentOffset.y = lengthToScroll + 60
+                }
             }
             .disposed(by: disposeBag)
         
@@ -210,3 +211,7 @@ final class ChatController: UIViewController, ViewType {
 //    override var canBecomeFirstResponder: Bool {
 //        return true
 //    }
+
+//                let count = self.viewModel.messages.value.count
+//                self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
+//                self.collectionView.layoutIfNeeded()

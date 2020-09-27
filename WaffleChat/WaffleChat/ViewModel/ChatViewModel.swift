@@ -23,11 +23,29 @@ struct ChatViewModel: ChatViewModelBindable {
     var disposeBag = DisposeBag()
     
     init(user: User, model: APIManager = .shared) {
+        
+        let didNewMessageIncome = PublishRelay<Void>()
+        
         self.userData.accept(user)
         
-        model.fetchMessages(forUser: user)
+        let fetchedMessages = model.fetchMessages(forUser: user).share()
+        
+        fetchedMessages
             .catchErrorJustReturn([])
             .bind(to: messages)
+            .disposed(by: disposeBag)
+        
+        fetchedMessages
+            .map{ _ in Void()}
+            .bind(to: didNewMessageIncome)
+            .disposed(by: disposeBag)
+        
+        didNewMessageIncome
+            .skip(1)
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { _ in
+                NotificationCenter.default.post(name: Notifications.didFinishFetchMessage, object: nil)
+            })
             .disposed(by: disposeBag)
         
         let source = Observable
