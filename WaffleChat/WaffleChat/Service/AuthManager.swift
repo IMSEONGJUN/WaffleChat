@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import Firebase
+import FirebaseFirestore
 
 final class AuthManager {
     
