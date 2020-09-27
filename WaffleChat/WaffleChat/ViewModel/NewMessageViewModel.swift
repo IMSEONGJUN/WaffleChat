@@ -52,7 +52,6 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
             .disposed(by: disposeBag)
         
         
-        
         let inputText = filterKey
             .distinctUntilChanged()
             .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
