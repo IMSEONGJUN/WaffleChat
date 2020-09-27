@@ -83,28 +83,17 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // Update the app interface directly.
-        
-        // Play a sound.
-//        completionHandler(UNNotificationPresentationOptions.sound)
+
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         if response.notification.request.content.categoryIdentifier == "READ" {
-            // Handle the actions for the expired timer.
             if response.actionIdentifier == "Read Message" {
-                // Invalidate the old timer and create a new one. . .
-                
-                
-            }
-            else if response.actionIdentifier == "STOP_ACTION" {
-                // Invalidate the timer. . .
+               
             }
         }
-        
-        // Else handle actions for other notification types. . .
     }
     
     func configureUserNotification(fromUser: User, body: String) {
@@ -115,7 +104,6 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         
-        // Create the request object.
         let request = UNNotificationRequest(identifier: "NewMessage", content: content, trigger: trigger)
         center.add(request) { (error : Error?) in
             if let theError = error {
@@ -137,27 +125,7 @@ extension SceneDelegate: UNUserNotificationCenterDelegate {
                                                      actions: [readAction],
                                                      intentIdentifiers: [],
                                                      options: UNNotificationCategoryOptions(rawValue: 0))
-        
-        // Register the notification categories.
         center.setNotificationCategories([generalCategory, expiredCategory])
     }
-
 }
-//        let center = UNUserNotificationCenter.current()
-//        center.delegate = self
-//        center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-//            // Enable or disable features based on authorization.
-//            if granted {
-//                print("Authorized")
-//            }
-//        }
-//
-//        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.didReceiveMessage",
-//                                        using: nil) { _ in
-//            APIManager.shared.newMessage
-//                .subscribe(onNext: { [weak self] in
-//                    print("background Task!")
-//                    self?.configureUserNotification(fromUser: $0.user, body: $0.recentMessage.text)
-//                })
-//                .disposed(by: self.disposeBag)
-//        }
+
