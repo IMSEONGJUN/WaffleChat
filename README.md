@@ -2,4 +2,8 @@
 ![이미지](https://github.com/IMSEONGJUN/WaffleChat/blob/master/WaffleChat/screenshot/WaffleChat4.png?raw=true)
 - Chat app created by using RxSwift and MVVM Pattern
 - Project for Reactive Programming Practice
+- Focus on decoupling of View and ViewModel for easy Unit-testing
 - Used Google Firestore for backend
+
+## Video Link: https://youtu.be/p3zgqgrtMbs
+
