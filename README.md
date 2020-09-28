@@ -5,5 +5,9 @@
 - Focus on decoupling of View and ViewModel for easy Unit-testing
 - Used Google Firestore for backend
 
+## Period
+- 2020.07.03 ~ 2020.08.31 
+- ### Constantly being modified and supplemented up to recently.
+
 ## Video Link: https://youtu.be/p3zgqgrtMbs
 
