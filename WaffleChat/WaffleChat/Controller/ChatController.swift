@@ -150,9 +150,9 @@ final class ChatController: UIViewController, ViewType {
         NotificationCenter.default.rx.notification(Notifications.didFinishFetchMessage)
             .bind { [weak self] (noti) in
                 guard let self = self else { return }
-                if self.collectionView.contentSize.height > self.collectionView.frame.height {
+                if self.collectionView.contentSize.height > (self.collectionView.frame.height - self.topbarHeight) {
                     let lengthToScroll = self.collectionView.contentSize.height - self.collectionView.frame.height
-                    self.collectionView.contentOffset.y = lengthToScroll + 60
+                    self.collectionView.contentOffset.y = lengthToScroll + self.topbarHeight
                 }
             }
             .disposed(by: disposeBag)

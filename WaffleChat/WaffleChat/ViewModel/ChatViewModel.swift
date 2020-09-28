@@ -23,12 +23,12 @@ struct ChatViewModel: ChatViewModelBindable {
     var disposeBag = DisposeBag()
     
     init(user: User, model: APIManager = .shared) {
-        
-        let didNewMessageIncome = PublishRelay<Void>()
-        
         self.userData.accept(user)
         
-        let fetchedMessages = model.fetchMessages(forUser: user).share()
+        let didNewMessageIncome = PublishRelay<Void>()
+        let fetchedMessages = model
+            .fetchMessages(forUser: user)
+            .share()
         
         fetchedMessages
             .catchErrorJustReturn([])
