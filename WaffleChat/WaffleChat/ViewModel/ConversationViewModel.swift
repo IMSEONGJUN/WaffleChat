@@ -18,9 +18,6 @@ struct ConversationViewModel: ConversationViewModelBindable {
     
     init(_ model: APIManager = .shared) {
         model.fetchConversations()
-            .do(onError: {
-                print("failed to fetch conversations: ", $0)
-            })
             .debug()
             .catchErrorJustReturn([])
             .bind(to: conversations)

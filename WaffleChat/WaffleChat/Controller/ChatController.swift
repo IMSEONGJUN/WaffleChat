@@ -163,7 +163,8 @@ final class ChatController: UIViewController, ViewType {
                 let height = self.getKeyboardFrameHeight(noti: noti)
                 let bottomInset = self.view.safeAreaInsets.bottom
                 
-                if self.collectionView.contentSize.height > self.collectionView.frame.height - (height + self.customInputView.frame.height) {
+                if self.collectionView.contentSize.height > self.collectionView.frame.height -
+                                                                        (height + self.customInputView.frame.height) {
                     self.view.transform = CGAffineTransform(translationX: 0, y: -height + bottomInset)
                 } else {
                     self.customInputView.transform = CGAffineTransform(translationX: 0, y: -height + bottomInset)
@@ -177,7 +178,8 @@ final class ChatController: UIViewController, ViewType {
                 guard let self = self else { return }
                 let height = self.getKeyboardFrameHeight(noti: noti)
 
-                if self.collectionView.contentSize.height > self.collectionView.frame.height - (height + self.customInputView.frame.height) {
+                if self.collectionView.contentSize.height > self.collectionView.frame.height -
+                                                                        (height + self.customInputView.frame.height) {
                     self.view.transform = .identity
                 }
                 self.customInputView.transform = .identity
