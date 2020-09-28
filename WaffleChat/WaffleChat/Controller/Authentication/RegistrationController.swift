@@ -253,16 +253,3 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
         picker.dismiss(animated: true)
     }
 }
-
-
-// MARK: - Custom Binder
-extension Reactive where Base: RegistrationController {
-    var setProfileImage: Binder<UIImage?> {
-        return Binder(base) { base, image in
-            base.plusPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-            base.plusPhotoButton.layer.cornerRadius = base.plusPhotoButton.frame.width / 2
-            base.plusPhotoButton.layer.borderWidth = 3
-            base.plusPhotoButton.layer.borderColor = UIColor.white.cgColor
-        }
-    }
-}

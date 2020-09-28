@@ -18,7 +18,7 @@ struct ConversationViewModel: ConversationViewModelBindable {
     
     init(_ model: APIManager = .shared) {
         model.fetchConversations()
-            .debug()
+            .retry(2)
             .catchErrorJustReturn([])
             .bind(to: conversations)
             .disposed(by: disposeBag)

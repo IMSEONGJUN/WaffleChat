@@ -12,7 +12,7 @@ import RxCocoa
 
 struct NewMessageViewModel: NewMessageViewModelBindable {
     // Input
-    let refreshPulled = PublishRelay<Void>()
+    var refreshPulled = PublishRelay<Void>()
     let filterKey = PublishRelay<String>()
     let searchCancelButtonTapped = PublishRelay<Void>()
     
@@ -24,10 +24,17 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
     
     init(_ model: APIManager = .shared) {
 
-        let fetchedUsers = model.fetchUsers().share()
+        let onRefreshPulled = PublishRelay<Void>()
+        refreshPulled = onRefreshPulled
+        
         let baseUsersForFiltering = PublishRelay<[User]>()
         let onNetworking = PublishRelay<Bool>()
         isNetworking = onNetworking
+        
+        let fetchedUsers = model
+            .fetchUsers()
+            .retryWhen{ _ in onRefreshPulled }
+            .share()
         
         fetchedUsers
             .bind(to: users)

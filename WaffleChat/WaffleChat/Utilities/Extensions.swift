@@ -13,14 +13,29 @@ import JGProgressHUD
 import RxSwift
 import RxCocoa
 
+// MARK: - Global function
 func isValidEmailAddress(email: String) -> Bool {
     let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
     let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
     return emailTest.evaluate(with: email)
 }
 
+
+// MARK: - Reactive Custom Binder
+extension Reactive where Base: RegistrationController {
+    var setProfileImage: Binder<UIImage?> {
+        return Binder(base) { base, image in
+            base.plusPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            base.plusPhotoButton.layer.cornerRadius = base.plusPhotoButton.frame.width / 2
+            base.plusPhotoButton.layer.borderWidth = 3
+            base.plusPhotoButton.layer.borderColor = UIColor.white.cgColor
+        }
+    }
+}
+
+
+// MARK: - UIViewController Ext
 extension UIViewController {
-        
     static let hud = JGProgressHUD(style: .dark)
     
     func configureGradientLayer() {
@@ -158,6 +173,8 @@ extension UIViewController {
 
 }
 
+
+// MARK: - UIView Ext
 extension UIView {
     func setupShadow(opacity: Float = 0, radius: CGFloat = 0, offset: CGSize = .zero, color: UIColor = .black) {
         layer.shadowOpacity = opacity
