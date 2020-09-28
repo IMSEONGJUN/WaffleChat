@@ -134,11 +134,7 @@ final class APIManager {
         
         return Observable.create { (observer) -> Disposable in
             ref.document(currentUid).collection(user.uid).addDocument(data: message) { (_) in
-//                NotificationCenter.default.post(name: Notifications.didFinishUploadMessage, object: nil)
-                
                 ref.document(user.uid).collection(currentUid).addDocument(data: message) { (_) in
-                    // Set or Update recent-message of each users
-                    
                     ref.document(currentUid).collection("recent-messages").document(user.uid).setData(message)
                     ref.document(user.uid).collection("recent-messages").document(currentUid).setData(message)
                     observer.onNext(true)

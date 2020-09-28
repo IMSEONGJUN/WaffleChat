@@ -50,16 +50,11 @@ final class ProfileController: UITableViewController, ViewType {
     
     // MARK: - Binding
     func bind() {
+        
+        // UI binding
         headerView.dismissButton.rx.tap
             .subscribe(onNext: { [unowned self] in
                 self.dismiss(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        viewModel.user
-            .drive(onNext: { [unowned self] in
-                guard let user = $0 else { return }
-                self.headerView.user.accept(user)
             })
             .disposed(by: disposeBag)
         
@@ -73,6 +68,14 @@ final class ProfileController: UITableViewController, ViewType {
                     print("Successfully logged out this user")
                     self?.switchToLoginVC()
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        // ViewModel -> Output
+        viewModel.user
+            .drive(onNext: { [weak self] in
+                guard let user = $0 else { return }
+                self?.headerView.user.accept(user)
             })
             .disposed(by: disposeBag)
     }

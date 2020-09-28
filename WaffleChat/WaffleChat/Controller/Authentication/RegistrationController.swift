@@ -134,8 +134,7 @@ final class RegistrationController: UIViewController, ViewType {
     func bind() {
         // Input -> ViewModel
         plusPhotoButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                guard let self = self else { return }
+            .subscribe(onNext: { [unowned self] in
                 self.didTapPlusPhotoButton(viewController: self)
             })
             .disposed(by: disposeBag)
@@ -199,6 +198,7 @@ final class RegistrationController: UIViewController, ViewType {
         viewModel.isRegistered
             .filter{ $0 == true }
             .emit(onNext: { [weak self] _ in
+                self?.showActivityIndicator(false)
                 self?.switchToConversationVC()
             })
             .disposed(by: disposeBag)

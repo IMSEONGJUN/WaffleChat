@@ -132,16 +132,16 @@ final class LoginController: UIViewController, ViewType {
             .disposed(by: disposeBag)
         
         loginButton.rx.tap
-            .do(onNext: { [weak self] _ in
-                self?.showActivityIndicator(true)
+            .do(onNext: { [unowned self] _ in
+                self.showActivityIndicator(true)
             })
             .bind(to: viewModel.loginButtonTapped)
             .disposed(by: disposeBag)
         
         goToSignUpPageButton.rx.tap
-            .subscribe(onNext: { [weak self] in
+            .subscribe(onNext: { [unowned self] in
                 let vc = RegistrationController.create(with: RegistrationViewModel())
-                self?.navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: disposeBag)
         
