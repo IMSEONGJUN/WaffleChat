@@ -1,8 +1,8 @@
 //
-//  Extensions.swift
+//  UIViewController+Ext.swift
 //  WaffleChat
 //
-//  Created by SEONGJUN on 2020/07/03.
+//  Created by SEONGJUN on 2020/09/29.
 //  Copyright © 2020 Seongjun Im. All rights reserved.
 //
 
@@ -12,27 +12,6 @@ import FirebaseAuth
 import JGProgressHUD
 import RxSwift
 import RxCocoa
-
-// MARK: - Global function
-func isValidEmailAddress(email: String) -> Bool {
-    let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-    let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-    return emailTest.evaluate(with: email)
-}
-
-
-// MARK: - Reactive Custom Binder
-extension Reactive where Base: RegistrationController {
-    var setProfileImage: Binder<UIImage?> {
-        return Binder(base) { base, image in
-            base.plusPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-            base.plusPhotoButton.layer.cornerRadius = base.plusPhotoButton.frame.width / 2
-            base.plusPhotoButton.layer.borderWidth = 3
-            base.plusPhotoButton.layer.borderColor = UIColor.white.cgColor
-        }
-    }
-}
-
 
 // MARK: - UIViewController Ext
 extension UIViewController {
@@ -172,40 +151,3 @@ extension UIViewController {
     }
 
 }
-
-
-// MARK: - UIView Ext
-extension UIView {
-    func setupShadow(opacity: Float = 0, radius: CGFloat = 0, offset: CGSize = .zero, color: UIColor = .black) {
-        layer.shadowOpacity = opacity
-        layer.shadowRadius = radius
-        layer.shadowOffset = offset
-        layer.shadowColor = color.cgColor
-    }
-}
-
-
-//    func makeInputDataContainerView(container: UIView, image: UIImage, textField: UITextField) {
-//        let imageView = UIImageView(image: image)
-//        let underline = UIView()
-//
-//        [imageView, textField, underline].forEach({ container.addSubview($0)})
-//        underline.backgroundColor = .white
-//        underline.snp.makeConstraints {
-//            $0.bottom.trailing.equalToSuperview()
-//            $0.leading.equalToSuperview().inset(10)
-//            $0.height.equalTo(1.5)
-//        }
-//
-//        imageView.snp.makeConstraints {
-//            $0.centerY.equalToSuperview().offset(-2)
-//            $0.leading.equalToSuperview().offset(10)
-//            $0.width.height.equalTo(30)
-//        }
-//
-//        textField.snp.makeConstraints {
-//            $0.centerY.equalToSuperview()
-//            $0.leading.equalTo(imageView.snp.trailing).offset(10)
-//            $0.trailing.equalToSuperview().inset(10)
-//        }
-//    }
