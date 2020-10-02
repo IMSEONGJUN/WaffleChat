@@ -65,7 +65,7 @@ final class ProfileCell: UITableViewCell {
     
     
     // MARK: - Configure UI
-    func configure() {
+    private func configure() {
         let stack = UIStackView(arrangedSubviews: [iconContainer, titleLabel])
         stack.spacing = 8
         stack.axis = .horizontal
@@ -79,7 +79,7 @@ final class ProfileCell: UITableViewCell {
     
     
     // MARK: - Cell Setter
-    func configureCellData() {
+    private func configureCellData() {
         guard let cellType = cellType else { return }
         iconImageView.image = UIImage(systemName: cellType.iconImageName)
         titleLabel.text = cellType.description

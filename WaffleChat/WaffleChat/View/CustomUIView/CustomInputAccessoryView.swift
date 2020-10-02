@@ -59,7 +59,7 @@ final class CustomInputAccessoryView: UIView {
     
     
     // MARK: - Initial Setup
-    func configureUI() {
+    private func configureUI() {
         backgroundColor = .white
 //        autoresizingMask = .flexibleHeight
         

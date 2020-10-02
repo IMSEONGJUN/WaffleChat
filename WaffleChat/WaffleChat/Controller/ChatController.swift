@@ -32,7 +32,7 @@ final class ChatController: UIViewController, ViewType {
     var disposeBag: DisposeBag!
     
     private let tapGesture = UITapGestureRecognizer()
-    let coverView = UIView()
+    private let coverView = UIView()
     
     
     // MARK: - Life Cycle
@@ -64,7 +64,7 @@ final class ChatController: UIViewController, ViewType {
         configureTapGesture()
     }
     
-    func configureCollectionView() {
+    private func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureFlowLayout())
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
@@ -77,7 +77,7 @@ final class ChatController: UIViewController, ViewType {
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: MessageCell.reuseID)
     }
     
-    func configureFlowLayout() -> UICollectionViewFlowLayout {
+    private func configureFlowLayout() -> UICollectionViewFlowLayout {
         layout = UICollectionViewFlowLayout()
         layout.estimatedItemSize = CGSize(width: view.frame.width, height: 50)
         layout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
@@ -86,7 +86,7 @@ final class ChatController: UIViewController, ViewType {
         return layout
     }
     
-    func configureCustomInputView() {
+    private func configureCustomInputView() {
         view.addSubview(customInputView)
         customInputView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
@@ -95,7 +95,7 @@ final class ChatController: UIViewController, ViewType {
         }
     }
     
-    func configureTapGesture() {
+    private func configureTapGesture() {
         collectionView.addGestureRecognizer(tapGesture)
     }
     

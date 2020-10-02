@@ -24,7 +24,7 @@ final class BottomButtonOnAuth: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(firstText: String, secondText: String) {
+    private func configure(firstText: String, secondText: String) {
         let attributedTitle = NSMutableAttributedString(string: firstText,
                                                         attributes: [.font: UIFont.systemFont(ofSize: 16),
                                                                      .foregroundColor : UIColor.white])

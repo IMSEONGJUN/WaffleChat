@@ -51,11 +51,11 @@ final class MessageCell: UICollectionViewCell {
         return view
     }()
     
-    var textLeadingConst: NSLayoutConstraint!
-    var texttrailingConst: NSLayoutConstraint!
+    private var textLeadingConst: NSLayoutConstraint!
+    private var texttrailingConst: NSLayoutConstraint!
     
-    var timelabelLeadingConst: NSLayoutConstraint!
-    var timelabelTrailingConst: NSLayoutConstraint!
+    private var timelabelLeadingConst: NSLayoutConstraint!
+    private var timelabelTrailingConst: NSLayoutConstraint!
     
     
     // MARK: - Initializer
@@ -70,7 +70,7 @@ final class MessageCell: UICollectionViewCell {
     
     
     // MARK: - Initial Setup for UI
-    func configureUI() {
+    private func configureUI() {
         contentView.backgroundColor = .white
         selectedBackgroundView?.isHidden = true
         contentView.addSubview(profileImageView)
@@ -107,7 +107,7 @@ final class MessageCell: UICollectionViewCell {
     
     
     // MARK: - Cell Setter
-    func configure() {
+    private func configure() {
         guard let message = message else { return }
         let viewModel = MessageViewModel(message: message)
         bubbleContainer.backgroundColor = viewModel.messageBackgroundColor

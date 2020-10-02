@@ -42,7 +42,6 @@ struct ChatViewModel: ChatViewModelBindable {
         
         didNewMessageIncome
             .skip(1)
-            .observeOn(MainScheduler.instance)
             .subscribe(onNext: { _ in
                 NotificationCenter.default.post(name: Notifications.didFinishFetchMessage, object: nil)
             })

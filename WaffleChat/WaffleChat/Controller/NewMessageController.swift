@@ -26,13 +26,13 @@ final class NewMessageController: UIViewController, ViewType {
     
     // MARK: - Properties
     let tableView = UITableView()
-    let refresh = UIRefreshControl()
     let searchController = UISearchController()
+    private let refresh = UIRefreshControl()
     
     var viewModel: NewMessageViewModelBindable!
     var disposeBag: DisposeBag!
     
-    let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: nil)
+    private let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: nil, action: nil)
     
     
     // MARK: - Life Cycle
@@ -112,18 +112,7 @@ final class NewMessageController: UIViewController, ViewType {
             .disposed(by: disposeBag)
         
         viewModel.isNetworking
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: {[weak self] in
-                if $0 {
-                    self?.refresh.beginRefreshing()
-                } else {
-                    self?.refresh.endRefreshing()
-                }
-            })
+            .bind(to: refresh.rx.spinner)
             .disposed(by: disposeBag)
     }
-
 }
-
-
-

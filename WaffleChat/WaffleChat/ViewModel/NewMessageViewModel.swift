@@ -12,13 +12,13 @@ import RxCocoa
 
 struct NewMessageViewModel: NewMessageViewModelBindable {
     // Input
-    var refreshPulled = PublishRelay<Void>()
+    let refreshPulled: PublishRelay<Void>
     let filterKey = PublishRelay<String>()
     let searchCancelButtonTapped = PublishRelay<Void>()
     
     // Output
     var users = BehaviorRelay<[User]>(value: [])
-    var isNetworking = PublishRelay<Bool>()
+    let isNetworking: PublishRelay<Bool>
     
     var disposeBag = DisposeBag()
     

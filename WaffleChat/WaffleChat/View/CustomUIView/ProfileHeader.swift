@@ -26,7 +26,7 @@ final class ProfileHeader: UIView {
         return btn
     }()
     
-    let profileImageView: UIImageView = {
+    private let profileImageView: UIImageView = {
        let iv = UIImageView()
         iv.layer.borderColor = UIColor.white.cgColor
         iv.layer.borderWidth = 4
@@ -35,7 +35,7 @@ final class ProfileHeader: UIView {
         return iv
     }()
     
-    let fullNameLabel: UILabel = {
+    private let fullNameLabel: UILabel = {
        let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 20)
@@ -43,7 +43,7 @@ final class ProfileHeader: UIView {
         return label
     }()
     
-    let userNameLabel: UILabel = {
+    private let userNameLabel: UILabel = {
        let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16)
@@ -66,7 +66,7 @@ final class ProfileHeader: UIView {
     
     
     // MARK: - Initial Setup
-    func configureUI() {
+    private func configureUI() {
         [dismissButton, profileImageView].forEach({addSubview($0)})
         
         dismissButton.snp.makeConstraints {
@@ -95,7 +95,7 @@ final class ProfileHeader: UIView {
     }
     
     
-    func configureGradientLayer() {
+    private func configureGradientLayer() {
         let gradient = CAGradientLayer()
         let topColor = #colorLiteral(red: 1, green: 0.9944892197, blue: 0.7521914475, alpha: 1).cgColor
         let bottomColor = #colorLiteral(red: 0.6196078431, green: 0.4235294118, blue: 0.1254901961, alpha: 1).cgColor
@@ -107,7 +107,7 @@ final class ProfileHeader: UIView {
     
     
     // MARK: - Bind
-    func bind() {
+    private func bind() {
         user
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [unowned self] in

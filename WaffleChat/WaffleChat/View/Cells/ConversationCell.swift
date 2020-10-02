@@ -20,15 +20,15 @@ final class ConversationCell: UITableViewCell {
         }
     }
     
-    let profileImageView = UIImageView()
-    let nameLabel = UILabel()
-    let messageLabel: UILabel = {
+    private let profileImageView = UIImageView()
+    private let nameLabel = UILabel()
+    private let messageLabel: UILabel = {
        let label = UILabel()
         label.textColor = .lightGray
         return label
     }()
     
-    let timeStampLabel: UILabel = {
+    private let timeStampLabel: UILabel = {
        let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .darkGray
@@ -46,7 +46,7 @@ final class ConversationCell: UITableViewCell {
     }
     
     // MARK: - setup
-    func configureUI() {
+    private func configureUI() {
         
         
         [profileImageView, nameLabel, messageLabel, timeStampLabel].forEach({contentView.addSubview($0)})
@@ -77,7 +77,7 @@ final class ConversationCell: UITableViewCell {
     
     
     // MARK: - Cell Setter
-    func configureData() {
+    private func configureData() {
         guard let conversation = self.conversation else { return }
         guard let url = URL(string: conversation.user.profileImageUrl) else { return }
         profileImageView.sd_setImage(with: url)

@@ -27,7 +27,7 @@ final class ConversationsController: UIViewController, ViewType {
         return btn
     }()
     
-    let tableView = UITableView()
+    private let tableView = UITableView()
     var disposeBag: DisposeBag!
     var viewModel: ConversationViewModelBindable!
     

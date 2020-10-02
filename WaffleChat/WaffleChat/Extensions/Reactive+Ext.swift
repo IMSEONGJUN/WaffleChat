@@ -25,3 +25,16 @@ extension Reactive where Base: RegistrationController {
         }
     }
 }
+
+
+extension Reactive where Base: UIRefreshControl {
+    var spinner: Binder<Bool> {
+        return Binder(base) { (refresh, isRefresh) in
+            if isRefresh {
+                refresh.beginRefreshing()
+            } else {
+                refresh.endRefreshing()
+            }
+        }
+    }
+}
