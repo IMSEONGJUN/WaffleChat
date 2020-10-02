@@ -131,20 +131,6 @@ final class LoginController: UIViewController, ViewType {
             .bind(to: viewModel.password)
             .disposed(by: disposeBag)
         
-        loginButton.rx.tap
-            .do(onNext: { [unowned self] _ in
-                self.showActivityIndicator(true)
-            })
-            .bind(to: viewModel.loginButtonTapped)
-            .disposed(by: disposeBag)
-        
-        goToSignUpPageButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                let vc = RegistrationController.create(with: RegistrationViewModel())
-                self.navigationController?.pushViewController(vc, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
         
         // viewModel -> Output
         viewModel.isValidForm
@@ -160,6 +146,23 @@ final class LoginController: UIViewController, ViewType {
                 self?.switchToConversationVC()
             })
             .disposed(by: disposeBag)
+        
+        
+        // UI Binding
+        loginButton.rx.tap
+            .do(onNext: { [unowned self] _ in
+                self.showActivityIndicator(true)
+            })
+            .bind(to: viewModel.loginButtonTapped)
+            .disposed(by: disposeBag)
+        
+        goToSignUpPageButton.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                let vc = RegistrationController.create(with: RegistrationViewModel())
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
     }
 }
 

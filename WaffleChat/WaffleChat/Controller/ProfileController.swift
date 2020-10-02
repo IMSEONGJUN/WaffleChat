@@ -71,6 +71,7 @@ final class ProfileController: UITableViewController, ViewType {
             })
             .disposed(by: disposeBag)
         
+        
         // ViewModel -> Output
         viewModel.user
             .drive(onNext: { [weak self] in

@@ -130,22 +130,12 @@ final class RegistrationController: UIViewController, ViewType {
     // MARK: - Binding
     func bind() {
         // Input -> ViewModel
-        plusPhotoButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                self.didTapPlusPhotoButton(viewController: self)
-            })
-            .disposed(by: disposeBag)
+        
         
         signUpButton.rx.tap
             .map{ _ in Void() }
             .debug()
             .bind(to: viewModel.signupButtonTapped)
-            .disposed(by: disposeBag)
-        
-        goToLoginPageButton.rx.tap
-            .subscribe(onNext:{ [unowned self] in
-                self.navigationController?.popViewController(animated: true)
-            })
             .disposed(by: disposeBag)
         
         emailTextField.rx.text
@@ -197,6 +187,20 @@ final class RegistrationController: UIViewController, ViewType {
             .emit(onNext: { [weak self] _ in
                 self?.showActivityIndicator(false)
                 self?.switchToConversationVC()
+            })
+            .disposed(by: disposeBag)
+        
+        
+        // UI Binding
+        plusPhotoButton.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                self.didTapPlusPhotoButton(viewController: self)
+            })
+            .disposed(by: disposeBag)
+        
+        goToLoginPageButton.rx.tap
+            .subscribe(onNext:{ [unowned self] in
+                self.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
         

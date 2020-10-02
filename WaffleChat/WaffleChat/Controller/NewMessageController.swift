@@ -96,12 +96,14 @@ final class NewMessageController: UIViewController, ViewType {
             .bind(to: viewModel.filterKey)
             .disposed(by: disposeBag)
         
+        
         // UI Bind
         cancelButton.rx.tap
             .subscribe(onNext: { [unowned self] in
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
+        
         
         // ViewModel -> Output
         viewModel.users

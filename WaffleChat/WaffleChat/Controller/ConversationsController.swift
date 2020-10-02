@@ -75,7 +75,7 @@ final class ConversationsController: UIViewController, ViewType {
     
     // MARK: - Binding
     func bind() {
-        // Input -> ViewModel
+        // UI Binding
         navigationItem.leftBarButtonItem?.rx.tap
             .subscribe(onNext: { [unowned self] in
                 let profileController = ProfileController.create(with: ProfileViewModel())
@@ -108,6 +108,7 @@ final class ConversationsController: UIViewController, ViewType {
                 self.tableView.deselectRow(at: $0, animated: true)
             })
             .disposed(by: disposeBag)
+        
         
         // ViewModel -> Output
         viewModel.conversations

@@ -108,12 +108,6 @@ final class ChatController: UIViewController, ViewType {
              .bind(to: viewModel.sendButtonTapped)
              .disposed(by: disposeBag)
          
-         tapGesture.rx.event
-             .subscribe(onNext: { [unowned self] _ in
-                 self.view.endEditing(true)
-             })
-             .disposed(by: disposeBag)
-         
          customInputView.messageInputTextView.rx.text
              .orEmpty
              .bind(to: viewModel.inputText)
@@ -145,7 +139,15 @@ final class ChatController: UIViewController, ViewType {
             })
             .disposed(by: disposeBag)
        
+        
+        // UI Binding
+        tapGesture.rx.event
+            .subscribe(onNext: { [unowned self] _ in
+                self.view.endEditing(true)
+            })
+            .disposed(by: disposeBag)
 
+        
         // Notification Binding
         NotificationCenter.default.rx.notification(Notifications.didFinishFetchMessage)
             .bind { [weak self] (noti) in
