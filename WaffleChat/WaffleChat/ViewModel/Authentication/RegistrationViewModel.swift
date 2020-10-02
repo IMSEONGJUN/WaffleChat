@@ -11,6 +11,8 @@ import RxSwift
 import RxCocoa
 import Firebase
 
+typealias Register = (profileImage: UIImage?, email: String, fullName: String, userName: String, password: String)
+
 struct RegistrationViewModel: RegistrationViewModelBindable {
     
     // MARK: - Properties
@@ -19,7 +21,6 @@ struct RegistrationViewModel: RegistrationViewModelBindable {
     let fullName = PublishRelay<String>()
     let userName = PublishRelay<String>()
     let password = PublishRelay<String>()
-    let registrationValues = PublishRelay<Register>()
     let signupButtonTapped = PublishRelay<Void>()
     
     let isRegistering: Driver<Bool>
@@ -37,23 +38,6 @@ struct RegistrationViewModel: RegistrationViewModelBindable {
         let onRegistered = PublishRelay<Bool>()
         isRegistered = onRegistered.asSignal(onErrorJustReturn: false)
         
-        isFormValid = Observable
-            .combineLatest(
-                email,
-                fullName,
-                userName,
-                password,
-                profileImage
-            )
-            .map {
-                isValidEmailAddress(email: $0) &&
-                $1.count > 2 &&
-                $2.count > 2 &&
-                $3.count > 6 &&
-                $4 != nil
-            }
-            .asDriver(onErrorJustReturn: false)
-        
         let registrationValues = Observable
             .combineLatest(
                 profileImage,
@@ -62,8 +46,18 @@ struct RegistrationViewModel: RegistrationViewModelBindable {
                 userName,
                 password
             )
-            .map { ($0,$1,$2,$3,$4) }
-            
+            .share()
+        
+        isFormValid = registrationValues
+            .map {
+                $0 != nil
+                && isValidEmailAddress(email: $1)
+                && $2.count > 2
+                && $3.count > 2
+                && $4.count > 6
+            }
+            .asDriver(onErrorJustReturn: false)
+        
         signupButtonTapped
             .withLatestFrom(
                 registrationValues

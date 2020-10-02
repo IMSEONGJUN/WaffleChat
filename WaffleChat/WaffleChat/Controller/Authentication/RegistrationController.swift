@@ -11,8 +11,6 @@ import RxSwift
 import RxCocoa
 import JGProgressHUD
 
-typealias Register = (profileImage: UIImage?, email: String, fullName: String, userName: String, password: String)
-
 protocol RegistrationViewModelBindable: ViewModelType {
     // Input
     var profileImage: PublishRelay<UIImage?> { get }
@@ -20,7 +18,6 @@ protocol RegistrationViewModelBindable: ViewModelType {
     var fullName: PublishRelay<String> { get }
     var userName: PublishRelay<String> { get }
     var password: PublishRelay<String> { get }
-    var registrationValues: PublishRelay<Register> { get }
     var signupButtonTapped: PublishRelay<Void> { get }
     
     // Output
