@@ -50,7 +50,7 @@ final class ProfileController: UITableViewController, ViewType {
     
     // MARK: - Binding
     func bind() {
-        
+
         // UI binding
         headerView.dismissButton.rx.tap
             .subscribe(onNext: { [unowned self] in
@@ -68,6 +68,12 @@ final class ProfileController: UITableViewController, ViewType {
                     print("Successfully logged out this user")
                     self?.switchToLoginVC()
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .subscribe(onNext:{ [unowned self] in
+                self.tableView.deselectRow(at: $0, animated: true)
             })
             .disposed(by: disposeBag)
         

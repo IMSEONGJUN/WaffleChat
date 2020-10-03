@@ -129,9 +129,8 @@ final class RegistrationController: UIViewController, ViewType {
     
     // MARK: - Binding
     func bind() {
+        
         // Input -> ViewModel
-        
-        
         signUpButton.rx.tap
             .map{ _ in Void() }
             .debug()
