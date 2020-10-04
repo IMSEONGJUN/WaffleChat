@@ -19,7 +19,7 @@ protocol NewMessageViewModelBindable: ViewModelType {
     // ViewModel -> OutPut
     var users: BehaviorRelay<[User]> { get }
     var isNetworking: PublishRelay<Bool> { get }
-    
+    var isSearching: BehaviorRelay<Bool> { get }
 }
 
 final class NewMessageController: UIViewController, ViewType {
@@ -84,6 +84,7 @@ final class NewMessageController: UIViewController, ViewType {
         
         // Input -> ViewModel
         refresh.rx.controlEvent(.valueChanged)
+            .filter{ !self.viewModel.isSearching.value }
             .bind(to: viewModel.refreshPulled)
             .disposed(by: disposeBag)
         
