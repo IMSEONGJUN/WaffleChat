@@ -84,7 +84,6 @@ final class NewMessageController: UIViewController, ViewType {
         
         // Input -> ViewModel
         refresh.rx.controlEvent(.valueChanged)
-            .filter{ !self.viewModel.isSearching.value }
             .bind(to: viewModel.refreshPulled)
             .disposed(by: disposeBag)
         
@@ -98,14 +97,6 @@ final class NewMessageController: UIViewController, ViewType {
             .disposed(by: disposeBag)
         
         
-        // UI Bind
-        cancelButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                self.dismiss(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        
         // ViewModel -> Output
         viewModel.users
             .bind(to: tableView.rx.items(cellIdentifier: UserCell.reuseIdentifier,
@@ -116,6 +107,14 @@ final class NewMessageController: UIViewController, ViewType {
         
         viewModel.isNetworking
             .bind(to: refresh.rx.spinner)
+            .disposed(by: disposeBag)
+        
+        
+        // UI Bind
+        cancelButton.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                self.dismiss(animated: true)
+            })
             .disposed(by: disposeBag)
     }
 }

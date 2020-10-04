@@ -53,9 +53,16 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
         
         
         // ReFetching by refreshing and canceling search
+        let refreshing = Observable
+            .combineLatest(
+                refreshPulled, onSearching
+            )
+            .filter{ !$1 }
+            .map{ _ in Void() }
+        
         let reFetchedUsers = Observable
             .merge(
-                refreshPulled.asObservable(),
+                refreshing,
                 searchCancelButtonTapped.asObservable()
             )
             .do(onNext: { onNetworking.accept(true) })
@@ -69,6 +76,7 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
             .disposed(by: disposeBag)
         
         reFetchedUsers
+            .debug()
             .bind(to: users)
             .disposed(by: disposeBag)
         
