@@ -71,6 +71,7 @@ final class ChatController: UIViewController, ViewType {
             $0.top.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(50)
         }
+        collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         collectionView.backgroundColor = .white
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .interactive
@@ -80,7 +81,6 @@ final class ChatController: UIViewController, ViewType {
     private func configureFlowLayout() -> UICollectionViewFlowLayout {
         layout = UICollectionViewFlowLayout()
         layout.estimatedItemSize = CGSize(width: view.frame.width, height: 50)
-        layout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         layout.minimumLineSpacing = 10
         layout.scrollDirection = .vertical
         return layout
@@ -112,7 +112,6 @@ final class ChatController: UIViewController, ViewType {
              .orEmpty
              .bind(to: viewModel.inputText)
              .disposed(by: disposeBag)
-        
         
         // ViewModel -> Output
         viewModel.userData
@@ -150,13 +149,15 @@ final class ChatController: UIViewController, ViewType {
         
         // Notification Binding
         NotificationCenter.default.rx.notification(Notifications.didFinishFetchMessage)
-            .bind { [weak self] (noti) in
+            .subscribe(onNext:{ [weak self] (noti) in
                 guard let self = self else { return }
-                if self.collectionView.contentSize.height > (self.collectionView.frame.height - self.topbarHeight) {
-                    let lengthToScroll = self.collectionView.contentSize.height - self.collectionView.frame.height
-                    self.collectionView.contentOffset.y = lengthToScroll + self.topbarHeight
+                self.collectionView.layoutIfNeeded()
+                if (self.collectionView.contentSize.height + self.topbarHeight) > self.collectionView.frame.height {
+                    let count = self.viewModel.messages.value.count
+                    self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
+                    self.collectionView.layoutIfNeeded()
                 }
-            }
+            })
             .disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
@@ -165,8 +166,7 @@ final class ChatController: UIViewController, ViewType {
                 let height = self.getKeyboardFrameHeight(noti: noti)
                 let bottomInset = self.view.safeAreaInsets.bottom
                 
-                if self.collectionView.contentSize.height > self.collectionView.frame.height -
-                                                                        (height + self.customInputView.frame.height) {
+                if self.collectionView.contentSize.height + self.topbarHeight > self.view.frame.height - (height + self.customInputView.frame.height) {
                     self.view.transform = CGAffineTransform(translationX: 0, y: -height + bottomInset)
                 } else {
                     self.customInputView.transform = CGAffineTransform(translationX: 0, y: -height + bottomInset)
@@ -180,8 +180,7 @@ final class ChatController: UIViewController, ViewType {
                 guard let self = self else { return }
                 let height = self.getKeyboardFrameHeight(noti: noti)
 
-                if self.collectionView.contentSize.height > self.collectionView.frame.height -
-                                                                        (height + self.customInputView.frame.height) {
+                if self.collectionView.contentSize.height + self.topbarHeight > self.view.frame.height - (height + self.customInputView.frame.height) {
                     self.view.transform = .identity
                 }
                 self.customInputView.transform = .identity
@@ -203,6 +202,15 @@ final class ChatController: UIViewController, ViewType {
 
 
 
+
+
+
+
+
+
+//if (self.collectionView.contentSize.height + self.topbarHeight) > self.collectionView.frame.height {
+//    let lengthToScroll = (self.collectionView.contentSize.height + self.topbarHeight) - self.collectionView.contentSize.height
+//    self.collectionView.contentOffset.y = lengthToScroll + 32
 /// CollectionView ContentOffSet Reference
 ///   let divisionIntValue = Int(collectionViewContentHeight / collectionViewHeight)
 ///   let remainder = collectionViewContentHeight.truncatingRemainder(dividingBy: collectionViewHeight)
