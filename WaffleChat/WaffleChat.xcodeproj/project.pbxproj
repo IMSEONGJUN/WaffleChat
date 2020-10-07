@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2628AF237C7CDB5ECC05C14F /* Pods_WaffleChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6EC4A4D1AD62C7C066FAD80 /* Pods_WaffleChatTests.framework */; };
 		AB650DE7C24B8EA28D97A79B /* Pods_WaffleChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */; };
 		CE01B70024FD39B300D2C0FC /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01B6FF24FD39B300D2C0FC /* ProfileCell.swift */; };
 		CE01B70224FD45D400D2C0FC /* ProfileFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01B70124FD45D400D2C0FC /* ProfileFooterView.swift */; };
@@ -47,10 +48,21 @@
 		CECA738A25234282001EED41 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA738925234282001EED41 /* UIView+Ext.swift */; };
 		CED52B2624EEA7730051848A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED52B2524EEA7730051848A /* ChatViewModel.swift */; };
 		CEDD8F9724EA59590034537E /* BottomButtonOnAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDD8F9624EA59590034537E /* BottomButtonOnAuth.swift */; };
+		CEEE185B252DA8DE0018A069 /* WaffleChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEE185A252DA8DE0018A069 /* WaffleChatTests.swift */; };
 		CEF7C77F24EF665000CFF7CF /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C77E24EF665000CFF7CF /* Message.swift */; };
 		CEF7C78124EF665900CFF7CF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C78024EF665900CFF7CF /* User.swift */; };
 		CEF7C78424EFB39200CFF7CF /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF7C78324EFB39200CFF7CF /* Conversation.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CEEE185D252DA8DE0018A069 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE9AE3F824A9BBB800F77F48 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE9AE3FF24A9BBB800F77F48;
+			remoteInfo = WaffleChat;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		CE38E38E24FF804900C0A200 /* Embed Frameworks */ = {
@@ -66,8 +78,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		018FF2AF3AFB88915F2DE255 /* Pods-WaffleChatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChatTests.debug.xcconfig"; path = "Target Support Files/Pods-WaffleChatTests/Pods-WaffleChatTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3F363E3C2492FB5307D42C85 /* Pods-WaffleChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.debug.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.debug.xcconfig"; sourceTree = "<group>"; };
 		53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaffleChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C11FE55820537ED2B2B00FA1 /* Pods-WaffleChatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChatTests.release.xcconfig"; path = "Target Support Files/Pods-WaffleChatTests/Pods-WaffleChatTests.release.xcconfig"; sourceTree = "<group>"; };
 		CE01B6FF24FD39B300D2C0FC /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		CE01B70124FD45D400D2C0FC /* ProfileFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFooterView.swift; sourceTree = "<group>"; };
 		CE0706E4251AF60C000E1A1D /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
@@ -110,10 +124,14 @@
 		CECA738925234282001EED41 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		CED52B2524EEA7730051848A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		CEDD8F9624EA59590034537E /* BottomButtonOnAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomButtonOnAuth.swift; sourceTree = "<group>"; };
+		CEEE1858252DA8DE0018A069 /* WaffleChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WaffleChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEEE185A252DA8DE0018A069 /* WaffleChatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaffleChatTests.swift; sourceTree = "<group>"; };
+		CEEE185C252DA8DE0018A069 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEF7C77E24EF665000CFF7CF /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		CEF7C78024EF665900CFF7CF /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CEF7C78324EFB39200CFF7CF /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WaffleChat.release.xcconfig"; path = "Target Support Files/Pods-WaffleChat/Pods-WaffleChat.release.xcconfig"; sourceTree = "<group>"; };
+		F6EC4A4D1AD62C7C066FAD80 /* Pods_WaffleChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WaffleChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +143,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CEEE1855252DA8DE0018A069 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2628AF237C7CDB5ECC05C14F /* Pods_WaffleChatTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -132,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				53E13549EF8BF1CF2B375860 /* Pods_WaffleChat.framework */,
+				F6EC4A4D1AD62C7C066FAD80 /* Pods_WaffleChatTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -141,6 +168,8 @@
 			children = (
 				3F363E3C2492FB5307D42C85 /* Pods-WaffleChat.debug.xcconfig */,
 				E9B27AB6A6234BB13D1C59B8 /* Pods-WaffleChat.release.xcconfig */,
+				018FF2AF3AFB88915F2DE255 /* Pods-WaffleChatTests.debug.xcconfig */,
+				C11FE55820537ED2B2B00FA1 /* Pods-WaffleChatTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -176,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				CE9AE40224A9BBB800F77F48 /* WaffleChat */,
+				CEEE1859252DA8DE0018A069 /* WaffleChatTests */,
 				CE9AE40124A9BBB800F77F48 /* Products */,
 				A7DF3E6FF268DDBCE8C3893B /* Pods */,
 				3213A76646E0129E1425D869 /* Frameworks */,
@@ -186,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				CE9AE40024A9BBB800F77F48 /* WaffleChat.app */,
+				CEEE1858252DA8DE0018A069 /* WaffleChatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -324,6 +355,15 @@
 			path = UIButton;
 			sourceTree = "<group>";
 		};
+		CEEE1859252DA8DE0018A069 /* WaffleChatTests */ = {
+			isa = PBXGroup;
+			children = (
+				CEEE185A252DA8DE0018A069 /* WaffleChatTests.swift */,
+				CEEE185C252DA8DE0018A069 /* Info.plist */,
+			);
+			path = WaffleChatTests;
+			sourceTree = "<group>";
+		};
 		CEF0CC7C24DAFAC50017E452 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -357,18 +397,42 @@
 			productReference = CE9AE40024A9BBB800F77F48 /* WaffleChat.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CEEE1857252DA8DE0018A069 /* WaffleChatTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEEE185F252DA8DE0018A069 /* Build configuration list for PBXNativeTarget "WaffleChatTests" */;
+			buildPhases = (
+				8B597D1CF003FD1F70B32066 /* [CP] Check Pods Manifest.lock */,
+				CEEE1854252DA8DE0018A069 /* Sources */,
+				CEEE1855252DA8DE0018A069 /* Frameworks */,
+				CEEE1856252DA8DE0018A069 /* Resources */,
+				228749D183C2B0AF06CC30D9 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CEEE185E252DA8DE0018A069 /* PBXTargetDependency */,
+			);
+			name = WaffleChatTests;
+			productName = WaffleChatTests;
+			productReference = CEEE1858252DA8DE0018A069 /* WaffleChatTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		CE9AE3F824A9BBB800F77F48 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1150;
+				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Seongjun Im";
 				TargetAttributes = {
 					CE9AE3FF24A9BBB800F77F48 = {
 						CreatedOnToolsVersion = 11.5;
+					};
+					CEEE1857252DA8DE0018A069 = {
+						CreatedOnToolsVersion = 12.0.1;
+						TestTargetID = CE9AE3FF24A9BBB800F77F48;
 					};
 				};
 			};
@@ -386,6 +450,7 @@
 			projectRoot = "";
 			targets = (
 				CE9AE3FF24A9BBB800F77F48 /* WaffleChat */,
+				CEEE1857252DA8DE0018A069 /* WaffleChatTests */,
 			);
 		};
 /* End PBXProject section */
@@ -402,9 +467,33 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CEEE1856252DA8DE0018A069 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		228749D183C2B0AF06CC30D9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WaffleChatTests/Pods-WaffleChatTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WaffleChatTests/Pods-WaffleChatTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WaffleChatTests/Pods-WaffleChatTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		4E5C1EA09D923CBDCB5E8BB0 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -420,6 +509,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WaffleChat/Pods-WaffleChat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8B597D1CF003FD1F70B32066 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WaffleChatTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DF70E484D1A9A7403C994C83 /* [CP] Check Pods Manifest.lock */ = {
@@ -492,7 +603,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CEEE1854252DA8DE0018A069 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEEE185B252DA8DE0018A069 /* WaffleChatTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CEEE185E252DA8DE0018A069 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE9AE3FF24A9BBB800F77F48 /* WaffleChat */;
+			targetProxy = CEEE185D252DA8DE0018A069 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CE9AE40924A9BBB800F77F48 /* Main.storyboard */ = {
@@ -639,6 +766,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ADHC8G6NHC;
 				INFOPLIST_FILE = WaffleChat/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -659,6 +787,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ADHC8G6NHC;
 				INFOPLIST_FILE = WaffleChat/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -667,6 +796,50 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CEEE1860252DA8DE0018A069 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 018FF2AF3AFB88915F2DE255 /* Pods-WaffleChatTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ADHC8G6NHC;
+				INFOPLIST_FILE = WaffleChatTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.seongjunIm.www.WaffleChatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WaffleChat.app/WaffleChat";
+			};
+			name = Debug;
+		};
+		CEEE1861252DA8DE0018A069 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C11FE55820537ED2B2B00FA1 /* Pods-WaffleChatTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ADHC8G6NHC;
+				INFOPLIST_FILE = WaffleChatTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.seongjunIm.www.WaffleChatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WaffleChat.app/WaffleChat";
 			};
 			name = Release;
 		};
@@ -687,6 +860,15 @@
 			buildConfigurations = (
 				CE9AE41524A9BBBA00F77F48 /* Debug */,
 				CE9AE41624A9BBBA00F77F48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CEEE185F252DA8DE0018A069 /* Build configuration list for PBXNativeTarget "WaffleChatTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEEE1860252DA8DE0018A069 /* Debug */,
+				CEEE1861252DA8DE0018A069 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

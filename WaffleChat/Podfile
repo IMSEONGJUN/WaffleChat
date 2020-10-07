@@ -18,4 +18,18 @@ target 'WaffleChat' do
   pod 'SDWebImage'
   pod 'JGProgressHUD'
 
+def testing_pods
+  pod 'Quick'
+  pod 'Nimble'
+  pod 'RxBlocking'
+  pod 'RxTest'
+end
+
+  target 'WaffleChatTests' do
+    inherit! :search_paths
+    # Pods for testing
+    pod 'Firebase/Core'
+    pod 'Firebase/Database'
+
+  end
 end

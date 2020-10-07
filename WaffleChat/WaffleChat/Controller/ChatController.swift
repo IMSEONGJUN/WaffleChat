@@ -57,7 +57,7 @@ final class ChatController: UIViewController, ViewType {
     }
     
     
-    // MARK: - Initial Setup
+    // MARK: - Initial UI Setup
     func setupUI() {
         configureCollectionView()
         configureCustomInputView()
