@@ -18,8 +18,8 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
     
     // Output
     var users = BehaviorRelay<[User]>(value: [])
-    let isNetworking: PublishRelay<Bool>
-    let isSearching: BehaviorRelay<Bool>
+    let isNetworking: Driver<Bool>
+    
     
     var disposeBag = DisposeBag()
     
@@ -31,10 +31,11 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
         let baseUsersForFiltering = PublishRelay<[User]>()
         
         let onNetworking = PublishRelay<Bool>()
-        isNetworking = onNetworking
+        isNetworking = onNetworking.asDriver(onErrorJustReturn: false)
         
         let onSearching = BehaviorRelay<Bool>(value: false)
-        isSearching = onSearching
+        
+        
         
         
         // Initial Fetching
@@ -76,7 +77,6 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
             .disposed(by: disposeBag)
         
         reFetchedUsers
-            .debug()
             .bind(to: users)
             .disposed(by: disposeBag)
         

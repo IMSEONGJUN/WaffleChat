@@ -18,8 +18,7 @@ protocol NewMessageViewModelBindable: ViewModelType {
     
     // ViewModel -> OutPut
     var users: BehaviorRelay<[User]> { get }
-    var isNetworking: PublishRelay<Bool> { get }
-    var isSearching: BehaviorRelay<Bool> { get }
+    var isNetworking: Driver<Bool> { get }
 }
 
 final class NewMessageController: UIViewController, ViewType {
@@ -106,7 +105,7 @@ final class NewMessageController: UIViewController, ViewType {
             .disposed(by: disposeBag)
         
         viewModel.isNetworking
-            .bind(to: refresh.rx.spinner)
+            .drive(refresh.rx.spinner)
             .disposed(by: disposeBag)
         
         
