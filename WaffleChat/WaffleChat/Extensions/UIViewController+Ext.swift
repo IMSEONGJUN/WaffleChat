@@ -112,7 +112,6 @@ extension UIViewController {
             navigationController?.navigationBar.prefersLargeTitles = prefersLargeTitles
             navigationItem.title = title
             navigationController?.navigationBar.tintColor = .white
-    //        navigationController?.navigationBar.isTranslucent = true
             navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
         }
     
