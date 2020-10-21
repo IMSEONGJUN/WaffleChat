@@ -35,6 +35,7 @@ final class ConversationCell: UITableViewCell {
         return label
     }()
     
+    
     // MARK: - initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -44,10 +45,10 @@ final class ConversationCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+   
     
     // MARK: - setup
     private func configureUI() {
-        
         
         [profileImageView, nameLabel, messageLabel, timeStampLabel].forEach({contentView.addSubview($0)})
         selectedBackgroundView?.isHidden = true
@@ -72,7 +73,6 @@ final class ConversationCell: UITableViewCell {
             $0.top.equalTo(nameLabel)
             $0.trailing.equalToSuperview().inset(15)
         }
-        
     }
     
     

@@ -15,14 +15,16 @@ import RxCocoa
 import UserNotifications
 
 final class APIManager {
+    
     static let shared = APIManager()
+    
     var disposeBag = DisposeBag()
     
     let messageRef = Firestore.firestore().collection("messages")
     let userRef = Firestore.firestore().collection("users")
     var newMessage = PublishRelay<Conversation>()
     
-    private init() {}
+    private init() { }
     
     func fetchUsers() -> Observable<[User]> {
         return Observable<[User]>.create { (observer) -> Disposable in

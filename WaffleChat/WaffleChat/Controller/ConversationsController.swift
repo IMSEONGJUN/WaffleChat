@@ -15,7 +15,6 @@ protocol ConversationViewModelBindable: ViewModelType {
     var conversations: BehaviorRelay<[Conversation]> { get }
 }
 
-
 final class ConversationsController: UIViewController, ViewType {
     
     // MARK: - Properties

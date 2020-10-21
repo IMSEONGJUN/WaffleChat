@@ -99,7 +99,7 @@ final class NewMessageController: UIViewController, ViewType {
         // ViewModel -> Output
         viewModel.users
             .bind(to: tableView.rx.items(cellIdentifier: UserCell.reuseIdentifier,
-                                         cellType: UserCell.self)) { indexPath, user, cell in
+                                         cellType: UserCell.self)) { row, user, cell in
                 cell.user = user
             }
             .disposed(by: disposeBag)
