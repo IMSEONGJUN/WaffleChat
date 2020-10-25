@@ -18,41 +18,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        
-        window = UIWindow(frame: UIScreen.main.bounds)
-
-        if loginCheck() {
-            switchToConversationVC()
-        } else {
-            let loginController = LoginController.create(with: LoginViewModel())
-            window?.rootViewController = UINavigationController(rootViewController: loginController)
-            window?.makeKeyAndVisible()
-        }
+//
+//        if loginCheck() {
+//            switchToConversationVC()
+//        } else {
+//            window = UIWindow(frame: UIScreen.main.bounds)
+//            let loginController = LoginController.create(with: LoginViewModel())
+//            window?.rootViewController = UINavigationController(rootViewController: loginController)
+//            window?.makeKeyAndVisible()
+//        }
         return true
     }
     
-    func switchToConversationVC() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        
-        let conversationVC = ConversationsController.create(with: ConversationViewModel())
-        window.rootViewController = UINavigationController(rootViewController: conversationVC)
-        window.makeKeyAndVisible()
-        appDelegate.window = window
-    }
-    
-    func loginCheck() -> Bool {
-        return Auth.auth().currentUser != nil
-    }
+//    func switchToConversationVC() {
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        let window = UIWindow(frame: UIScreen.main.bounds)
+//
+//        let conversationVC = ConversationsController.create(with: ConversationViewModel())
+//        window.rootViewController = UINavigationController(rootViewController: conversationVC)
+//        window.makeKeyAndVisible()
+//        appDelegate.window = window
+//    }
+//
+//    func loginCheck() -> Bool {
+//        return Auth.auth().currentUser != nil
+//    }
     
     // MARK: UISceneSession Lifecycle
-    @available(iOS 13.0, *)
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        print("Scene Session Configured!!!!!!!!!!!!!")
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-    @available(iOS 13.0, *)
+    
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
