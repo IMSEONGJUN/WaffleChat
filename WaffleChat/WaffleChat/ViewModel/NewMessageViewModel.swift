@@ -25,17 +25,16 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
     
     init(_ model: APIManager = .shared) {
 
+        // Broker
         let onRefreshPulled = PublishRelay<Void>()
         refreshPulled = onRefreshPulled
-        
-        let baseUsersForFiltering = PublishRelay<[User]>()
         
         let onNetworking = PublishRelay<Bool>()
         isNetworking = onNetworking.asDriver(onErrorJustReturn: false)
         
+        // Material
+        let baseUsersForFiltering = PublishRelay<[User]>()
         let onSearching = BehaviorRelay<Bool>(value: false)
-        
-        
         
         
         // Initial Fetching
@@ -56,7 +55,8 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
         // ReFetching by refreshing and canceling search
         let refreshing = Observable
             .combineLatest(
-                refreshPulled, onSearching
+                refreshPulled,
+                onSearching
             )
             .filter{ !$1 }
             .map{ _ in Void() }

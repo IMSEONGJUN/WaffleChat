@@ -68,7 +68,8 @@ final class ChatController: UIViewController, ViewType {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureFlowLayout())
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+            $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(50)
         }
         collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
@@ -112,6 +113,7 @@ final class ChatController: UIViewController, ViewType {
              .orEmpty
              .bind(to: viewModel.inputText)
              .disposed(by: disposeBag)
+        
         
         // ViewModel -> Output
         viewModel.userData
