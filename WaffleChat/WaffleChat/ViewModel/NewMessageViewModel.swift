@@ -35,7 +35,7 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
         // Material
         let baseUsersForFiltering = PublishRelay<[User]>()
         let onSearching = BehaviorRelay<Bool>(value: false)
-        
+//      let someSub = PublishSubject<Void>()
         
         // Initial Fetching
         let fetchedUsers = model
@@ -61,10 +61,16 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
             .filter{ !$1 }
             .map{ _ in Void() }
         
+        
+        // merge할때는 합쳐지는 각각의 시퀀스가 갖는 값의 타입도 같아야 하는 것은 물론이며,
+        // Observable, Relay, Subject 중 같은 wrapper타입끼리는 합쳐질 수 있으며 ex) Observable + Obsevable,
+        // ( Observable + Subject ) Merge 가능
+        // ( Observable + Relay) Merge 불가 -> ( Observalble + Relay.asObserable() ) 은 가능함.
         let reFetchedUsers = Observable
             .merge(
-                refreshing,
-                searchCancelButtonTapped.asObservable()
+                refreshing, // -> Observable
+//              someSub     // -> Subject
+                searchCancelButtonTapped.asObservable() // Relay.asObservable()
             )
             .do(onNext: { onNetworking.accept(true) })
             .flatMapLatest(model.fetchUsers)

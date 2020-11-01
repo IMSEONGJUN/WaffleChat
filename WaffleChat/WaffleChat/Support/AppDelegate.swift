@@ -18,31 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-//
-//        if loginCheck() {
-//            switchToConversationVC()
-//        } else {
-//            window = UIWindow(frame: UIScreen.main.bounds)
-//            let loginController = LoginController.create(with: LoginViewModel())
-//            window?.rootViewController = UINavigationController(rootViewController: loginController)
-//            window?.makeKeyAndVisible()
-//        }
         return true
     }
-    
-//    func switchToConversationVC() {
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        let window = UIWindow(frame: UIScreen.main.bounds)
-//
-//        let conversationVC = ConversationsController.create(with: ConversationViewModel())
-//        window.rootViewController = UINavigationController(rootViewController: conversationVC)
-//        window.makeKeyAndVisible()
-//        appDelegate.window = window
-//    }
-//
-//    func loginCheck() -> Bool {
-//        return Auth.auth().currentUser != nil
-//    }
     
     // MARK: UISceneSession Lifecycle
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

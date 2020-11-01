@@ -13,16 +13,16 @@ import RxSwift
 
 protocol ViewType: class {
     
-    associatedtype VM
+    associatedtype ViewModelType
     
-    var viewModel: VM! { get set }
+    var viewModel: ViewModelType! { get set }
     var disposeBag: DisposeBag! { get set }
     func setupUI()
     func bind()
 }
 
 extension ViewType where Self: UIViewController {
-    static func create(with viewModel: VM) -> Self {
+    static func create(with viewModel: ViewModelType) -> Self {
         let `self` = Self()
         
         // DI
