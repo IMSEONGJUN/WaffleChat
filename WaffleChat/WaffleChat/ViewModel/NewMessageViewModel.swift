@@ -20,12 +20,11 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
     var users = BehaviorRelay<[User]>(value: [])
     let isNetworking: Driver<Bool>
     
-    
     var disposeBag = DisposeBag()
     
     init(_ model: APIManager = .shared) {
 
-        // Broker
+        // Proxy
         let onRefreshPulled = PublishRelay<Void>()
         refreshPulled = onRefreshPulled
         
