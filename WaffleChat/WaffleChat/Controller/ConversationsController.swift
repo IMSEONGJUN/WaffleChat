@@ -34,7 +34,6 @@ final class ConversationsController: UIViewController, ViewType {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("ConversationVC viewDidLoad")
     }
     
     override func viewWillAppear(_ animated: Bool) {

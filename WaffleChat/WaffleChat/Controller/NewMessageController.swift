@@ -24,8 +24,8 @@ protocol NewMessageViewModelBindable: ViewModelType {
 final class NewMessageController: UIViewController, ViewType {
     
     // MARK: - Properties
-    private let tableView = UITableView()
-    private let searchController = UISearchController()
+    let tableView = UITableView()
+    let searchController = UISearchController()
     private let refresh = UIRefreshControl()
     
     var viewModel: NewMessageViewModelBindable!
