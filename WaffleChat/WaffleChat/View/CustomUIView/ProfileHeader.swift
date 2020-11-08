@@ -55,13 +55,19 @@ final class ProfileHeader: UIView {
     // MARK: - Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureGradientLayer()
-        configureUI()
         bind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    // MARK: - UIView
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        configureGradientLayer()
+        configureUI()
     }
     
     
@@ -93,7 +99,6 @@ final class ProfileHeader: UIView {
             $0.top.equalTo(profileImageView.snp.bottom).offset(15)
         }
     }
-    
     
     private func configureGradientLayer() {
         let gradient = CAGradientLayer()
