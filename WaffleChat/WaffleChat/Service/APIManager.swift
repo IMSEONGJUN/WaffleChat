@@ -22,7 +22,7 @@ final class APIManager {
     
     let messageRef = Firestore.firestore().collection("messages")
     let userRef = Firestore.firestore().collection("users")
-    var newMessage = PublishRelay<Conversation>()
+    
     
     private init() { }
     

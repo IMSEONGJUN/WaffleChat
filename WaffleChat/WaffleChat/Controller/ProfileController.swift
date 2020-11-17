@@ -60,13 +60,13 @@ final class ProfileController: UITableViewController, ViewType {
         
         footerView.logoutButton.rx.tap
             .subscribe(onNext:{ [unowned self] in
-                self.doLogoutThisUser {[weak self] (error) in
+                self.doLogoutThisUser { (error) in
                     if let err = error {
                         print("Failed to logged out:", err)
                         return
                     }
                     print("Successfully logged out this user")
-                    self?.switchToLoginVC()
+                    self.switchToLoginVC()
                 }
             })
             .disposed(by: disposeBag)

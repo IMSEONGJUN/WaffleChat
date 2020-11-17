@@ -68,7 +68,7 @@ struct RegistrationViewModel: RegistrationViewModelBindable {
             .flatMapLatest( model.performRegistration )
             .subscribe(onNext: {
                 onRegistering.accept(false)
-                onRegistered.accept($0 ? true : false)
+                onRegistered.accept($0)
             })
             .disposed(by: disposeBag)
     }
