@@ -51,11 +51,11 @@ final class MessageCell: UICollectionViewCell {
         return view
     }()
     
-    private var textLeadingConst: NSLayoutConstraint!
-    private var texttrailingConst: NSLayoutConstraint!
+    var textLeadingConst: NSLayoutConstraint!
+    var texttrailingConst: NSLayoutConstraint!
     
-    private var timelabelLeadingConst: NSLayoutConstraint!
-    private var timelabelTrailingConst: NSLayoutConstraint!
+    var timelabelLeadingConst: NSLayoutConstraint!
+    var timelabelTrailingConst: NSLayoutConstraint!
     
     
     // MARK: - Initializer

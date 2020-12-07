@@ -27,7 +27,12 @@ final class ChatController: UIViewController, ViewType {
     private var collectionView: UICollectionView!
     private var layout: UICollectionViewFlowLayout!
     
-    private let customInputView = CustomInputAccessoryView()
+    private lazy var customInputView: CustomInputAccessoryView = {
+       let iv = CustomInputAccessoryView()
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 60)
+        iv.frame = frame
+        return iv
+    }()
     var viewModel: ChatViewModelBindable!
     var disposeBag: DisposeBag!
     
@@ -100,6 +105,13 @@ final class ChatController: UIViewController, ViewType {
         collectionView.addGestureRecognizer(tapGesture)
     }
     
+//    override var inputAccessoryView: UIView? {
+//        return customInputView
+//    }
+//    
+//    override var canBecomeFirstResponder: Bool {
+//        return true
+//    }
     
     // MARK: - Binding
     func bind() {
@@ -129,6 +141,11 @@ final class ChatController: UIViewController, ViewType {
             }
             .bind(to: collectionView.rx.items(cellIdentifier: MessageCell.reuseID,
                                               cellType: MessageCell.self)) { index, message, cell in
+                                                cell.message = nil
+                                                cell.textLeadingConst.isActive = false
+                                                cell.texttrailingConst.isActive = false
+                                                cell.timelabelLeadingConst.isActive = false
+                                                cell.timelabelTrailingConst.isActive = false
                                                 cell.message = message
             }
             .disposed(by: disposeBag)
