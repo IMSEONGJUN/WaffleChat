@@ -27,12 +27,7 @@ final class ChatController: UIViewController, ViewType {
     private var collectionView: UICollectionView!
     private var layout: UICollectionViewFlowLayout!
     
-    private lazy var customInputView: CustomInputAccessoryView = {
-       let iv = CustomInputAccessoryView()
-        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 60)
-        iv.frame = frame
-        return iv
-    }()
+    private let customInputView = CustomInputAccessoryView()
     var viewModel: ChatViewModelBindable!
     var disposeBag: DisposeBag!
     
@@ -108,7 +103,7 @@ final class ChatController: UIViewController, ViewType {
 //    override var inputAccessoryView: UIView? {
 //        return customInputView
 //    }
-//    
+//
 //    override var canBecomeFirstResponder: Bool {
 //        return true
 //    }
