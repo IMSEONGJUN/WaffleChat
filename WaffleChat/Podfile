@@ -9,6 +9,7 @@ target 'WaffleChat' do
   pod 'SnapKit'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'Firebase'
   pod 'Firebase/Analytics'
   pod 'Firebase/Messaging'
   pod 'Firebase/Core'

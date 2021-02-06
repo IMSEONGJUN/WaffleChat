@@ -54,11 +54,13 @@ final class RegistrationController: UIViewController, ViewType {
     
     private let goToLoginPageButton = BottomButtonOnAuth(firstText: "Already have an account? ", secondText: "Log In")
     
-    private lazy var stackContents = [emailContainer,
-                              fullNameContainer,
-                              userNameContainer,
-                              passwordContainer,
-                              signUpButton]
+    private lazy var stackContents = [
+        emailContainer,
+        fullNameContainer,
+        userNameContainer,
+        passwordContainer,
+        signUpButton
+    ]
     
     private let stack = UIStackView()
     
@@ -132,8 +134,6 @@ final class RegistrationController: UIViewController, ViewType {
         
         // Input -> ViewModel
         signUpButton.rx.tap
-            .map{ _ in Void() }
-            .debug()
             .bind(to: viewModel.signupButtonTapped)
             .disposed(by: disposeBag)
         

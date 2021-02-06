@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol ChatViewModelBindable : ViewModelType {
+protocol ChatViewModelBindable: ViewModelType {
     // Input
     var userData: BehaviorRelay<User?> { get }
     var inputText: BehaviorRelay<String> { get }
