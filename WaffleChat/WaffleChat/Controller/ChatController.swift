@@ -130,18 +130,22 @@ final class ChatController: UIViewController, ViewType {
             })
             .disposed(by: disposeBag)
         
-        Observable.combineLatest(viewModel.messages, viewModel.userData)
+        Observable
+            .combineLatest(
+                viewModel.messages,
+                viewModel.userData
+            )
             .map{ (messages, user) -> [Message] in
-                messages.map{ Message(original: $0, user: user!) }
+                return messages.map{ Message(original: $0, user: user!) }
             }
             .bind(to: collectionView.rx.items(cellIdentifier: MessageCell.reuseID,
                                               cellType: MessageCell.self)) { index, message, cell in
-                                                cell.message = nil
-                                                cell.textLeadingConst.isActive = false
-                                                cell.texttrailingConst.isActive = false
-                                                cell.timelabelLeadingConst.isActive = false
-                                                cell.timelabelTrailingConst.isActive = false
-                                                cell.message = message
+                cell.message = nil
+                cell.textLeadingConst.isActive = false
+                cell.texttrailingConst.isActive = false
+                cell.timelabelLeadingConst.isActive = false
+                cell.timelabelTrailingConst.isActive = false
+                cell.message = message
             }
             .disposed(by: disposeBag)
 
