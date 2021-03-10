@@ -58,7 +58,7 @@ struct NewMessageViewModel: NewMessageViewModelBindable {
                 onSearching
             )
             .filter{ !$1 }
-            .map{ _ in Void() }
+            .mapToVoid()
         
         
         // merge할때는 합쳐지는 각각의 시퀀스가 갖는 값의 타입도 같아야 하는 것은 물론이며,

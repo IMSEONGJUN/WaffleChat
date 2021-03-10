@@ -36,7 +36,7 @@ struct ChatViewModel: ChatViewModelBindable {
             .disposed(by: disposeBag)
         
         fetchedMessages
-            .map{ _ in Void()}
+            .mapToVoid()
             .bind(to: didNewMessageIncome)
             .disposed(by: disposeBag)
         
