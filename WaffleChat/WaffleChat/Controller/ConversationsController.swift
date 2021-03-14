@@ -119,7 +119,7 @@ final class ConversationsController: UIViewController, ViewType {
     
     
     // MARK: - Binding Helper
-    func newMessageControllerBind(newMsgVC: NewMessageController) {
+    private func newMessageControllerBind(newMsgVC: NewMessageController) {
         newMsgVC.tableView.rx.modelSelected(User.self)
             .subscribe(onNext: { [weak self] user in
                 let chatVC = ChatController.create(with: ChatViewModel(user: user))
