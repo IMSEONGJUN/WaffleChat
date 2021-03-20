@@ -122,8 +122,8 @@ final class APIManager {
         }
     }
     
-    func uploadMessage(_ message: String, To user: User) -> Observable<Bool> {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return Observable.just(false)}
+    func uploadMessage(_ message: String, To user: User?) -> Observable<Bool> {
+        guard let currentUid = Auth.auth().currentUser?.uid, let user = user else { return Observable.just(false)}
         
         let message: [String: Any] = [
                                       "text": message,

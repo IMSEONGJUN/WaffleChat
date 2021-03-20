@@ -57,7 +57,7 @@ struct ChatViewModel: ChatViewModelBindable {
             .withLatestFrom(source)
             .filter{ $0.0 != ""}
             .flatMapLatest{
-                model.uploadMessage($0.0, To: $0.1!)
+                model.uploadMessage($0.0, To: $0.1)
             }
             .asDriver(onErrorJustReturn: false)
     }

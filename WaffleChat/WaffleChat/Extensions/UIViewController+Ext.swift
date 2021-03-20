@@ -148,5 +148,4 @@ extension UIViewController {
         return statusBarHeight +
             (self.navigationController?.navigationBar.frame.height ?? 0.0)
     }
-
 }
