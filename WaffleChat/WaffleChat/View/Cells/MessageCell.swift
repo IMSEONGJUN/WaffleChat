@@ -105,9 +105,18 @@ final class MessageCell: UICollectionViewCell {
         timelabelTrailingConst = timeStampLabel.trailingAnchor.constraint(equalTo: textView.leadingAnchor, constant: -12)
     }
     
+    private func resetCellForReuse() {
+        message = nil
+        textLeadingConst.isActive = false
+        texttrailingConst.isActive = false
+        timelabelLeadingConst.isActive = false
+        timelabelTrailingConst.isActive = false
+    }
     
     // MARK: - Cell Setter
     private func configure() {
+        resetCellForReuse()
+        
         guard let message = message else { return }
         let viewModel = MessageViewModel(message: message)
         bubbleContainer.backgroundColor = viewModel.messageBackgroundColor

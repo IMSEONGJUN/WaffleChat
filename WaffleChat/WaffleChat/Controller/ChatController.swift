@@ -140,11 +140,6 @@ final class ChatController: UIViewController, ViewType {
             }
             .bind(to: collectionView.rx.items(cellIdentifier: MessageCell.reuseID,
                                               cellType: MessageCell.self)) { index, message, cell in
-                cell.message = nil
-                cell.textLeadingConst.isActive = false
-                cell.texttrailingConst.isActive = false
-                cell.timelabelLeadingConst.isActive = false
-                cell.timelabelTrailingConst.isActive = false
                 cell.message = message
             }
             .disposed(by: disposeBag)
