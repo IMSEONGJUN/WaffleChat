@@ -28,11 +28,11 @@ extension Reactive where Base: RegistrationController {
 
 extension Reactive where Base: UIRefreshControl {
     var spinner: Binder<Bool> {
-        return Binder(base) { (refresh, isRefresh) in
+        return Binder(base) { (refreshControl, isRefresh) in
             if isRefresh {
-                refresh.beginRefreshing()
+                refreshControl.beginRefreshing()
             } else {
-                refresh.endRefreshing()
+                refreshControl.endRefreshing()
             }
         }
     }
