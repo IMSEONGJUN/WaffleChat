@@ -19,7 +19,7 @@ final class InputContainerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(image: UIImage?, textField: UITextField) {
+    required init(image: UIImage?, textField: UITextField) {
         super.init(frame: .zero)
         let imageView = UIImageView(image: image)
         let underline = UIView()

@@ -28,7 +28,6 @@
 #include "Firestore/core/src/api/firestore.h"
 #include "Firestore/core/src/auth/credentials_provider.h"
 #include "Firestore/core/src/auth/firebase_credentials_provider_apple.h"
-#include "Firestore/core/src/model/maybe_document.h"
 #include "Firestore/core/src/remote/firebase_metadata_provider.h"
 #include "Firestore/core/src/remote/firebase_metadata_provider_apple.h"
 #include "Firestore/core/src/util/async_queue.h"
@@ -38,10 +37,8 @@
 #include "absl/memory/memory.h"
 
 namespace util = firebase::firestore::util;
-using firebase::firestore::api::Firestore;
 using firebase::firestore::auth::CredentialsProvider;
 using firebase::firestore::auth::FirebaseCredentialsProvider;
-using firebase::firestore::remote::FirebaseMetadataProvider;
 using firebase::firestore::remote::FirebaseMetadataProviderApple;
 using firebase::firestore::util::AsyncQueue;
 using firebase::firestore::util::Executor;
@@ -143,10 +140,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Object Lifecycle
 
 + (void)load {
-  [FIRApp registerInternalLibrary:(Class<FIRLibrary>)self
-                         withName:@"fire-fst"
-                      withVersion:[NSString stringWithUTF8String:firebase::firestore::
-                                                                     kFirestoreVersionString]];
+  [FIRApp registerInternalLibrary:(Class<FIRLibrary>)self withName:@"fire-fst"];
 }
 
 #pragma mark - Interoperability

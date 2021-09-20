@@ -110,7 +110,6 @@ final class ChatController: UIViewController, ViewType {
     
     // MARK: - Binding
     func bind() {
-        
         // Input -> ViewModel
          customInputView.sendButton.rx.tap
              .bind(to: viewModel.sendButtonTapped)
@@ -118,16 +117,17 @@ final class ChatController: UIViewController, ViewType {
          
          customInputView.messageInputTextView.rx.text
              .orEmpty
+             .distinctUntilChanged()
              .bind(to: viewModel.inputText)
              .disposed(by: disposeBag)
         
         
         // ViewModel -> Output
         viewModel.userData
-            .subscribe(onNext: { [weak self] in
-                guard let user = $0 else { return }
-                self?.configureNavigationBar(with: user.username, prefersLargeTitles: false)
-            })
+            .compactMap { $0 }
+            .subscribe(with: self) { owner, user in
+                owner.configureNavigationBar(with: user.username, prefersLargeTitles: false)
+            }
             .disposed(by: disposeBag)
         
         Observable
@@ -135,8 +135,8 @@ final class ChatController: UIViewController, ViewType {
                 viewModel.messages,
                 viewModel.userData
             )
-            .map{ (messages, user) -> [Message] in
-                return messages.map{ Message(original: $0, user: user!) }
+            .map{ messages, user -> [Message] in
+                return messages.map { Message(original: $0, user: user!) }
             }
             .bind(to: collectionView.rx.items(cellIdentifier: MessageCell.reuseID,
                                               cellType: MessageCell.self)) { index, message, cell in
@@ -145,71 +145,63 @@ final class ChatController: UIViewController, ViewType {
             .disposed(by: disposeBag)
 
         viewModel.isMessageUploaded
-            .filter{ $0 }
-            .drive(onNext: { [weak self] _ in
-                self?.customInputView.clearMessageText()
-            })
+            .filter { $0 }
+            .drive(with: self) { owner, _ in
+                owner.customInputView.clearMessageText()
+            }
             .disposed(by: disposeBag)
        
         
         // UI Binding
         tapGesture.rx.event
-            .subscribe(onNext: { [unowned self] _ in
-                self.view.endEditing(true)
-            })
+            .subscribe(with: self) { owner, _ in
+                owner.view.endEditing(true)
+            }
             .disposed(by: disposeBag)
 
         
         // Notification Binding
         NotificationCenter.default.rx.notification(Notifications.didFinishFetchMessage)
-            .subscribe(onNext:{ [weak self] (noti) in
-                guard let self = self else { return }
-                self.collectionView.layoutIfNeeded()
-                if (self.collectionView.contentSize.height + self.topbarHeight) > self.collectionView.frame.height {
-                    let count = self.viewModel.messages.value.count
-                    self.collectionView.scrollToItem(at: IndexPath(item: count - 1, section: 0), at: .bottom, animated: true)
-                    self.collectionView.layoutIfNeeded()
+            .withLatestFrom(viewModel.messages)
+            .map { $0.count }
+            .subscribe(with: self) { owner, messageCount in
+                if (owner.collectionView.contentSize.height + owner.topbarHeight) > owner.collectionView.frame.height {
+                    owner.collectionView.scrollToItem(at: IndexPath(item: messageCount - 1, section: 0), at: .bottom, animated: true)
+                    owner.collectionView.layoutIfNeeded()
                 }
-            })
+            }
             .disposed(by: disposeBag)
         
-        NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
-            .subscribe(onNext:{ [weak self] noti in
-                guard let self = self else { return }
-                let height = self.getKeyboardFrameHeight(noti: noti)
-                let bottomInset = self.view.safeAreaInsets.bottom
-                
-                if self.collectionView.contentSize.height + self.topbarHeight > self.view.frame.height - (height + self.customInputView.frame.height) {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: -height + bottomInset)
-                } else {
-                    self.customInputView.transform = CGAffineTransform(translationX: 0, y: -height + bottomInset)
-                }
-                
-            })
-            .disposed(by: disposeBag)
-
-        NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
-            .subscribe(onNext: {[weak self] noti in
-                guard let self = self else { return }
-                let height = self.getKeyboardFrameHeight(noti: noti)
-
-                if self.collectionView.contentSize.height + self.topbarHeight > self.view.frame.height - (height + self.customInputView.frame.height) {
-                    self.view.transform = .identity
-                }
-                self.customInputView.transform = .identity
-            })
-            .disposed(by: disposeBag)
-        
+        Observable.merge(
+            NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification),
+            NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
+        )
+        .subscribe(with: self) { owner, noti in
+            owner.updateMessageLayout(noti: noti)
+        }
+        .disposed(by: disposeBag)
     }
     
     
     // MARK: - Helper
-    func getKeyboardFrameHeight(noti: Notification) -> CGFloat {
+    private func getKeyboardFrameHeight(noti: Notification) -> CGFloat {
         guard let value = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
             fatalError()
         }
         let keyboardFrame = value.cgRectValue
         return keyboardFrame.height
+    }
+    
+    private func updateMessageLayout(noti: Notification) {
+        let height = getKeyboardFrameHeight(noti: noti)
+        let isKeyboardWillShow = noti.name == UIResponder.keyboardWillHideNotification
+        if collectionView.contentSize.height + topbarHeight > view.frame.height - (height + customInputView.frame.height) {
+            view.transform = isKeyboardWillShow
+                ? CGAffineTransform(translationX: 0, y: -height + view.safeAreaInsets.bottom) : .identity
+            return
+        }
+        customInputView.transform = isKeyboardWillShow
+            ? CGAffineTransform(translationX: 0, y: -height + view.safeAreaInsets.bottom) : .identity
     }
 }
 

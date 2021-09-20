@@ -14,7 +14,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Firebase-fc1b9f38.xcscheme</key>
+		<key>Firebase-d036256f.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -50,11 +50,6 @@
 			<false/>
 		</dict>
 		<key>FirebaseInstallations.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>FirebaseInstanceID.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -105,11 +100,6 @@
 			<false/>
 		</dict>
 		<key>PromisesObjC.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Protobuf.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

@@ -111,9 +111,9 @@ final class NewMessageController: UIViewController, ViewType {
         
         // UI Bind
         cancelButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                self.dismiss(animated: true)
-            })
+            .subscribe(with: self) { owner, _ in
+                owner.dismiss(animated: true)
+            }
             .disposed(by: disposeBag)
     }
 }

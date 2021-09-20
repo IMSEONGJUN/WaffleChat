@@ -53,37 +53,37 @@ final class ProfileController: UITableViewController, ViewType {
 
         // UI binding
         headerView.dismissButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                self.dismiss(animated: true)
-            })
+            .subscribe(with: self) { owner, _ in
+                owner.dismiss(animated: true)
+            }
             .disposed(by: disposeBag)
         
         footerView.logoutButton.rx.tap
-            .subscribe(onNext:{ [unowned self] in
-                self.doLogoutThisUser { (error) in
+            .subscribe(with: self) { owner, _ in
+                owner.doLogoutThisUser { (error) in
                     if let err = error {
                         print("Failed to logged out:", err)
                         return
                     }
                     print("Successfully logged out this user")
-                    self.switchToLoginVC()
+                    owner.switchToLoginVC()
                 }
-            })
+            }
             .disposed(by: disposeBag)
         
         tableView.rx.itemSelected
-            .subscribe(onNext:{ [unowned self] in
-                self.tableView.deselectRow(at: $0, animated: true)
-            })
+            .subscribe(with: self) { owner, indexPath in
+                owner.tableView.deselectRow(at: indexPath, animated: true)
+            }
             .disposed(by: disposeBag)
         
         
         // ViewModel -> Output
         viewModel.user
-            .drive(onNext: { [weak self] in
-                guard let user = $0 else { return }
-                self?.headerView.user.accept(user)
-            })
+            .compactMap { $0 }
+            .drive(with: self) { owner, user in
+                owner.headerView.user.accept(user)
+            }
             .disposed(by: disposeBag)
     }
 }

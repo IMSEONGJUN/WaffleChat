@@ -26,12 +26,16 @@
 #include <utility>
 #include <vector>
 
+#include "Firestore/core/src/api/load_bundle_task.h"
+#include "Firestore/core/src/bundle/bundle_loader.h"
+#include "Firestore/core/src/bundle/bundle_reader.h"
 #include "Firestore/core/src/core/query.h"
 #include "Firestore/core/src/core/target_id_generator.h"
 #include "Firestore/core/src/core/view.h"
 #include "Firestore/core/src/local/reference_set.h"
 #include "Firestore/core/src/model/model_fwd.h"
 #include "Firestore/core/src/remote/remote_store.h"
+#include "Firestore/core/src/util/random_access_queue.h"
 #include "Firestore/core/src/util/status.h"
 #include "absl/strings/string_view.h"
 
@@ -140,12 +144,14 @@ class SyncEngine : public remote::RemoteStoreCallback, public QueryEventSource {
   void ApplyRemoteEvent(const remote::RemoteEvent& remote_event) override;
   void HandleRejectedListen(model::TargetId target_id,
                             util::Status error) override;
-  void HandleSuccessfulWrite(
-      const model::MutationBatchResult& batch_result) override;
+  void HandleSuccessfulWrite(model::MutationBatchResult batch_result) override;
   void HandleRejectedWrite(model::BatchId batch_id,
                            util::Status error) override;
   void HandleOnlineStateChange(model::OnlineState online_state) override;
   model::DocumentKeySet GetRemoteKeys(model::TargetId target_id) const override;
+
+  void LoadBundle(std::shared_ptr<bundle::BundleReader> reader,
+                  std::shared_ptr<api::LoadBundleTask> result_task);
 
   // For tests only
   std::map<model::DocumentKey, model::TargetId>
@@ -155,9 +161,8 @@ class SyncEngine : public remote::RemoteStoreCallback, public QueryEventSource {
   }
 
   // For tests only
-  std::deque<model::DocumentKey> GetEnqueuedLimboDocumentResolutions() const {
-    // Return defensive copy
-    return enqueued_limbo_resolutions_;
+  std::vector<model::DocumentKey> GetEnqueuedLimboDocumentResolutions() const {
+    return enqueued_limbo_resolutions_.elements();
   }
 
  private:
@@ -230,7 +235,7 @@ class SyncEngine : public remote::RemoteStoreCallback, public QueryEventSource {
   void RemoveLimboTarget(const model::DocumentKey& key);
 
   void EmitNewSnapshotsAndNotifyLocalStore(
-      const model::MaybeDocumentMap& changes,
+      const model::DocumentMap& changes,
       const absl::optional<remote::RemoteEvent>& maybe_remote_event);
 
   /** Updates the limbo document state for the given target_id. */
@@ -261,6 +266,11 @@ class SyncEngine : public remote::RemoteStoreCallback, public QueryEventSource {
    */
   void TriggerPendingWriteCallbacks(model::BatchId batch_id);
   void FailOutstandingPendingWriteCallbacks(const std::string& message);
+
+  absl::optional<bundle::BundleLoader> ReadIntoLoader(
+      const bundle::BundleMetadata& metadata,
+      bundle::BundleReader& reader,
+      api::LoadBundleTask& result_task);
 
   /** The local store, used to persist mutations and cached documents. */
   local::LocalStore* local_store_ = nullptr;
@@ -301,7 +311,8 @@ class SyncEngine : public remote::RemoteStoreCallback, public QueryEventSource {
    * The keys of documents that are in limbo for which we haven't yet started a
    * limbo resolution query.
    */
-  std::deque<model::DocumentKey> enqueued_limbo_resolutions_;
+  util::RandomAccessQueue<model::DocumentKey, model::DocumentKeyHash>
+      enqueued_limbo_resolutions_;
 
   /**
    * Keeps track of the target ID for each document that is in limbo with an

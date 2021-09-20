@@ -75,36 +75,36 @@ final class ConversationsController: UIViewController, ViewType {
     func bind() {
         // UI Binding
         navigationItem.leftBarButtonItem?.rx.tap
-            .subscribe(onNext: { [unowned self] in
+            .subscribe(with: self) { owner, _ in
                 let profileController = ProfileController.create(with: ProfileViewModel())
                 let navi = UINavigationController(rootViewController: profileController)
                 navi.modalPresentationStyle = .fullScreen
                 navi.modalTransitionStyle = .coverVertical
-                self.present(navi, animated: true)
-            })
+                owner.present(navi, animated: true)
+            }
             .disposed(by: disposeBag)
         
         newMessageButton.rx.tap
-            .subscribe(onNext:{ [unowned self] in
+            .subscribe(with: self) { owner, _ in
                 let newMessageVC = NewMessageController.create(with: NewMessageViewModel())
                 self.newMessageControllerBind(newMsgVC: newMessageVC)
                 let newMessageVCNavi = UINavigationController(rootViewController: newMessageVC)
                 newMessageVCNavi.modalPresentationStyle = .fullScreen
-                self.present(newMessageVCNavi, animated: true)
-            })
+                owner.present(newMessageVCNavi, animated: true)
+            }
             .disposed(by: disposeBag)
         
         tableView.rx.modelSelected(Conversation.self)
-            .subscribe(onNext: {[unowned self] conversation in
+            .subscribe(with: self) { owner, conversation in
                 let chatVC = ChatController.create(with: ChatViewModel(user: conversation.user))
-                self.navigationController?.pushViewController(chatVC, animated: true)
-            })
+                owner.navigationController?.pushViewController(chatVC, animated: true)
+            }
             .disposed(by: disposeBag)
         
         tableView.rx.itemSelected
-            .subscribe(onNext: { [unowned self] in
-                self.tableView.deselectRow(at: $0, animated: true)
-            })
+            .subscribe(with: self) { owner, indexPath in
+                owner.tableView.deselectRow(at: indexPath, animated: true)
+            }
             .disposed(by: disposeBag)
         
         
@@ -121,12 +121,12 @@ final class ConversationsController: UIViewController, ViewType {
     // MARK: - Binding Helper
     private func newMessageControllerBind(newMsgVC: NewMessageController) {
         newMsgVC.tableView.rx.modelSelected(User.self)
-            .subscribe(onNext: { [weak self] user in
+            .subscribe(with: self) { owner, user in
                 let chatVC = ChatController.create(with: ChatViewModel(user: user))
                 newMsgVC.searchController.dismiss(animated: true)
                 newMsgVC.dismiss(animated: true)
-                self?.navigationController?.pushViewController(chatVC, animated: true)
-            })
+                owner.navigationController?.pushViewController(chatVC, animated: true)
+            }
             .disposed(by: disposeBag)
     }
 }
