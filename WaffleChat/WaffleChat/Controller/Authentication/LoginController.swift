@@ -49,16 +49,10 @@ final class LoginController: UIViewController, ViewType {
     
     
     // MARK: - Life cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(#function)
         navigationController?.navigationBar.isHidden = true
     }
-    
     
     // MARK: - Initial UI Setup
     func setupUI() {
@@ -134,17 +128,17 @@ final class LoginController: UIViewController, ViewType {
         
         // viewModel -> Output
         viewModel.isValidForm
-            .drive(onNext: { [weak self] in
-                self?.loginButton.isEnabled = $0
-                self?.loginButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
-            })
+            .drive(with: self) { owner, isValid in
+                owner.loginButton.isEnabled = isValid
+                owner.loginButton.backgroundColor = isValid ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
+            }
             .disposed(by: disposeBag)
         
         viewModel.isLoginCompleted
-            .emit(onNext: { [weak self] _ in
-                self?.showActivityIndicator(false)
-                self?.switchToConversationVC()
-            })
+            .emit(with: self) { owner, _ in
+                owner.showActivityIndicator(false)
+                owner.switchToConversationVC()
+            }
             .disposed(by: disposeBag)
         
         

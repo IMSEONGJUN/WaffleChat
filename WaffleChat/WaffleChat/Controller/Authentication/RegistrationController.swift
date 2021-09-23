@@ -164,27 +164,27 @@ final class RegistrationController: UIViewController, ViewType {
         
         // viewModel -> Output
         viewModel.isFormValid
-            .drive(onNext: { [weak self] in
-                self?.signUpButton.isEnabled = $0
-                self?.signUpButton.backgroundColor = $0 ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
-            })
+            .drive(with: self) { owner, isValid in
+                owner.signUpButton.isEnabled = isValid
+                owner.signUpButton.backgroundColor = isValid ? #colorLiteral(red: 0.9659136591, green: 0.6820907831, blue: 0.1123226724, alpha: 1) : #colorLiteral(red: 0.9379426837, green: 0.7515827417, blue: 0.31791839, alpha: 1)
+            }
             .disposed(by: disposeBag)
         
         viewModel.profileImage
-            .bind(to: self.rx.setProfileImage)
+            .bind(to: rx.setProfileImage)
             .disposed(by: disposeBag)
         
         viewModel.isRegistering
-            .drive(onNext: {[weak self] in
-                self?.showActivityIndicator($0, withText: $0 ? "Registering" : nil)
-            })
+            .drive(with: self) { owner, isRegistering in
+                owner.showActivityIndicator(isRegistering, withText: isRegistering ? "Registering" : nil)
+            }
             .disposed(by: disposeBag)
         
         viewModel.isRegistered
-            .filter{ $0 == true }
-            .emit(onNext: { [weak self] _ in
-                self?.switchToConversationVC()
-            })
+            .filter { $0 == true }
+            .emit(with: self) { owner, _ in
+                owner.switchToConversationVC()
+            }
             .disposed(by: disposeBag)
         
         
@@ -203,28 +203,26 @@ final class RegistrationController: UIViewController, ViewType {
         
         
         // Notification binding
-        NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
-            .map { [weak self] noti -> CGFloat in
-                guard let self = self else { fatalError() }
-                return self.getKeyboardFrameHeight(noti: noti)
+        Observable.merge(
+            NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification),
+            NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
+        )
+        .subscribe(with: self) { owner, noti in
+            if noti.name == UIResponder.keyboardWillShowNotification {
+                let keyboardHeight = owner.getKeyboardFrameHeight(noti: noti)
+                owner.view.transform = CGAffineTransform(translationX: 0, y: -keyboardHeight - 8)
+                return
             }
-            .subscribe(onNext: { [weak self] in
-                self?.view.transform = CGAffineTransform(translationX: 0, y: -$0 - 8)
+            UIView.animate(withDuration: 0.5,
+                           delay: 0,
+                           usingSpringWithDamping: 0.8,
+                           initialSpringVelocity: 1,
+                           options: .curveEaseOut,
+                           animations: {
+                owner.view.transform = .identity
             })
-            .disposed(by: disposeBag)
-        
-        NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
-            .subscribe(onNext: { [weak self] noti -> Void in
-                UIView.animate(withDuration: 0.5,
-                               delay: 0,
-                               usingSpringWithDamping: 0.8,
-                               initialSpringVelocity: 1,
-                               options: .curveEaseOut,
-                               animations: {
-                    self?.view.transform = .identity
-                })
-            })
-            .disposed(by: disposeBag)
+        }
+        .disposed(by: disposeBag)
     }
 
     
