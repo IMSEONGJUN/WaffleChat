@@ -12,7 +12,7 @@ import RxCocoa
 
 struct ChatViewModel: ChatViewModelBindable {
     // Input
-    let userData = BehaviorRelay<User?>(value: nil)
+    let userData: BehaviorRelay<User>
     let inputText = BehaviorRelay<String>(value: "")
     let sendButtonTapped = PublishSubject<Void>()
     
@@ -23,28 +23,12 @@ struct ChatViewModel: ChatViewModelBindable {
     var disposeBag = DisposeBag()
     
     init(user: User, model: APIManager = .shared) {
-        self.userData.accept(user)
+        self.userData = BehaviorRelay<User>(value: user)
         
-        let didNewMessageIncome = PublishRelay<Void>()
-        let fetchedMessages = model
+        model
             .fetchMessages(forUser: user)
-            .share()
-        
-        fetchedMessages
-            .catchErrorJustReturn([])
+            .catchAndReturn([])
             .bind(to: messages)
-            .disposed(by: disposeBag)
-        
-        fetchedMessages
-            .mapToVoid()
-            .bind(to: didNewMessageIncome)
-            .disposed(by: disposeBag)
-        
-        didNewMessageIncome
-            .skip(1)
-            .subscribe(onNext: { _ in
-                NotificationCenter.default.post(name: Notifications.didFinishFetchMessage, object: nil)
-            })
             .disposed(by: disposeBag)
         
         let source = Observable

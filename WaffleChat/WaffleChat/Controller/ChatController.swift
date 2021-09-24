@@ -12,7 +12,7 @@ import RxCocoa
 
 protocol ChatViewModelBindable: ViewModelType {
     // Input
-    var userData: BehaviorRelay<User?> { get }
+    var userData: BehaviorRelay<User> { get }
     var inputText: BehaviorRelay<String> { get }
     var sendButtonTapped: PublishSubject<Void> { get }
     
@@ -135,9 +135,12 @@ final class ChatController: UIViewController, ViewType {
                 viewModel.messages,
                 viewModel.userData
             )
-            .map{ messages, user -> [Message] in
-                return messages.map { Message(original: $0, user: user!) }
+            .map { messages, user -> [Message] in
+                return messages.map { Message(original: $0, user: user) }
             }
+            .do(onNext: { [weak self] messages in
+                self?.newMessageIncome(messageCount: messages.count)
+            })
             .bind(to: collectionView.rx.items(cellIdentifier: MessageCell.reuseID,
                                               cellType: MessageCell.self)) { index, message, cell in
                 cell.message = message
@@ -150,7 +153,6 @@ final class ChatController: UIViewController, ViewType {
                 owner.customInputView.clearMessageText()
             }
             .disposed(by: disposeBag)
-       
         
         // UI Binding
         tapGesture.rx.event
@@ -158,20 +160,8 @@ final class ChatController: UIViewController, ViewType {
                 owner.view.endEditing(true)
             }
             .disposed(by: disposeBag)
-
         
         // Notification Binding
-        NotificationCenter.default.rx.notification(Notifications.didFinishFetchMessage)
-            .withLatestFrom(viewModel.messages)
-            .map { $0.count }
-            .subscribe(with: self) { owner, messageCount in
-                if (owner.collectionView.contentSize.height + owner.topbarHeight) > owner.collectionView.frame.height {
-                    owner.collectionView.scrollToItem(at: IndexPath(item: messageCount - 1, section: 0), at: .bottom, animated: true)
-                    owner.collectionView.layoutIfNeeded()
-                }
-            }
-            .disposed(by: disposeBag)
-        
         Observable.merge(
             NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification),
             NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
@@ -202,6 +192,13 @@ final class ChatController: UIViewController, ViewType {
         }
         customInputView.transform = isKeyboardWillShow
             ? CGAffineTransform(translationX: 0, y: -height + view.safeAreaInsets.bottom) : .identity
+    }
+    
+    private func newMessageIncome(messageCount: Int) {
+        if (collectionView.contentSize.height + topbarHeight) > collectionView.frame.height {
+            collectionView.scrollToItem(at: IndexPath(item: messageCount - 1, section: 0), at: .bottom, animated: true)
+            collectionView.layoutIfNeeded()
+        }
     }
 }
 
