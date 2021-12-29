@@ -11,18 +11,19 @@ import RxSwift
 
 // MARK: - BaseView Protocol
 
-protocol ViewType: class {
+protocol ViewType: AnyObject {
     
-    associatedtype VM
+    associatedtype ViewModel: ViewModelType
     
-    var viewModel: VM! { get set }
-    var disposeBag: DisposeBag! { get set }
+    var viewModel: ViewModel { get set }
+    var disposeBag: DisposeBag { get set }
+    
     func setupUI()
     func bind()
 }
 
 extension ViewType where Self: UIViewController {
-    static func create(with viewModel: VM) -> Self {
+    static func create(with viewModel: ViewModel) -> Self {
         let `self` = Self()
         
         // DI
